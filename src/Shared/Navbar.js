@@ -45,7 +45,7 @@ function Navbar() {
             Cart
             <Circle
               size='20px'
-              bgColor='yellow'
+              bgColor='goldenrod'
               aspectRatio='1/1'
               pos='absolute'
               top='4px'

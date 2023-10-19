@@ -7,7 +7,7 @@ function Searchbar() {
         <Input
           border='none'
           placeholder='Search'
-          maxW='240px'
+          maxW='200px'
           borderRadius='20px'
           bgColor='gray.200'
         />

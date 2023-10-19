@@ -4,10 +4,21 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 
 import { ChakraProvider } from "@chakra-ui/react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Homepage from "./Home/Homepage";
+import Layout from "./Shared/Layout";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [{ index: true, element: <Homepage /> }],
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ChakraProvider>
-    <App />
+    <RouterProvider router={router} />
   </ChakraProvider>
 );
