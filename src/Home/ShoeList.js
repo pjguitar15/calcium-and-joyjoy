@@ -1,17 +1,62 @@
-import { Box, HStack, Heading } from "@chakra-ui/react";
+import { Box, Circle, Heading } from "@chakra-ui/react";
 import ItemCard from "../Shared/ItemCard";
+import Slider from "react-slick";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { useState } from "react";
 function ShoeList() {
-  const dummy = Array.from({ length: 5 });
+  const [activeIndex, setActiveIndex] = useState(0);
+  const dummy = Array.from({ length: 15 });
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 5,
+    nextArrow: (
+      <Arrow variant='next' onLast={activeIndex === 10 ? true : false} />
+    ),
+    prevArrow: (
+      <Arrow variant='prev' onLast={activeIndex === 0 ? true : false} />
+    ),
+    beforeChange: (current, next) => setActiveIndex(next),
+  };
+
   return (
     <Box>
       <Heading mb='24px'>WHAT'S HOT?</Heading>
-      <HStack gap='40px' justify='center'>
+      <Box as={Slider} {...settings}>
         {dummy.map((_, i) => {
-          return <ItemCard key={i} />;
+          return (
+            <Box py='16px' key={i}>
+              <ItemCard />
+            </Box>
+          );
         })}
-      </HStack>
+      </Box>
     </Box>
   );
 }
 
 export default ShoeList;
+
+const Arrow = ({ onClick, variant, onLast }) => {
+  return (
+    <Circle
+      opacity={onLast ? 0 : 1}
+      pointerEvents={onLast ? "none" : "auto"}
+      fontSize='40px'
+      pos='absolute'
+      left={variant === "prev" ? "16px" : ""}
+      right={variant === "next" ? "16px" : ""}
+      top='50%'
+      transform='translateY(-60%)'
+      zIndex={90}
+      onClick={onClick}
+      cursor='pointer'
+      bgColor='gray.500'
+      color='white'
+    >
+      {variant === "next" ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+    </Circle>
+  );
+};
