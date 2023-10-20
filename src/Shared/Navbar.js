@@ -11,6 +11,7 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
+  Image,
 } from "@chakra-ui/react";
 import Searchbar from "./Searchbar";
 import { Link } from "react-router-dom";
@@ -25,14 +26,14 @@ function Navbar() {
       zIndex={100}
     >
       <Grid
-        gridTemplateColumns='repeat(3,1fr)'
+        gridTemplateColumns='1fr 2fr 1fr'
         maxW='var(--maxW)'
         px='56px'
         mx='auto'
         alignItems='center'
       >
         <Link to='/'>
-          <Box justifySelf='start' bgColor='red' h='80px' aspectRatio='2/1' />
+          <Image transform='translateY(20px)' src='/assets/logoheader.png' />
         </Link>
         <Box justifySelf='center'>
           <HStack alignItems='center' gap='40px'>
