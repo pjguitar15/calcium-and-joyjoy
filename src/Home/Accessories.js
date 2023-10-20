@@ -5,6 +5,8 @@ import ItemCard from "../Shared/ItemCard";
 import Slider from "react-slick";
 import { useState } from "react";
 
+const dummy = Array.from({ length: 5 });
+
 function Accessories() {
   const [activeIndex, setActiveIndex] = useState(0);
   const settings = {
@@ -26,6 +28,12 @@ function Accessories() {
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
+          nextArrow: (
+            <Arrow
+              variant='next'
+              onLast={activeIndex === dummy.length - 4 ? true : false}
+            />
+          ),
         },
       },
       {
@@ -33,6 +41,12 @@ function Accessories() {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
+          nextArrow: (
+            <Arrow
+              variant='next'
+              onLast={activeIndex === dummy.length - 3 ? true : false}
+            />
+          ),
         },
       },
       {
@@ -40,13 +54,12 @@ function Accessories() {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-        },
-      },
-      {
-        breakpoint: 940,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          nextArrow: (
+            <Arrow
+              variant='next'
+              onLast={activeIndex === dummy.length - 2 ? true : false}
+            />
+          ),
         },
       },
       {
@@ -54,11 +67,17 @@ function Accessories() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          nextArrow: (
+            <Arrow
+              variant='next'
+              onLast={activeIndex === dummy.length - 1 ? true : false}
+            />
+          ),
         },
       },
     ],
   };
-  const dummy = Array.from({ length: 5 });
+
   return (
     <Box>
       <Heading mb='24px'>WHAT'S HOT?</Heading>

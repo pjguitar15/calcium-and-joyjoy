@@ -3,9 +3,11 @@ import ItemCard from "../Shared/ItemCard";
 import Slider from "react-slick";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+
+const dummy = Array.from({ length: 15 });
 function ShoeList() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const dummy = Array.from({ length: 15 });
+
   const settings = {
     dots: false,
     infinite: false,
@@ -25,6 +27,12 @@ function ShoeList() {
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
+          nextArrow: (
+            <Arrow
+              variant='next'
+              onLast={activeIndex === dummy.length - 4 ? true : false}
+            />
+          ),
         },
       },
       {
@@ -32,6 +40,12 @@ function ShoeList() {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
+          nextArrow: (
+            <Arrow
+              variant='next'
+              onLast={activeIndex === dummy.length - 3 ? true : false}
+            />
+          ),
         },
       },
       {
@@ -39,13 +53,12 @@ function ShoeList() {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-        },
-      },
-      {
-        breakpoint: 940,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          nextArrow: (
+            <Arrow
+              variant='next'
+              onLast={activeIndex === dummy.length - 2 ? true : false}
+            />
+          ),
         },
       },
       {
@@ -53,6 +66,12 @@ function ShoeList() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          nextArrow: (
+            <Arrow
+              variant='next'
+              onLast={activeIndex === dummy.length - 1 ? true : false}
+            />
+          ),
         },
       },
     ],
