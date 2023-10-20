@@ -6,16 +6,31 @@ import {
   Grid,
   HStack,
   Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+  textDecoration,
 } from "@chakra-ui/react";
 import Searchbar from "./Searchbar";
 function Navbar() {
   const navItems = ["Men", "Women", "Brand"];
   return (
-    <Box>
+    <Box
+      pos='sticky'
+      top='0px'
+      backdropFilter='auto'
+      backdropBlur='8px'
+      zIndex={100}
+    >
       <Grid
         gridTemplateColumns='repeat(3,1fr)'
         maxW='var(--maxW)'
-        p='16px 56px'
+        px='56px'
         mx='auto'
         alignItems='center'
       >
@@ -23,14 +38,29 @@ function Navbar() {
         <Box justifySelf='center'>
           <HStack alignItems='center' gap='40px'>
             {navItems.map((item) => (
-              <Button
-                fontSize='24px'
-                key={item}
-                variant='unstyled'
-                fontWeight='semibold'
-              >
-                {item}
-              </Button>
+              <Menu key={item}>
+                <MenuButton
+                  _hover={{
+                    textDecor: "underline",
+                    textUnderlineOffset: "8px",
+                  }}
+                  _active={{
+                    textDecor: "underline",
+                    textUnderlineOffset: "8px",
+                  }}
+                  fontWeight='semibold'
+                  fontSize='20px'
+                >
+                  {item}
+                </MenuButton>
+                <MenuList>
+                  <MenuItem fontWeight='semibold'>Nike</MenuItem>
+                  <MenuDivider />
+                  <MenuItem fontWeight='semibold'>Jordan</MenuItem>
+                  <MenuDivider />
+                  <MenuItem fontWeight='semibold'>Addidas</MenuItem>
+                </MenuList>
+              </Menu>
             ))}
           </HStack>
         </Box>
