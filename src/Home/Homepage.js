@@ -1,8 +1,9 @@
 import { Grid, Skeleton, Text, VStack } from "@chakra-ui/react";
 import ShoeList from "./ShoeList";
+import Accessories from "./Accessories";
 function Homepage() {
   return (
-    <VStack align='normal' justify='normal' gap='40px'>
+    <VStack align='normal' justify='normal' gap='80px'>
       <Grid
         p='48px'
         borderRadius='24px'
@@ -20,6 +21,7 @@ function Homepage() {
         <Skeleton w='100%' />
       </Grid>
       <ShoeList />
+      <Accessories />
     </VStack>
   );
 }

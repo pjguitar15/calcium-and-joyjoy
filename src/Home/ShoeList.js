@@ -28,7 +28,7 @@ function ShoeList() {
         {dummy.map((_, i) => {
           return (
             <Box py='16px' key={i}>
-              <ItemCard />
+              <ItemCard title={i + 1} />
             </Box>
           );
         })}
