@@ -7,12 +7,24 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Homepage from "./Home/Homepage";
 import Layout from "./Shared/Layout";
+import AuthPage from "./Auth/AuthPage";
+import CartPage from "./Cart/CartPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [{ index: true, element: <Homepage /> }],
+    children: [
+      { index: true, element: <Homepage /> },
+      {
+        path: "/auth",
+        element: <AuthPage />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
+      },
+    ],
   },
 ]);
 

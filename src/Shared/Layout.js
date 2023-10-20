@@ -20,9 +20,9 @@ function Layout() {
     },
   ];
   return (
-    <>
+    <Box>
       <Navbar />
-      <Box maxW='var(--maxW)' mx='auto' p='40px'>
+      <Box minH='55vh' maxW='var(--maxW)' mx='auto' p='40px'>
         <Outlet />
       </Box>
       <Box h='240px' bgColor='#403F3F' mt='80px' pb='56px' pt='200px' px='40px'>
@@ -47,7 +47,7 @@ function Layout() {
           </HStack>
         </HStack>
       </Box>
-    </>
+    </Box>
   );
 }
 

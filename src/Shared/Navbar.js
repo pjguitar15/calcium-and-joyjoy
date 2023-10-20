@@ -13,6 +13,7 @@ import {
   MenuDivider,
 } from "@chakra-ui/react";
 import Searchbar from "./Searchbar";
+import { Link } from "react-router-dom";
 function Navbar() {
   const navItems = ["Men", "Women", "Brand"];
   return (
@@ -30,7 +31,9 @@ function Navbar() {
         mx='auto'
         alignItems='center'
       >
-        <Box justifySelf='start' bgColor='red' h='80px' aspectRatio='2/1' />
+        <Link to='/'>
+          <Box justifySelf='start' bgColor='red' h='80px' aspectRatio='2/1' />
+        </Link>
         <Box justifySelf='center'>
           <HStack alignItems='center' gap='40px'>
             {navItems.map((item) => (
@@ -69,25 +72,29 @@ function Navbar() {
         <HStack justifySelf='end' pr='24px'>
           <Searchbar />
           <Divider mx='8px' orientation='vertical' height='40px' />
-          <Button variant='unstyled' borderRadius={0}>
-            Sign In
-          </Button>
+          <Link to='/auth'>
+            <Button variant='unstyled' borderRadius={0}>
+              Sign In
+            </Button>
+          </Link>
           <Divider mx='8px' orientation='vertical' height='40px' />
-          <Button variant='unstyled' pos='relative'>
-            Cart
-            <Circle
-              size='20px'
-              bgColor='goldenrod'
-              aspectRatio='1/1'
-              pos='absolute'
-              top='4px'
-              right='-16px'
-            >
-              <Text fontWeight='semibold' fontSize='12px' lineHeight='0'>
-                0
-              </Text>
-            </Circle>
-          </Button>
+          <Link to='/cart'>
+            <Button variant='unstyled' pos='relative'>
+              Cart
+              <Circle
+                size='20px'
+                bgColor='goldenrod'
+                aspectRatio='1/1'
+                pos='absolute'
+                top='4px'
+                right='-16px'
+              >
+                <Text fontWeight='semibold' fontSize='12px' lineHeight='0'>
+                  0
+                </Text>
+              </Circle>
+            </Button>
+          </Link>
         </HStack>
       </Grid>
     </Box>
