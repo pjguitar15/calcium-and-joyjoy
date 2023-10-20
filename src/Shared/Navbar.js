@@ -10,11 +10,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
   MenuDivider,
-  textDecoration,
 } from "@chakra-ui/react";
 import Searchbar from "./Searchbar";
 function Navbar() {
@@ -38,7 +34,7 @@ function Navbar() {
         <Box justifySelf='center'>
           <HStack alignItems='center' gap='40px'>
             {navItems.map((item) => (
-              <Menu key={item}>
+              <Menu offset={item === "Men" ? [-90, 16] : [-75, 16]} key={item}>
                 <MenuButton
                   _hover={{
                     textDecor: "underline",
@@ -54,11 +50,17 @@ function Navbar() {
                   {item}
                 </MenuButton>
                 <MenuList>
-                  <MenuItem fontWeight='semibold'>Nike</MenuItem>
+                  <MenuItem justifyContent='center' fontWeight='semibold'>
+                    Nike
+                  </MenuItem>
                   <MenuDivider />
-                  <MenuItem fontWeight='semibold'>Jordan</MenuItem>
+                  <MenuItem justifyContent='center' fontWeight='semibold'>
+                    Jordan
+                  </MenuItem>
                   <MenuDivider />
-                  <MenuItem fontWeight='semibold'>Addidas</MenuItem>
+                  <MenuItem justifyContent='center' fontWeight='semibold'>
+                    Addidas
+                  </MenuItem>
                 </MenuList>
               </Menu>
             ))}
