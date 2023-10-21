@@ -85,7 +85,7 @@ function Accessories() {
         {dummy.map((_, i) => {
           return (
             <Box py='16px' key={i}>
-              <ItemCard title={i + 1} />
+              <ItemCard title={`Nike socks ${i + 1}`} img='/dummySocks.png' />
             </Box>
           );
         })}

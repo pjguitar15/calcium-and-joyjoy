@@ -84,7 +84,7 @@ function ShoeList() {
         {dummy.map((_, i) => {
           return (
             <Box py='16px' key={i}>
-              <ItemCard title={i + 1} />
+              <ItemCard img='/dummyShoe.png' title={`Air Force ${i + 1}`} />
             </Box>
           );
         })}

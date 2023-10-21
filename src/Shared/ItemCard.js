@@ -11,7 +11,7 @@ function ItemCard(props) {
     >
       <CardBody>
         <Image mx='auto' src={img} w='200px' h='200px' mb='32px' />
-        <Text fontWeight='semibold'>Air Force {title} White</Text>
+        <Text fontWeight='semibold'>{title}</Text>
         <Text color='gray.300'>Men/Women's Shoes</Text>
         <Text my='24px' fontWeight='semibold'>
           P5,495
