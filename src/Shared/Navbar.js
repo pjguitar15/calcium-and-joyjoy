@@ -54,20 +54,34 @@ function Navbar() {
                   {item}
                 </MenuButton>
                 <MenuList>
-                  <Link to={item !== "Brand" ? `nike/${item}` : `/nike`}>
+                  <Link
+                    to={
+                      item !== "Brand" ? `/browse/nike/${item}` : `/browse/nike`
+                    }
+                  >
                     <MenuItem justifyContent='center' fontWeight='semibold'>
                       Nike
                     </MenuItem>
                   </Link>
                   <MenuDivider />
-                  <Link to={item !== "Brand" ? `Jordan/${item}` : `/Jordan`}>
+                  <Link
+                    to={
+                      item !== "Brand"
+                        ? `/browse/jordan/${item}`
+                        : `/browse/Jordan`
+                    }
+                  >
                     <MenuItem justifyContent='center' fontWeight='semibold'>
                       Jordan
                     </MenuItem>
                   </Link>
                   <MenuDivider />
                   <Link
-                    to={item !== "Brand" ? `Addiddas/${item}` : `/Addiddas`}
+                    to={
+                      item !== "Brand"
+                        ? `/browse/addiddas/${item}`
+                        : `/browse/addiddas`
+                    }
                   >
                     <MenuItem justifyContent='center' fontWeight='semibold'>
                       Addidas

@@ -15,6 +15,12 @@ function ItemCard(props) {
       boxShadow='4px 4px 16px rgba(0,0,0,.3)'
       maxW='280px'
       mx='auto'
+      cursor='pointer'
+      transition='all .4s'
+      _hover={{
+        transform: "translateY(-8px)",
+        boxShadow: "4px 8px 16px rgba(0,0,0,.4)",
+      }}
     >
       {discount && (
         <CardHeader fontWeight='semibold' color='red'>

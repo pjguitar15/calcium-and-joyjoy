@@ -10,6 +10,7 @@ import Layout from "./Shared/Layout";
 import AuthPage from "./Auth/AuthPage";
 import CartPage from "./Cart/CartPage";
 import CategoryPage from "./Category/CategoryPage";
+import ProductPage from "./Product/ProductPage";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +27,16 @@ const router = createBrowserRouter([
         element: <CartPage />,
       },
       {
-        path: "/:brand/:category?",
+        path: "/browse/:brand/:category?",
         element: <CategoryPage />,
+      },
+      {
+        path: "/shoe/:productID",
+        element: <ProductPage />,
+      },
+      {
+        path: "/shoe/:productID/customize",
+        element: <h1>customize</h1>,
       },
     ],
   },
