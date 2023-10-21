@@ -25,7 +25,7 @@ function Layout() {
       <Box minH='55vh' maxW='var(--maxW)' mx='auto' p='40px'>
         <Outlet />
       </Box>
-      <Box h='240px' bgColor='#403F3F' mt='80px' pb='56px' pt='200px' px='40px'>
+      <Box bgColor='#403F3F' mt='80px' pb='40px' pt='160px' px='40px'>
         <HStack justifyContent='space-between'>
           <HStack gap='16px' color='#FFDC83'>
             <Text fontWeight='bold'>
