@@ -9,6 +9,7 @@ import Homepage from "./Home/Homepage";
 import Layout from "./Shared/Layout";
 import AuthPage from "./Auth/AuthPage";
 import CartPage from "./Cart/CartPage";
+import CategoryPage from "./Category/CategoryPage";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <CartPage />,
+      },
+      {
+        path: "/:brand/:category?",
+        element: <CategoryPage />,
       },
     ],
   },
