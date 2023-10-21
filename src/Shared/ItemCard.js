@@ -7,13 +7,14 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 function ItemCard(props) {
   const { img, title, discount } = props;
   return (
     <Card
       py='8px'
       boxShadow='4px 4px 16px rgba(0,0,0,.3)'
-      maxW='280px'
+      w='280px'
       mx='auto'
       cursor='pointer'
       transition='all .4s'
@@ -21,6 +22,8 @@ function ItemCard(props) {
         transform: "translateY(-8px)",
         boxShadow: "4px 8px 16px rgba(0,0,0,.4)",
       }}
+      as={Link}
+      to='/shoe/1'
     >
       {discount && (
         <CardHeader fontWeight='semibold' color='red'>

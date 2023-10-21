@@ -6,7 +6,7 @@ function CategoryPage() {
   const dummyProds = Array.from({ length: 10 });
   return (
     <Box pt='40px' pb='80px'>
-      <Heading ml='60px' mb='40px' textTransform='capitalize'>
+      <Heading ml='40px' mb='40px' textTransform='capitalize'>
         {category ? `${category}'s ${brand}` : brand}
       </Heading>
       <Grid
