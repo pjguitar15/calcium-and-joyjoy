@@ -36,7 +36,7 @@ function Navbar() {
           <Image transform='translateY(20px)' src='/assets/logoheader.png' />
         </Link>
         <Box justifySelf='center'>
-          <HStack alignItems='center' gap='40px'>
+          <HStack transform='translateX(-24px)' alignItems='center' gap='40px'>
             {navItems.map((item) => (
               <Menu offset={item === "Men" ? [-90, 16] : [-75, 16]} key={item}>
                 <MenuButton
