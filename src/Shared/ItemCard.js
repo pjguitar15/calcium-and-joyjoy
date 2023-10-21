@@ -1,7 +1,14 @@
 import { StarIcon } from "@chakra-ui/icons";
-import { Card, CardBody, HStack, Image, Text } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  HStack,
+  Image,
+  Text,
+} from "@chakra-ui/react";
 function ItemCard(props) {
-  const { img, title } = props;
+  const { img, title, discount } = props;
   return (
     <Card
       py='8px'
@@ -9,13 +16,30 @@ function ItemCard(props) {
       maxW='280px'
       mx='auto'
     >
+      {discount && (
+        <CardHeader fontWeight='semibold' color='red'>
+          SALE -{discount * 100}%
+        </CardHeader>
+      )}
       <CardBody>
         <Image mx='auto' src={img} w='200px' h='200px' mb='32px' />
         <Text fontWeight='semibold'>{title}</Text>
         <Text color='gray.300'>Men/Women's Shoes</Text>
-        <Text my='24px' fontWeight='semibold'>
-          P5,495
-        </Text>
+        {discount && (
+          <HStack>
+            <Text color='red' my='24px' fontWeight='semibold'>
+              &#8369;{5495 * 0.1}
+            </Text>
+            <Text my='24px' textDecor='line-through' fontWeight='semibold'>
+              &#8369;5,495
+            </Text>
+          </HStack>
+        )}
+        {!discount && (
+          <Text my='24px' fontWeight='semibold'>
+            &#8369;5,495
+          </Text>
+        )}
         <HStack color='goldenrod'>
           <StarIcon />
           <Text>5.0</Text>
