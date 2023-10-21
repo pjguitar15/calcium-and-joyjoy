@@ -45,11 +45,11 @@ function ProductPage() {
                 cursor='pointer'
                 onClick={() => setDisplay(img)}
               >
-                <Image w='100px' h='100px' src={img} />
+                <Image w='64px' h='64px' src={img} />
               </Box>
             ))}
           </VStack>
-          <Center px='40px' borderRadius='10px' h='100%'>
+          <Center bgColor='gray.100' px='40px' borderRadius='10px' h='100%'>
             <Image maxW='320px' src={display} />
           </Center>
         </Grid>
