@@ -11,6 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import ItemCard from "../Shared/ItemCard";
 function ProductPage() {
   const [display, setDisplay] = useState("/dummyShoe.png");
   const dummy = [
@@ -34,6 +35,7 @@ function ProductPage() {
         mx='auto'
         pos='relative'
       >
+        {/* DISPLAYED PRODUCT */}
         <Center bgColor='gray.100' px='40px' borderRadius='10px' h='100%'>
           <VStack pos='absolute' left='-100px' top='0'>
             {dummy.map((img) => (
@@ -52,6 +54,7 @@ function ProductPage() {
           <Image maxW='320px' src={display} />
         </Center>
 
+        {/* DETAILS AND CTAs */}
         <Box>
           <Box mb='16px' fontWeight='semibold'>
             <Heading fontWeight='semibold'>Air Force 1 White</Heading>
@@ -101,6 +104,8 @@ function ProductPage() {
             </Button>
           </VStack>
         </Box>
+
+        {/* DESCRIPTION AND REVIEWS */}
         <Box gridColumn='span 2'>
           <Box py='16px' borderBlock='solid 1px #d1d1d1'>
             <Text fontWeight='semibold'>Product Description</Text>
@@ -136,6 +141,18 @@ function ProductPage() {
           </Box>
         </Box>
       </Grid>
+
+      {/* YOU MIGHT ALSO LIKE */}
+      <Box maxW='1100px' mx='auto'>
+        <Heading mt='120px' mb='80px'>
+          You Might Also Like
+        </Heading>
+        <Grid gridTemplateColumns='repeat(3,1fr)'>
+          {dummy.slice(0, 3).map(() => (
+            <ItemCard img='/heroSocks.png' title={`Sting energy drink`} />
+          ))}
+        </Grid>
+      </Box>
     </>
   );
 }
