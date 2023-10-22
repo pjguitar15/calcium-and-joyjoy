@@ -33,7 +33,7 @@ function ItemCard(props) {
       <CardBody>
         <Image mx='auto' src={img} w='200px' h='200px' mb='32px' />
         <Text fontWeight='semibold'>{title}</Text>
-        <Text color='gray.300'>Men/Women's Shoes</Text>
+        <Text color='gray.500'>Men/Women's Shoes</Text>
         {discount && (
           <HStack>
             <Text color='red' my='24px' fontWeight='semibold'>

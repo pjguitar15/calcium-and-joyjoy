@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import ItemCard from "../Shared/ItemCard";
+import YouMightAlsoLike from "../Shared/YouMightAlsoLike";
 function ProductPage() {
   const [display, setDisplay] = useState("/dummyShoe.png");
   const dummy = [
@@ -143,16 +144,7 @@ function ProductPage() {
       </Grid>
 
       {/* YOU MIGHT ALSO LIKE */}
-      <Box maxW='1100px' mx='auto'>
-        <Heading mt='120px' mb='80px'>
-          You Might Also Like
-        </Heading>
-        <Grid gridTemplateColumns='repeat(3,1fr)'>
-          {dummy.slice(0, 3).map(() => (
-            <ItemCard img='/heroSocks.png' title={`Sting energy drink`} />
-          ))}
-        </Grid>
-      </Box>
+      <YouMightAlsoLike />
     </>
   );
 }
