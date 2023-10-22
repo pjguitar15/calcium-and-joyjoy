@@ -1,8 +1,10 @@
+import { StarIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Center,
   Grid,
+  HStack,
   Heading,
   Image,
   Text,
@@ -21,21 +23,19 @@ function ProductPage() {
   const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
 
   return (
-    <Box>
+    <>
       <Grid
         justifyContent='center'
         pr='40px'
         alignItems='center'
-        gridTemplateColumns='1.2fr 1fr'
+        gridTemplateColumns='1fr 1fr'
         gap='80px'
+        maxW='1100px'
+        mx='auto'
+        pos='relative'
       >
-        <Grid
-          gap='24px'
-          gridTemplateColumns='1fr 1fr'
-          h='100%'
-          justifySelf='end'
-        >
-          <VStack justifySelf='end'>
+        <Center bgColor='gray.100' px='40px' borderRadius='10px' h='100%'>
+          <VStack pos='absolute' left='-100px' top='0'>
             {dummy.map((img) => (
               <Box
                 bgColor='gray.100'
@@ -49,10 +49,9 @@ function ProductPage() {
               </Box>
             ))}
           </VStack>
-          <Center bgColor='gray.100' px='40px' borderRadius='10px' h='100%'>
-            <Image maxW='320px' src={display} />
-          </Center>
-        </Grid>
+          <Image maxW='320px' src={display} />
+        </Center>
+
         <Box justifySelf='start'>
           <Box mb='16px' fontWeight='semibold'>
             <Heading fontWeight='semibold'>Air Force 1 White</Heading>
@@ -102,8 +101,42 @@ function ProductPage() {
             </Button>
           </VStack>
         </Box>
+        <Box gridColumn='span 2'>
+          <Box py='16px' borderBlock='solid 1px #d1d1d1'>
+            <Text fontWeight='semibold'>Product Description</Text>
+            <Text>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem
+              laboriosam expedita tenetur libero porro. Architecto dignissimos
+              illum nesciunt neque quia qui ratione itaque animi odit. Officia
+              pariatur natus accusamus blanditiis?
+            </Text>
+          </Box>
+          <Box py='16px'>
+            <HStack alignItems='center' gap='40px'>
+              <Text fontWeight='semibold'>{`Reviews (1)`}</Text>
+              <Box color='goldenrod'>
+                <StarIcon mr='8px' transform='translateY(-2px)' />
+                5.0
+              </Box>
+            </HStack>
+            <Box fontSize='15px' mt='24px' color='gray.500'>
+              <HStack aligntems='center' gap='40px'>
+                <Box color='goldenrod'>
+                  <StarIcon mr='8px' transform='translateY(-2px)' />
+                  5.0
+                </Box>
+                <Text>Jon V.- 10 July 2023</Text>
+              </HStack>
+              <Text mt='8px'>
+                The Air Force 1 react shoes are definitely not stanky. I'd wear
+                these anywhere especially while swimming. I also love sting
+                energy drink.
+              </Text>
+            </Box>
+          </Box>
+        </Box>
       </Grid>
-    </Box>
+    </>
   );
 }
 
