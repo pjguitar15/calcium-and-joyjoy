@@ -1,10 +1,15 @@
 import { Box, HStack, Icon, Text } from "@chakra-ui/react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 
 import { BiLogoTwitter, BiLogoFacebook, BiLogoInstagram } from "react-icons/bi";
 import { FaLocationDot } from "react-icons/fa6";
+import { useEffect } from "react";
 function Layout() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [pathname]);
   const socials = [
     {
       icon: BiLogoFacebook,
