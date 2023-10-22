@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Homepage /> },
       {
-        path: "/auth",
+        path: "/auth/:action",
         element: <AuthPage />,
       },
       {
