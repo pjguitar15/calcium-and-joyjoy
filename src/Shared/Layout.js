@@ -22,7 +22,7 @@ function Layout() {
   return (
     <Box>
       <Navbar />
-      <Box minH='55vh' maxW='var(--maxW)' mx='auto' p='40px'>
+      <Box minH='55.2vh' maxW='var(--maxW)' mx='auto' p='40px'>
         <Outlet />
       </Box>
       <Box bgColor='#403F3F' mt='80px' pb='40px' pt='160px' px='40px'>
