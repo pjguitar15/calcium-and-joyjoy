@@ -28,7 +28,7 @@ function ProductPage() {
         justifyContent='center'
         pr='40px'
         alignItems='center'
-        gridTemplateColumns='1fr 1fr'
+        gridTemplateColumns='1.3fr 1fr'
         gap='80px'
         maxW='1100px'
         mx='auto'
@@ -52,7 +52,7 @@ function ProductPage() {
           <Image maxW='320px' src={display} />
         </Center>
 
-        <Box justifySelf='start'>
+        <Box>
           <Box mb='16px' fontWeight='semibold'>
             <Heading fontWeight='semibold'>Air Force 1 White</Heading>
             <Text>Men/Women's Shoes</Text>
