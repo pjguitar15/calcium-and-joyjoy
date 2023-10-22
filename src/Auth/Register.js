@@ -54,7 +54,9 @@ function Register() {
           value={country}
           onChange={(e) => SetCountry(e)}
         />
-        <Button>Create Account</Button>
+        <Button px='56px' py='16px'>
+          Create Account
+        </Button>
         <Box fontSize='14px'>
           Already a member?{" "}
           <Link to='/auth/sign-in'>

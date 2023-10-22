@@ -95,7 +95,7 @@ function Navbar() {
         <HStack justifySelf='end' pr='24px'>
           <Searchbar />
           <Divider mx='8px' orientation='vertical' height='40px' />
-          <Link to='/auth'>
+          <Link to='/auth/register'>
             <Button variant='unstyled' borderRadius={0}>
               Sign In
             </Button>
