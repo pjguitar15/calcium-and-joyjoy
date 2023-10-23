@@ -10,6 +10,7 @@ function Homepage() {
         h='80vh'
         pos='relative'
         gridTemplateColumns={{ base: "1fr", lg: "1fr 1fr" }}
+        gridTemplateRows={{ base: "1fr 1fr", lg: "1fr" }}
       >
         <Text
           fontWeight='bold'
@@ -20,6 +21,7 @@ function Homepage() {
           pl='40px'
           pt='56px'
           letterSpacing='tight'
+          bgColor='red'
         >
           SAMPLE
           <br />
@@ -28,7 +30,7 @@ function Homepage() {
         <Box display='flex' pos='relative' alignItems='center'>
           <Skeleton
             w='100%'
-            h='400px'
+            h={{ base: "100%", lg: "400px" }}
             pos='absolute'
             // left={{ lg: "-3vw" }}
           />

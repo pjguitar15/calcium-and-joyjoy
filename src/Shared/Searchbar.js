@@ -7,9 +7,9 @@ function Searchbar() {
         <Input
           border='none'
           placeholder='Search'
-          w='200px'
           borderRadius='20px'
           bgColor='gray.200'
+          minW='120px'
         />
         <InputLeftElement children={<Search2Icon />} />
       </InputGroup>
