@@ -13,7 +13,13 @@ import {
 import { useState } from "react";
 
 import YouMightAlsoLike from "../Shared/YouMightAlsoLike";
+
+import AddedToast from "./AddedToast";
+import { AnimatePresence } from "framer-motion";
+
 function ProductPage() {
+  const [showAdded, setShowAdded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [display, setDisplay] = useState("/dummyShoe.png");
   const dummy = [
     "/dummyShoe.png",
@@ -24,8 +30,27 @@ function ProductPage() {
 
   const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
 
+  const handleAdd = () => {
+    if (showAdded === true) return;
+    else {
+      setShowAdded(true);
+      setTimeout(() => {
+        setShowAdded(false);
+      }, 1000);
+    }
+  };
+
   return (
     <>
+      <AnimatePresence>
+        {(showAdded || isHovered) && (
+          <AddedToast
+            show={() => setIsHovered(true)}
+            dismount={() => setIsHovered(false)}
+          />
+        )}
+      </AnimatePresence>
+
       <Grid
         justifyContent='center'
         pr='40px'
@@ -97,7 +122,13 @@ function ProductPage() {
             Cutomize
           </Button>
           <VStack gap='16px'>
-            <Button bgColor='gray' color='white' borderRadius='20px' w='100%'>
+            <Button
+              onClick={handleAdd}
+              bgColor='gray'
+              color='white'
+              borderRadius='20px'
+              w='100%'
+            >
               Add to Cart
             </Button>
 
