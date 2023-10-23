@@ -21,7 +21,6 @@ function Homepage() {
           pl='40px'
           pt='56px'
           letterSpacing='tight'
-          bgColor='red'
         >
           SAMPLE
           <br />
