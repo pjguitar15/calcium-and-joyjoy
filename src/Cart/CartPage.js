@@ -9,6 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import YouMightAlsoLike from "../Shared/YouMightAlsoLike";
+import { Link } from "react-router-dom";
 function CartPage() {
   const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
   return (
@@ -80,9 +81,11 @@ function CartPage() {
             <Text>Total</Text>
             <Text>9 million</Text>
           </HStack>
-          <Button borderRadius='40px' w='100%'>
-            Checkout
-          </Button>
+          <Link to='/checkout'>
+            <Button borderRadius='40px' w='100%'>
+              Checkout
+            </Button>
+          </Link>
         </Box>
       </Grid>
       <YouMightAlsoLike />

@@ -13,6 +13,7 @@ import AuthPage from "./Auth/AuthPage";
 import CartPage from "./Cart/CartPage";
 import CategoryPage from "./Category/CategoryPage";
 import ProductPage from "./Product/ProductPage";
+import CheckoutPage from "./Checkout/CheckoutPage";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/shoe/:productID/customize",
         element: <h1>customize</h1>,
+      },
+      {
+        path: "/checkout",
+        element: <CheckoutPage />,
       },
     ],
   },

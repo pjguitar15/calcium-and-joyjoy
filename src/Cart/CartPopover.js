@@ -79,7 +79,7 @@ const CartPopOver = () => {
                 View Cart
               </Button>
             </Link>
-            <Link to='/cart'>
+            <Link to='/checkout'>
               <Button
                 bgColor='red'
                 fontSize='15px'
