@@ -9,8 +9,11 @@ import {
   Heading,
   Button,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { CountryDropdown } from "react-country-region-selector";
 function CheckoutPage() {
+  const [country, setCountry] = useState("Philippines");
+  // const
   return (
     <Grid
       alignItems='start'
@@ -21,7 +24,12 @@ function CheckoutPage() {
       mx='auto'
     >
       <VStack gap='16px' align='normal'>
-        <Select defaultOptionLabel='Country/Region' as={CountryDropdown} />
+        <Select
+          defaultOptionLabel='Country/Region'
+          as={CountryDropdown}
+          value={country}
+          onChange={(e) => setCountry(e)}
+        />
         <HStack>
           <Input placeholder='First Name' />
           <Input placeholder='Last Name' />
