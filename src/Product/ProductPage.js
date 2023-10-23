@@ -36,7 +36,7 @@ function ProductPage() {
       setShowAdded(true);
       setTimeout(() => {
         setShowAdded(false);
-      }, 1000);
+      }, 1200);
     }
   };
 
