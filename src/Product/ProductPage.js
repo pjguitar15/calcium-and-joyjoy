@@ -11,7 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import ItemCard from "../Shared/ItemCard";
+
 import YouMightAlsoLike from "../Shared/YouMightAlsoLike";
 function ProductPage() {
   const [display, setDisplay] = useState("/dummyShoe.png");
@@ -100,6 +100,7 @@ function ProductPage() {
             <Button bgColor='gray' color='white' borderRadius='20px' w='100%'>
               Add to Cart
             </Button>
+
             <Button bgColor='gray' color='white' borderRadius='20px' w='100%'>
               Checkout
             </Button>

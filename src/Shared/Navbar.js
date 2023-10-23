@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import Searchbar from "./Searchbar";
 import { Link } from "react-router-dom";
+import CartPopOver from "../Cart/CartPopover";
 function Navbar() {
   const navItems = ["Men", "Women", "Brand"];
   return (
@@ -101,23 +102,7 @@ function Navbar() {
             </Button>
           </Link>
           <Divider mx='8px' orientation='vertical' height='40px' />
-          <Link to='/cart'>
-            <Button variant='unstyled' pos='relative'>
-              Cart
-              <Circle
-                size='20px'
-                bgColor='goldenrod'
-                aspectRatio='1/1'
-                pos='absolute'
-                top='4px'
-                right='-16px'
-              >
-                <Text fontWeight='semibold' fontSize='12px' lineHeight='0'>
-                  0
-                </Text>
-              </Circle>
-            </Button>
-          </Link>
+          <CartPopOver />
         </HStack>
       </Grid>
     </Box>
