@@ -34,7 +34,12 @@ function Navbar() {
         alignItems='center'
       >
         <Link to='/'>
-          <Image transform='translateY(20px)' src='/assets/logoheader.png' />
+          <Image
+            transform='translateY(20px)'
+            h='80px'
+            w='256px'
+            src='/assets/logoheader.png'
+          />
         </Link>
         <Box justifySelf='center'>
           <HStack transform='translateX(-24px)' alignItems='center' gap='40px'>

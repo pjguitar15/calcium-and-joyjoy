@@ -1,11 +1,13 @@
-import { Box, HStack, Icon, Text } from "@chakra-ui/react";
+import { Box, HStack, Icon, Text, useMediaQuery } from "@chakra-ui/react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 
 import { BiLogoTwitter, BiLogoFacebook, BiLogoInstagram } from "react-icons/bi";
 import { FaLocationDot } from "react-icons/fa6";
 import { useEffect } from "react";
+import DrawerNav from "./DrawerNav";
 function Layout() {
+  const [isLg] = useMediaQuery("(min-width: 992px)");
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -26,7 +28,8 @@ function Layout() {
   ];
   return (
     <Box>
-      <Navbar />
+      {isLg && <Navbar />}
+      {!isLg && <DrawerNav />}
       <Box minH='55.2vh' maxW='var(--maxW)' mx='auto' p='40px'>
         <Outlet />
       </Box>
