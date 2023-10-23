@@ -56,8 +56,8 @@ const CartPopOver = () => {
                 <Text fontSize='12px'>Size: 8</Text>
                 <Text fontSize='12px'>Quantity: 1</Text>
               </HStack>
-              <HStack justifyContent='space-between'>
-                <Text>5495</Text>
+              <HStack mt='-4px' justifyContent='space-between'>
+                <Text>&#8369;5495</Text>
                 <Button fontSize='14px' variant='unstyled' color='red.500'>
                   Remove
                 </Button>
