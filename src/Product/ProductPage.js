@@ -19,8 +19,8 @@ import { AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
 function ProductPage() {
-  const [showAdded, setShowAdded] = useState(true);
-  const [isHovered, setIsHovered] = useState(true);
+  const [showAdded, setShowAdded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [display, setDisplay] = useState("/dummyShoe.png");
   const dummy = [
     "/dummyShoe.png",

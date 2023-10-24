@@ -3,17 +3,22 @@ import { useParams } from "react-router-dom";
 import ItemCard from "../Shared/ItemCard";
 function ProductList() {
   const { category, brand } = useParams();
-  const dummyProds = Array.from({ length: 10 });
+  const dummyProds = Array.from({ length: 8 });
   return (
     <Box pt='40px' pb='80px'>
-      <Heading ml='40px' mb='40px' textTransform='capitalize'>
-        {category ? `${category}'s ${brand}` : brand}
-      </Heading>
       <Grid
         columnGapgap='24px'
         rowGap='48px'
-        gridTemplateColumns='repeat(auto-fit,minmax(380px,1fr))'
+        gridTemplateColumns='repeat(auto-fit,minmax(350px,1fr))'
       >
+        <Heading
+          justifySelf={{ base: "center", lg: "start" }}
+          ml={{ base: "0px", lg: "72px" }}
+          gridColumn='1/-1'
+          textTransform='capitalize'
+        >
+          {category ? `${category}'s ${brand}` : brand} (8)
+        </Heading>
         {dummyProds.map((_, i) => {
           return (
             <ItemCard
