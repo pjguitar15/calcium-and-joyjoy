@@ -24,7 +24,7 @@ function Accessories() {
     beforeChange: (current, next) => setActiveIndex(next),
     responsive: [
       {
-        breakpoint: 1500,
+        breakpoint: 1320,
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
@@ -37,7 +37,7 @@ function Accessories() {
         },
       },
       {
-        breakpoint: 1230,
+        breakpoint: 1080,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
@@ -50,7 +50,7 @@ function Accessories() {
         },
       },
       {
-        breakpoint: 940,
+        breakpoint: 820,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
@@ -63,7 +63,7 @@ function Accessories() {
         },
       },
       {
-        breakpoint: 650,
+        breakpoint: 560,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,

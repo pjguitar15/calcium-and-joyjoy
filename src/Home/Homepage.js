@@ -7,7 +7,7 @@ function Homepage() {
       <Grid
         borderRadius='24px'
         bgImage='linear-gradient(to bottom right, rgba(0,0,0,.9) ,rgba(0,0,0,.6))'
-        minH='70vh'
+        minH={{ base: "50vh", lg: "70vh" }}
         pos='relative'
         gridTemplateColumns={{ base: "1fr", lg: "1fr 1fr" }}
         gridTemplateRows={{ base: "1fr 1fr", lg: "1fr" }}
@@ -15,11 +15,11 @@ function Homepage() {
         <Text
           fontWeight='bold'
           filter='drop-shadow(3px 3px 3px #FF0707)'
-          fontSize='120px'
+          fontSize={{ base: "10vw", lg: "120px" }}
           color='white'
           lineHeight='shorter'
-          pl='80px'
-          pt='96px'
+          pl={{ base: "24px", lg: "80px" }}
+          pt={{ base: "24px", lg: "80px" }}
           letterSpacing='tight'
         >
           SAMPLE

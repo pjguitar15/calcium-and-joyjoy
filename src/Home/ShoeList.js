@@ -23,7 +23,7 @@ function ShoeList() {
     beforeChange: (current, next) => setActiveIndex(next),
     responsive: [
       {
-        breakpoint: 1500,
+        breakpoint: 1320,
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
@@ -36,7 +36,7 @@ function ShoeList() {
         },
       },
       {
-        breakpoint: 1230,
+        breakpoint: 1080,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
@@ -49,7 +49,7 @@ function ShoeList() {
         },
       },
       {
-        breakpoint: 940,
+        breakpoint: 820,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
@@ -62,7 +62,7 @@ function ShoeList() {
         },
       },
       {
-        breakpoint: 650,
+        breakpoint: 560,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -102,8 +102,8 @@ const Arrow = ({ onClick, variant, onLast }) => {
       pointerEvents={onLast ? "none" : "auto"}
       fontSize='40px'
       pos='absolute'
-      left={variant === "prev" ? "16px" : ""}
-      right={variant === "next" ? "16px" : ""}
+      left={variant === "prev" ? "-8px" : ""}
+      right={variant === "next" ? "-8px" : ""}
       top='50%'
       transform='translateY(-60%)'
       zIndex={90}

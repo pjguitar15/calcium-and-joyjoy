@@ -12,11 +12,16 @@ function ProductList() {
       <Grid
         columnGapgap='24px'
         rowGap='48px'
-        gridTemplateColumns='repeat(auto-fit,minmax(320px,1fr))'
+        gridTemplateColumns='repeat(auto-fit,minmax(380px,1fr))'
       >
         {dummyProds.map((_, i) => {
           return (
-            <ItemCard title={`Abbibas ${i}`} img='/dummyShoe.png' key={i} />
+            <ItemCard
+              cardW='300px'
+              title={`Abbibas ${i}`}
+              img='/dummyShoe.png'
+              key={i}
+            />
           );
         })}
       </Grid>
