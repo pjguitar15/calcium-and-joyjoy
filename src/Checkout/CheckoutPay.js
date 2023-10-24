@@ -13,6 +13,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import OrderSummary from "./OrderSummary";
 
 function CheckoutPay({ onBack }) {
   const [payment, setPayment] = useState("1");
@@ -20,7 +21,7 @@ function CheckoutPay({ onBack }) {
     <Grid
       maxW='1000px'
       mx='auto'
-      gridTemplateColumns='1fr 1fr'
+      gridTemplateColumns={{ base: "1fr", lg: "5.5fr 4.5fr" }}
       gap={{ base: "80px", lg: "200px" }}
     >
       <Box>
@@ -72,7 +73,7 @@ function CheckoutPay({ onBack }) {
           </Button>
         </Grid>
       </Box>
-      <Box></Box>
+      <OrderSummary />
     </Grid>
   );
 }
