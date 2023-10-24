@@ -22,7 +22,7 @@ function Layout() {
           maxW='var(--maxW)'
           w='100%'
           mx='auto'
-          p='56px 40px 120px'
+          p='56px 8px 120px'
         >
           <Outlet />
         </Box>

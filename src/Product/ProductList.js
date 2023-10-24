@@ -9,7 +9,7 @@ function ProductList() {
       <Grid
         columnGapgap='24px'
         rowGap='48px'
-        gridTemplateColumns='repeat(auto-fit,minmax(350px,1fr))'
+        gridTemplateColumns='repeat(auto-fit,minmax(357px,1fr))'
       >
         <Heading
           justifySelf={{ base: "center", lg: "start" }}

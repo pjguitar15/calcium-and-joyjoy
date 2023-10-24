@@ -29,7 +29,6 @@ function Navbar() {
       <Grid
         gridTemplateColumns='1fr 2fr 1fr'
         maxW='var(--maxW)'
-        px='56px'
         mx='auto'
         alignItems='center'
       >
