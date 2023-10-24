@@ -38,7 +38,7 @@ function AddedToast({ show, dismount }) {
       zIndex={101}
       pos='fixed'
       top='24px'
-      right='311px'
+      right='255px'
       initial={{
         opacity: 0,
       }}
