@@ -1,7 +1,7 @@
 import { Box, Grid, Heading } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import ItemCard from "../Shared/ItemCard";
-function CategoryPage() {
+function ProductList() {
   const { category, brand } = useParams();
   const dummyProds = Array.from({ length: 10 });
   return (
@@ -24,4 +24,4 @@ function CategoryPage() {
   );
 }
 
-export default CategoryPage;
+export default ProductList;

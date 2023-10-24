@@ -11,9 +11,9 @@ import Homepage from "./Home/Homepage";
 import Layout from "./Shared/Layout";
 import AuthPage from "./Auth/AuthPage";
 import CartPage from "./Cart/CartPage";
-import CategoryPage from "./Category/CategoryPage";
 import ProductPage from "./Product/ProductPage";
 import CheckoutPage from "./Checkout/CheckoutPage";
+import ProductList from "./Product/ProductList";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/browse/:brand/:category?",
-        element: <CategoryPage />,
+        element: <ProductList />,
       },
       {
         path: "/shoe/:productID",

@@ -55,7 +55,7 @@ function CheckoutPay({ onBack }) {
           onChange={setPayment}
         >
           <VStack align='normal'>
-            <Radio value='1'>Cash on Deliver</Radio>
+            <Radio value='1'>Cash on Delivery</Radio>
             <Divider />
             <Radio value='2'>Kiss sa noo</Radio>
             <Divider />

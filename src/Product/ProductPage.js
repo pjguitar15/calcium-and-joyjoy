@@ -16,6 +16,7 @@ import YouMightAlsoLike from "../Shared/YouMightAlsoLike";
 
 import AddedToast from "./AddedToast";
 import { AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 
 function ProductPage() {
   const [showAdded, setShowAdded] = useState(false);
@@ -132,7 +133,14 @@ function ProductPage() {
               Add to Cart
             </Button>
 
-            <Button bgColor='gray' color='white' borderRadius='20px' w='100%'>
+            <Button
+              as={Link}
+              to='/checkout'
+              bgColor='gray'
+              color='white'
+              borderRadius='20px'
+              w='100%'
+            >
               Checkout
             </Button>
           </VStack>
