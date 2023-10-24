@@ -20,7 +20,13 @@ const socials = [
 function Footer() {
   return (
     <Box bgColor='#403F3F' pb='40px' pt='160px' px='40px'>
-      <HStack maxW='var(--maxW)' mx='auto' justifyContent='space-between'>
+      <HStack
+        maxW='var(--maxW)'
+        mx='auto'
+        justifyContent='space-between'
+        rowGap='16px'
+        flexDir={{ base: "column", md: "row" }}
+      >
         <HStack gap='16px' color='#FFDC83'>
           <Text fontWeight='bold'>
             <Icon as={FaLocationDot} /> Philippines
