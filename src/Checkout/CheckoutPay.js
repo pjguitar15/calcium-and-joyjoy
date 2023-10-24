@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 import OrderSummary from "./OrderSummary";
 
-function CheckoutPay({ onBack }) {
+function CheckoutPay({ onBack, onPay }) {
   const [payment, setPayment] = useState("1");
   return (
     <Grid
@@ -68,7 +68,7 @@ function CheckoutPay({ onBack }) {
           <Button borderRadius='20px' p='16px 40px' onClick={onBack}>
             Back
           </Button>
-          <Button borderRadius='20px' p='16px 40px'>
+          <Button borderRadius='20px' p='16px 40px' onClick={onPay}>
             Continue
           </Button>
         </Grid>
