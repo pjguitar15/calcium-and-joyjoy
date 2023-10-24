@@ -19,8 +19,8 @@ const socials = [
 
 function Footer() {
   return (
-    <Box bgColor='#403F3F' mt='80px' pb='40px' pt='160px' px='40px'>
-      <HStack justifyContent='space-between'>
+    <Box bgColor='#403F3F' pb='40px' pt='160px' px='40px'>
+      <HStack maxW='var(--maxW)' mx='auto' justifyContent='space-between'>
         <HStack gap='16px' color='#FFDC83'>
           <Text fontWeight='bold'>
             <Icon as={FaLocationDot} /> Philippines

@@ -16,8 +16,14 @@ function Layout() {
     <>
       {isLg && <Navbar />}
       {!isLg && <DrawerNav />}
-      <Box>
-        <Box minH='55.2vh' maxW='var(--maxW)' mx='auto' p='40px'>
+      <Box display='flex' flexDir='column' minH='100vh'>
+        <Box
+          flexGrow='1'
+          maxW='var(--maxW)'
+          w='100%'
+          mx='auto'
+          p='56px 40px 120px'
+        >
           <Outlet />
         </Box>
         <Footer />
