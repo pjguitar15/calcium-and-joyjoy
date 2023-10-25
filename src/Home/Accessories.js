@@ -80,7 +80,7 @@ function Accessories() {
 
   return (
     <Box>
-      <Heading mb='24px'>WHAT'S HOT?</Heading>
+      <Heading mb='24px'>ACCESSORIES</Heading>
       <Box as={Slider} {...settings}>
         {dummy.map((_, i) => {
           return (
