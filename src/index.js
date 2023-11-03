@@ -14,6 +14,7 @@ import CartPage from "./Cart/CartPage";
 import ProductPage from "./Product/ProductPage";
 import CheckoutPage from "./Checkout/CheckoutPage";
 import ProductList from "./Product/ProductList";
+import AdminPage from "./Admin/AdminPage";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
         element: <CheckoutPage />,
       },
     ],
+  },
+  {
+    path: "/admin",
+    element: <AdminPage />,
   },
 ]);
 
