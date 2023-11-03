@@ -3,9 +3,9 @@ import {
   Button,
   Divider,
   Grid,
-  HStack,
   Input,
   InputGroup,
+  InputLeftAddon,
   InputRightElement,
   Radio,
   RadioGroup,
@@ -13,7 +13,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import OrderSummary from "./OrderSummary";
 
 function CheckoutPay({ onBack, onPay }) {
   const [payment, setPayment] = useState("1");
@@ -50,11 +49,33 @@ function CheckoutPay({ onBack, onPay }) {
         onChange={setPayment}
       >
         <VStack align='normal'>
-          <Radio value='1'>Cash on Delivery</Radio>
+          <Radio value='1'>Gcash</Radio>
           <Divider />
-          <Radio value='2'>Kiss sa noo</Radio>
-          <Divider />
-          <Radio value='3'>Thank you nalang</Radio>
+          <Radio value='2'>Bank Transfer</Radio>
+          {payment === "2" && (
+            <>
+              <InputGroup>
+                <InputLeftAddon
+                  bgColor='white'
+                  border='none'
+                  p='0'
+                  children='Bank name:'
+                  opacity={0.6}
+                />
+                <Input pl='8px' variant='unstyled' />
+              </InputGroup>
+              <InputGroup>
+                <InputLeftAddon
+                  bgColor='white'
+                  border='none'
+                  p='0'
+                  children='Bank number:'
+                  opacity={0.6}
+                />
+                <Input pl='8px' type='number' variant='unstyled' />
+              </InputGroup>
+            </>
+          )}
         </VStack>
       </RadioGroup>
 
