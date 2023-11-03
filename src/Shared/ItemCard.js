@@ -1,5 +1,6 @@
 import { StarIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Card,
   CardBody,
   CardHeader,
@@ -27,8 +28,20 @@ function ItemCard(props) {
       borderRadius='20px'
     >
       {discount && (
-        <CardHeader fontWeight='semibold' color='red'>
-          SALE -{discount * 100}%
+        <CardHeader color='white' pos='relative' mt='-8px'>
+          <Box
+            w='fit-content'
+            pos='absolute'
+            right='24px'
+            top='0'
+            bgColor='#F24E1E'
+            px='4px'
+            py='12px'
+            clipPath='polygon(100% 0, 100% 100%, 50% 80%, 0 100%, 0 0)'
+            fontSize='14px'
+          >
+            {discount * 100}%
+          </Box>
         </CardHeader>
       )}
       <CardBody>
