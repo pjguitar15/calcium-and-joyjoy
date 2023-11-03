@@ -13,6 +13,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import Receipt from "./Receipt";
 
 function CheckoutPay({ onBack, onPay }) {
   const [payment, setPayment] = useState("1");
@@ -76,6 +77,7 @@ function CheckoutPay({ onBack, onPay }) {
               </InputGroup>
             </>
           )}
+          <Receipt onUpload={(file) => console.log(file)} />
         </VStack>
       </RadioGroup>
 
