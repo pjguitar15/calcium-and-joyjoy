@@ -37,8 +37,9 @@ function AddedToast({ show, dismount }) {
       borderRadius='10px'
       zIndex={101}
       pos='fixed'
-      top='24px'
-      right='255px'
+      bottom='24px'
+      left='50%'
+      transform='translateX(-50%)'
       initial={{
         opacity: 0,
       }}
@@ -56,7 +57,7 @@ function AddedToast({ show, dismount }) {
         <Text fontSize='14px' fontWeight='semibold'>
           1 item added to cart
         </Text>
-        <CloseIcon fontSize='12px' />
+        <CloseIcon onClick={handleDismount} cursor='pointer' fontSize='12px' />
       </HStack>
       <Grid
         maxH='320px'

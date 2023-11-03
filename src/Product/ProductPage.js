@@ -80,7 +80,6 @@ function ProductPage() {
           </VStack>
           <Image maxW='320px' src={display} />
         </Center>
-
         {/* DETAILS AND CTAs */}
         <Box>
           <Box mb='16px' fontWeight='semibold'>
@@ -145,7 +144,6 @@ function ProductPage() {
             </Button>
           </VStack>
         </Box>
-
         {/* DESCRIPTION AND REVIEWS */}
         <Box gridColumn='span 2'>
           <Box py='16px' borderBlock='solid 1px #d1d1d1'>
