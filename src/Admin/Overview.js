@@ -1,6 +1,7 @@
 import { Box, Grid, HStack, Heading, Icon, Text } from "@chakra-ui/react";
 import ViewLayout from "./ViewLayout";
 import { AiOutlineStock } from "react-icons/ai";
+import Barchart from "./Barchart";
 function Overview() {
   const dummy = Array.from({ length: 3 });
 
@@ -37,7 +38,10 @@ function Overview() {
           </Box>
         ))}
       </Grid>
-      <Grid gridTemplateColumns='1fr 1fr' gap='24px'></Grid>
+      <Grid mt='40px' gridTemplateColumns='1fr 1fr' gap='24px'>
+        <Barchart />
+        <Barchart />
+      </Grid>
     </ViewLayout>
   );
 }
