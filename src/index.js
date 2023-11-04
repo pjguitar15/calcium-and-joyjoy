@@ -59,7 +59,7 @@ const router = createBrowserRouter([
         element: <Overview />,
       },
       {
-        index: "/user-management/roles-and-permissions",
+        path: "roles",
         element: <Roles />,
       },
     ],
