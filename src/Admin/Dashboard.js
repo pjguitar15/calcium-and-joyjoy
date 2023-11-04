@@ -68,10 +68,12 @@ function Dashboard() {
           onChange={(e) => handleExpand(e, "users")}
           allowToggle
           w='100%'
-          bgColor={expanded === "users" ? "gray.500" : ""}
         >
           <AccordionItem border='none'>
-            <AccordionButton p='0px'>
+            <AccordionButton
+              bgColor={expanded === "users" ? "blackAlpha.2 00" : ""}
+              p='0px'
+            >
               <HStack
                 cursor='pointer'
                 w='100%'
@@ -84,8 +86,19 @@ function Dashboard() {
                 <AccordionIcon />
               </HStack>
             </AccordionButton>
-            <AccordionPanel bgColor='red' w='100%'>
-              <NavLink>Roles & Permissions</NavLink>
+
+            <AccordionPanel p='0px' mt='8px'>
+              <Box
+                w='100%'
+                h='100%'
+                py='16px'
+                to='/admin/roles'
+                pl='64px'
+                as={NavLink}
+                display='block'
+              >
+                Roles & Permissions
+              </Box>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
