@@ -15,6 +15,7 @@ import ProductPage from "./Product/ProductPage";
 import CheckoutPage from "./Checkout/CheckoutPage";
 import ProductList from "./Product/ProductList";
 import AdminPage from "./Admin/AdminPage";
+import Overview from "./Admin/Overview";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,12 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminPage />,
+    children: [
+      {
+        index: true,
+        element: <Overview />,
+      },
+    ],
   },
 ]);
 

@@ -21,6 +21,7 @@ function Navbar() {
   return (
     <Box
       pos='sticky'
+      // pos='fixed'
       top='0px'
       backdropFilter='auto'
       backdropBlur='8px'

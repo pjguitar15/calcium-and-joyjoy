@@ -16,6 +16,10 @@ function Dashboard() {
     },
   ];
 
+  const dummyMenu = Array.from({
+    length: 5,
+  });
+
   return (
     <Box
       pos='fixed'
