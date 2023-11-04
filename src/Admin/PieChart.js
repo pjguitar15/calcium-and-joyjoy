@@ -29,7 +29,7 @@ export const data = {
 };
 export function PieChart() {
   return (
-    <Center w='600px' mx='auto'>
+    <Center w='360px' mx='auto'>
       <Pie data={data} />
     </Center>
   );
