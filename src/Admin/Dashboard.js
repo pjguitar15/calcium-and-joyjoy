@@ -23,13 +23,15 @@ function Dashboard() {
   const menu = [
     {
       main: "User Management",
-      icon: VscDashboard,
+      icon: BsFillPeopleFill,
+      submenu: [
+        {
+          text: "Roles & Permissions",
+          link: "/roles",
+        },
+      ],
     },
   ];
-
-  const dummyMenu = Array.from({
-    length: 5,
-  });
 
   const handleExpand = (num, id) => {
     if (num === 0) setExpanded(id);
@@ -63,45 +65,54 @@ function Dashboard() {
           <Icon fontSize='24px' as={VscDashboard} />
           <Text>Dashboard Overview</Text>
         </HStack>
-        <Accordion
-          id='users'
-          onChange={(e) => handleExpand(e, "users")}
-          allowToggle
-          w='100%'
-        >
-          <AccordionItem border='none'>
-            <AccordionButton
-              bgColor={expanded === "users" ? "blackAlpha.2 00" : ""}
-              p='0px'
-            >
-              <HStack
-                cursor='pointer'
-                w='100%'
-                py='16px'
-                justify='center'
-                gap='16px'
-              >
-                <Icon fontSize='24px' as={BsFillPeopleFill} />
-                <Text>User Management</Text>
-                <AccordionIcon />
-              </HStack>
-            </AccordionButton>
 
-            <AccordionPanel p='0px' mt='8px'>
-              <Box
-                w='100%'
-                h='100%'
-                py='16px'
-                to='/admin/roles'
-                pl='64px'
-                as={NavLink}
-                display='block'
-              >
-                Roles & Permissions
-              </Box>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
+        {menu.map((item) => {
+          return (
+            <Accordion
+              id='users'
+              onChange={(e) => handleExpand(e, "users")}
+              allowToggle
+              w='100%'
+            >
+              <AccordionItem border='none'>
+                <AccordionButton
+                  bgColor={expanded === "users" ? "blackAlpha.2 00" : ""}
+                  p='0px'
+                >
+                  <HStack
+                    cursor='pointer'
+                    w='100%'
+                    py='16px'
+                    justify='center'
+                    gap='16px'
+                  >
+                    <Icon fontSize='24px' as={item.icon} />
+                    <Text>{item.main}</Text>
+                    <AccordionIcon />
+                  </HStack>
+                </AccordionButton>
+
+                <AccordionPanel p='0px' mt='8px'>
+                  <VStack align='normal'>
+                    {item.submenu.map((sub) => (
+                      <Box
+                        w='100%'
+                        h='100%'
+                        py='16px'
+                        pl='64px'
+                        as={NavLink}
+                        to={"/admin" + sub.link}
+                        display='block'
+                      >
+                        {sub.text}
+                      </Box>
+                    ))}
+                  </VStack>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          );
+        })}
       </VStack>
     </Box>
   );
