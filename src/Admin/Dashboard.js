@@ -24,7 +24,7 @@ function Dashboard() {
     <Box
       pos='fixed'
       left='0'
-      w='400px'
+      w='350px'
       bgColor='gray.600'
       color='white'
       h='100%'

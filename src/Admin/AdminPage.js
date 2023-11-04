@@ -5,7 +5,9 @@ function AdminPage() {
   return (
     <Box>
       <Dashboard />
-      <Outlet />
+      <Box ml='350px' p='72px 32px'>
+        <Outlet />
+      </Box>
     </Box>
   );
 }
