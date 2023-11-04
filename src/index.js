@@ -17,6 +17,8 @@ import ProductList from "./Product/ProductList";
 import AdminPage from "./Admin/AdminPage";
 import Overview from "./Admin/Overview";
 import Roles from "./Admin/Users/Roles";
+import Customers from "./Admin/Users/Customers";
+import UsersAuth from "./Admin/Users/UsersAuth";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +63,14 @@ const router = createBrowserRouter([
       {
         path: "roles",
         element: <Roles />,
+      },
+      {
+        path: "customers",
+        element: <Customers />,
+      },
+      {
+        path: "auth",
+        element: <UsersAuth />,
       },
     ],
   },

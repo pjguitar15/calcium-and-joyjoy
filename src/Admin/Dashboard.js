@@ -35,7 +35,7 @@ function Dashboard() {
         },
         {
           text: "Authentication Settings",
-          link: "/roles",
+          link: "/auth",
         },
       ],
     },
