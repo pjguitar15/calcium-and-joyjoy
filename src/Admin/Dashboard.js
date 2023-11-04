@@ -29,6 +29,14 @@ function Dashboard() {
           text: "Roles & Permissions",
           link: "/roles",
         },
+        {
+          text: "Customers",
+          link: "/customers",
+        },
+        {
+          text: "Authentication Settings",
+          link: "/roles",
+        },
       ],
     },
   ];
