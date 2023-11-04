@@ -8,6 +8,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { VscDashboard } from "react-icons/vsc";
+import { BsFillPeopleFill } from "react-icons/bs";
+import { NavLink } from "react-router-dom";
+import "./Dashboard.css";
+
 function Dashboard() {
   const menu = [
     {
@@ -33,9 +37,12 @@ function Dashboard() {
         <Image src='/assets/logoheader.png' />
         <Text fontSize='32px'>Admin Dashboard</Text>
         <Divider w='80%' />
+
         <HStack
+          as={NavLink}
+          to='/admin'
+          end
           cursor='pointer'
-          bgColor='blackAlpha.300'
           w='100%'
           py='16px'
           justify='center'

@@ -16,6 +16,7 @@ import CheckoutPage from "./Checkout/CheckoutPage";
 import ProductList from "./Product/ProductList";
 import AdminPage from "./Admin/AdminPage";
 import Overview from "./Admin/Overview";
+import Roles from "./Admin/Users/Roles";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Overview />,
+      },
+      {
+        index: "/user-management/roles-and-permissions",
+        element: <Roles />,
       },
     ],
   },
