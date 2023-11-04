@@ -1,6 +1,6 @@
-import { Box } from "@chakra-ui/react";
+import ViewLayout from "../ViewLayout";
 function Roles() {
-  return <Box>i am roles</Box>;
+  return <ViewLayout>roles</ViewLayout>;
 }
 
 export default Roles;
