@@ -1,7 +1,7 @@
 import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { Box } from "@chakra-ui/react";
+import { Box, Center } from "@chakra-ui/react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -29,8 +29,8 @@ export const data = {
 };
 export function PieChart() {
   return (
-    <Box maxW='600px'>
+    <Center maxW='360px' mx='auto'>
       <Pie data={data} />
-    </Box>
+    </Center>
   );
 }

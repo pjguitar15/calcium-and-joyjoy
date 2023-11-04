@@ -39,13 +39,7 @@ function Overview() {
           </Box>
         ))}
       </Grid>
-      <Grid
-        mt='40px'
-        gridTemplateColumns='1fr 1fr'
-        justifyContent='center'
-        justifyItems='center'
-        gap='24px'
-      >
+      <Grid mt='64px' gridTemplateColumns='1fr 1fr' gap='24px'>
         <Barchart />
         <PieChart />
       </Grid>
