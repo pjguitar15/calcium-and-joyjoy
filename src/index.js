@@ -6,19 +6,28 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import { ChakraProvider } from "@chakra-ui/react";
+import { lazy } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
 import Homepage from "./Home/Homepage";
 import Layout from "./Shared/Layout";
-import AuthPage from "./Auth/AuthPage";
-import CartPage from "./Cart/CartPage";
-import ProductPage from "./Product/ProductPage";
-import CheckoutPage from "./Checkout/CheckoutPage";
-import ProductList from "./Product/ProductList";
-import AdminPage from "./Admin/AdminPage";
-import Overview from "./Admin/Overview";
-import Roles from "./Admin/Users/Roles";
-import Customers from "./Admin/Users/Customers";
-import UsersAuth from "./Admin/Users/UsersAuth";
+
+// import Overview from "./Admin/Overview";
+// import Roles from "./Admin/Users/Roles";
+// import Customers from "./Admin/Users/Customers";
+// import UsersAuth from "./Admin/Users/UsersAuth";
+import { Suspense } from "react";
+
+const AuthPage = lazy(() => import("./Auth/AuthPage"));
+const CartPage = lazy(() => import("./Cart/CartPage"));
+const ProductPage = lazy(() => import("./Product/ProductPage"));
+const CheckoutPage = lazy(() => import("./Checkout/CheckoutPage"));
+const ProductList = lazy(() => import("./Product/ProductList"));
+const AdminPage = lazy(() => import("./Admin/AdminPage"));
+const Overview = lazy(() => import("./Admin/Overview"));
+const Roles = lazy(() => import("./Admin/Users/Roles"));
+const Customers = lazy(() => import("./Admin/Users/Customers"));
+const UsersAuth = lazy(() => import("./Admin/Users/UsersAuth"));
 
 const router = createBrowserRouter([
   {
@@ -28,49 +37,93 @@ const router = createBrowserRouter([
       { index: true, element: <Homepage /> },
       {
         path: "/auth/:action",
-        element: <AuthPage />,
+        element: (
+          <Suspense fallback={<div />}>
+            <AuthPage />
+          </Suspense>
+        ),
       },
       {
         path: "/cart",
-        element: <CartPage />,
+        element: (
+          <Suspense fallback={<div />}>
+            <CartPage />,
+          </Suspense>
+        ),
       },
       {
         path: "/browse/:brand/:category?",
-        element: <ProductList />,
+        element: (
+          <Suspense fallback={<div />}>
+            <ProductList />,
+          </Suspense>
+        ),
       },
       {
         path: "/shoe/:productID",
-        element: <ProductPage />,
+        element: (
+          <Suspense fallback={<div />}>
+            <ProductPage />
+          </Suspense>
+        ),
       },
       {
         path: "/shoe/:productID/customize",
-        element: <h1>customize</h1>,
+        element: (
+          <Suspense fallback={<div />}>
+            <h1>customize</h1>
+          </Suspense>
+        ),
       },
       {
         path: "/checkout",
-        element: <CheckoutPage />,
+        element: (
+          <Suspense fallback={<div />}>
+            <CheckoutPage />
+          </Suspense>
+        ),
       },
     ],
   },
   {
     path: "/admin",
-    element: <AdminPage />,
+    element: (
+      <Suspense fallback={<div />}>
+        <AdminPage />
+      </Suspense>
+    ),
     children: [
       {
         index: true,
-        element: <Overview />,
+        element: (
+          <Suspense fallback={<div />}>
+            <Overview />
+          </Suspense>
+        ),
       },
       {
         path: "roles",
-        element: <Roles />,
+        element: (
+          <Suspense fallback={<div />}>
+            <Roles />
+          </Suspense>
+        ),
       },
       {
         path: "customers",
-        element: <Customers />,
+        element: (
+          <Suspense fallback={<div />}>
+            <Customers />
+          </Suspense>
+        ),
       },
       {
         path: "auth",
-        element: <UsersAuth />,
+        element: (
+          <Suspense fallback={<div />}>
+            <UsersAuth />
+          </Suspense>
+        ),
       },
     ],
   },
