@@ -1,10 +1,11 @@
 import { Box, Grid, Skeleton, Text, VStack } from "@chakra-ui/react";
 import ShoeList from "./ShoeList";
 import Accessories from "./Accessories";
+import HeroCarousel from "./HeroCarousel";
 function Homepage() {
   return (
     <VStack align='normal' justify='normal' gap='80px'>
-      <Grid
+      {/* <Grid
         borderRadius='24px'
         bgImage='linear-gradient(to bottom right, rgba(0,0,0,.9) ,rgba(0,0,0,.6))'
         minH={{ base: "50vh", lg: "70vh" }}
@@ -34,7 +35,8 @@ function Homepage() {
             // left={{ lg: "-3vw" }}
           />
         </Box>
-      </Grid>
+      </Grid> */}
+      <HeroCarousel />
       <ShoeList />
       <Accessories />
     </VStack>
