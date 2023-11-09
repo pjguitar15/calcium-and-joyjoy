@@ -23,6 +23,8 @@ const CartPage = lazy(() => import("./Cart/CartPage"));
 const ProductPage = lazy(() => import("./Product/ProductPage"));
 const CheckoutPage = lazy(() => import("./Checkout/CheckoutPage"));
 const ProductList = lazy(() => import("./Product/ProductList"));
+const CustomizePage = lazy(() => import("./Customize/CustomizePage"));
+
 const AdminPage = lazy(() => import("./Admin/AdminPage"));
 const Overview = lazy(() => import("./Admin/Overview"));
 const Roles = lazy(() => import("./Admin/Users/Roles"));
@@ -71,7 +73,7 @@ const router = createBrowserRouter([
         path: "/shoe/:productID/customize",
         element: (
           <Suspense fallback={<div />}>
-            <h1>customize</h1>
+            <CustomizePage />
           </Suspense>
         ),
       },
