@@ -17,6 +17,7 @@ import Layout from "./Shared/UI/Layout";
 // import Customers from "./Admin/Users/Customers";
 // import UsersAuth from "./Admin/Users/UsersAuth";
 import { Suspense } from "react";
+import ErrorPage from "./Shared/UI/ErrorPage";
 
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
 const CartPage = lazy(() => import("./Cart/CartPage"));
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Homepage /> },
       {
