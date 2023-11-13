@@ -11,10 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { CountryDropdown } from "react-country-region-selector";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 function Register() {
   const [country, SetCountry] = useState("Philippines");
+
+  const { register, handleSubmit } = useForm();
   return (
     <Box mx='auto' maxW='400px'>
       <Box mb='40px'>
@@ -33,7 +36,7 @@ function Register() {
         </Center>
       </Box>
 
-      <VStack gap='16px'>
+      <VStack as='form' gap='16px'>
         <Input p='8px 16px' placeholder='First Name' />
         <Input p='8px 16px' placeholder='Last Name' />
         <Input p='8px 16px' placeholder='Email Address' />

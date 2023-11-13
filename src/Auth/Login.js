@@ -1,3 +1,4 @@
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Box,
   Center,
@@ -6,9 +7,19 @@ import {
   VStack,
   Input,
   Button,
+  InputGroup,
+  InputRightAddon,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 function Login() {
+  const { register, handleSubmit, reset } = useForm();
+  const [showPass, setShowPass] = useState(false);
+
+  const onLogin = (data) => {
+    console.log(data);
+  };
   return (
     <Box maxW='400px' mx='auto'>
       <Box mb='40px'>
@@ -27,10 +38,21 @@ function Login() {
         </Center>
       </Box>
 
-      <VStack gap='16px'>
-        <Input placeholder='Email address' />
-        <Input placeholder='Password' />
-        <Button px='56px' py='16px'>
+      <VStack onSubmit={handleSubmit(onLogin)} as='form' gap='16px'>
+        <Input {...register("email")} placeholder='Email address' />
+        <InputGroup>
+          <Input
+            {...register("password")}
+            placeholder='Password'
+            type={!showPass ? "password" : "text"}
+          />
+          <InputRightAddon
+            onClick={() => setShowPass(!showPass)}
+            cursor='pointer'
+            children={showPass ? <ViewIcon /> : <ViewOffIcon />}
+          />
+        </InputGroup>
+        <Button type='submit' px='56px' py='16px'>
           Sign In
         </Button>
         <Box fontSize='14px'>

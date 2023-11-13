@@ -13,7 +13,7 @@ const socials = [
   },
   {
     icon: BiLogoInstagram,
-    link: "https://www.facebook.com/",
+    link: "https://www.instagram.com/",
   },
 ];
 
