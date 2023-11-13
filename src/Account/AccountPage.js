@@ -1,4 +1,4 @@
-import { Grid, Heading } from "@chakra-ui/react";
+import { Container, Grid, Heading } from "@chakra-ui/react";
 
 import Sidebar from "./Sidebar";
 import AccountDetails from "./AccountDetails";
@@ -18,7 +18,7 @@ function AccountPage() {
         My Account
       </Heading>
       <Sidebar onSelect={(ui) => setShow(ui)} />
-      {handleShow()}
+      <Container px='32px'>{handleShow()}</Container>
     </Grid>
   );
 }

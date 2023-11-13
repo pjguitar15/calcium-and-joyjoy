@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 function OrderDetails() {
-  return <Box>ORDER DEETS</Box>;
+  return <Box>You haven't placed any orders yet.</Box>;
 }
 
 export default OrderDetails;

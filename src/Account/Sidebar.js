@@ -9,6 +9,8 @@ import {
   ModalContent,
   useDisclosure,
   Center,
+  Text,
+  HStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -27,7 +29,43 @@ function Sidebar({ onSelect }) {
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalBody>Log out? talagurr?</ModalBody>
+          <ModalBody py='40px' px='32px'>
+            <Text
+              fontSize='18px'
+              fontWeight='semibold'
+              mb='32px'
+              textAlign='center'
+            >
+              Are you sure you want to log out?
+            </Text>
+            <HStack gap='64px' justify='center'>
+              <Button
+                color='white'
+                bgColor='var(--primary)'
+                borderRadius='20px'
+                px='32px'
+                py='16px'
+                _hover={{
+                  bgColor: "",
+                }}
+                onClick={onClose}
+              >
+                No
+              </Button>
+              <Button
+                color='white'
+                bgColor='var(--primary)'
+                borderRadius='20px'
+                px='32px'
+                py='16px'
+                _hover={{
+                  bgColor: "",
+                }}
+              >
+                Yes
+              </Button>
+            </HStack>
+          </ModalBody>
         </ModalContent>
       </Modal>
       <Box pos='relative'>
