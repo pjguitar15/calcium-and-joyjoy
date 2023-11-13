@@ -19,6 +19,7 @@ import Layout from "./Shared/UI/Layout";
 import { Suspense } from "react";
 import ErrorPage from "./Shared/UI/ErrorPage";
 import theme from "./Shared/UI/chakraTheme";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
 const CartPage = lazy(() => import("./Cart/CartPage"));
@@ -134,9 +135,13 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ChakraProvider theme={theme}>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </ChakraProvider>
 );

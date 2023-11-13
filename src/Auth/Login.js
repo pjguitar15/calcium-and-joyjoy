@@ -7,21 +7,39 @@ import {
   VStack,
   Input,
   Button,
-  InputGroup,
-  InputRightAddon,
   FormControl,
   FormLabel,
+  useToast,
 } from "@chakra-ui/react";
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
+import axiosInstance from "../Shared/utils/axiosInstance";
 function Login() {
   const { register, handleSubmit, reset } = useForm();
   const [showPass, setShowPass] = useState(false);
 
-  const onLogin = (data) => {
-    console.log(data);
+  const toast = useToast();
+
+  const onLogin = async (creds) => {
+    const res = await axiosInstance.post("/login", creds);
+    return res.data;
   };
+
+  const { mutate, data: user } = useMutation({
+    mutationFn: onLogin,
+    onSuccess: () => {
+      toast({ status: "success", title: "Login successful", position: "top" });
+      reset();
+      console.log(user);
+    },
+    onError: () => {
+      toast({ status: "error", title: "Invalid credentials", position: "top" });
+    },
+  });
+
   return (
     <Box maxW='400px' mx='auto'>
       <Box mb='40px'>
@@ -40,7 +58,7 @@ function Login() {
         </Center>
       </Box>
 
-      <VStack onSubmit={handleSubmit(onLogin)} as='form' gap='16px'>
+      <VStack onSubmit={handleSubmit(mutate)} as='form' gap='16px'>
         <FormControl variant='floating' isRequired>
           <Input {...register("email")} placeholder=' ' />
           <FormLabel>Email</FormLabel>
