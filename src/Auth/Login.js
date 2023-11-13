@@ -19,21 +19,20 @@ import { Link } from "react-router-dom";
 import axiosInstance from "../Shared/utils/axiosInstance";
 function Login() {
   const { register, handleSubmit, reset } = useForm();
-  const [showPass, setShowPass] = useState(false);
+  const [showPass, setShowPass] = useState(true);
 
   const toast = useToast();
 
   const onLogin = async (creds) => {
     const res = await axiosInstance.post("/login", creds);
-    return res.data;
+    return res.data.data;
   };
 
-  const { mutate, data: user } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: onLogin,
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({ status: "success", title: "Login successful", position: "top" });
       reset();
-      console.log(user);
     },
     onError: () => {
       toast({ status: "error", title: "Invalid credentials", position: "top" });
