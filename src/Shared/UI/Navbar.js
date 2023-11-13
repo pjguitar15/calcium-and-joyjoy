@@ -103,7 +103,7 @@ function Navbar() {
           <Searchbar />
           <Divider mx='8px' orientation='vertical' height='40px' />
           {!user ? (
-            <Link to='/auth/register'>
+            <Link to='/auth/sign-in'>
               <Button variant='unstyled' borderRadius={0}>
                 Sign In
               </Button>

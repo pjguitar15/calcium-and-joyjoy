@@ -8,21 +8,27 @@ import {
   ModalOverlay,
   ModalContent,
   useDisclosure,
-  Center,
   Text,
   HStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const detailItems = ["Details", "Order Details", "Delivery Addresses"];
 
 function Sidebar({ onSelect }) {
   const [selected, setSelected] = useState("Details");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   const handleSelect = (ui) => {
     setSelected(ui);
     onSelect(ui);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
   };
   return (
     <>
@@ -61,6 +67,7 @@ function Sidebar({ onSelect }) {
                 _hover={{
                   bgColor: "",
                 }}
+                onClick={handleLogout}
               >
                 Yes
               </Button>
