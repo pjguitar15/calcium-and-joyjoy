@@ -103,13 +103,22 @@ function Login() {
           )}
         </FormControl>
 
-        <Button type='submit' px='56px' py='16px'>
+        <Button
+          bgColor='var(--primary)'
+          color='white'
+          type='submit'
+          px='56px'
+          py='16px'
+          _hover={{
+            bgColor: "var(--accent)",
+          }}
+        >
           Sign In
         </Button>
         <Box fontSize='14px'>
           Not a member?{" "}
           <Link to='/auth/register'>
-            <Button variant='link' fontSize='14px'>
+            <Button color='#A5B92D' variant='link' fontSize='14px'>
               Create Account
             </Button>
           </Link>

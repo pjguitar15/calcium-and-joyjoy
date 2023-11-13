@@ -118,13 +118,27 @@ function Register() {
           value={country}
           onChange={(e) => SetCountry(e)}
         /> */}
-        <Button type='submit' px='56px' py='16px'>
+        <Button
+          color='white'
+          bgColor='var(--primary)'
+          _hover={{
+            bgColor: "var(--accent)",
+          }}
+          type='submit'
+          px='56px'
+          py='16px'
+        >
           Create Account
         </Button>
         <Box fontSize='14px'>
           Already a member?{" "}
           <Link to='/auth/sign-in'>
-            <Button textDecor='underline' variant='link' fontSize='14px'>
+            <Button
+              color='#A5B92D'
+              textDecor='underline'
+              variant='link'
+              fontSize='14px'
+            >
               Sign in
             </Button>
           </Link>
