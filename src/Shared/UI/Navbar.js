@@ -109,7 +109,7 @@ function Navbar() {
               </Button>
             </Link>
           ) : (
-            <Link to='/auth/register'>
+            <Link to='/me'>
               <Button variant='unstyled' borderRadius={0}>
                 {user.user_info.firstname}
               </Button>

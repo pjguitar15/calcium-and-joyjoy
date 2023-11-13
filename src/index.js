@@ -27,6 +27,7 @@ const ProductPage = lazy(() => import("./Product/ProductPage"));
 const CheckoutPage = lazy(() => import("./Checkout/CheckoutPage"));
 const ProductList = lazy(() => import("./Product/ProductList"));
 const CustomizePage = lazy(() => import("./Customize/CustomizePage"));
+const AccountPage = lazy(() => import("./Account/AccountPage"));
 
 const AdminPage = lazy(() => import("./Admin/AdminPage"));
 const Overview = lazy(() => import("./Admin/Overview"));
@@ -86,6 +87,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <CheckoutPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/me",
+        element: (
+          <Suspense fallback={<div />}>
+            <AccountPage />
           </Suspense>
         ),
       },
