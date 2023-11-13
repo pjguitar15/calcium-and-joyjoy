@@ -18,6 +18,7 @@ import Layout from "./Shared/UI/Layout";
 // import UsersAuth from "./Admin/Users/UsersAuth";
 import { Suspense } from "react";
 import ErrorPage from "./Shared/UI/ErrorPage";
+import theme from "./Shared/UI/chakraTheme";
 
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
 const CartPage = lazy(() => import("./Cart/CartPage"));
@@ -135,7 +136,7 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <ChakraProvider>
+  <ChakraProvider theme={theme}>
     <RouterProvider router={router} />
   </ChakraProvider>
 );

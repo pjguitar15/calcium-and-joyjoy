@@ -9,6 +9,8 @@ import {
   Button,
   InputGroup,
   InputRightAddon,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -39,19 +41,47 @@ function Login() {
       </Box>
 
       <VStack onSubmit={handleSubmit(onLogin)} as='form' gap='16px'>
-        <Input {...register("email")} placeholder='Email address' />
-        <InputGroup>
+        <FormControl variant='floating' isRequired>
+          <Input {...register("email")} placeholder=' ' />
+          <FormLabel>Email</FormLabel>
+        </FormControl>
+
+        <FormControl pos='relative' isRequired variant='floating'>
           <Input
             {...register("password")}
-            placeholder='Password'
+            placeholder=' '
             type={!showPass ? "password" : "text"}
+            pr='40px'
           />
-          <InputRightAddon
-            onClick={() => setShowPass(!showPass)}
-            cursor='pointer'
-            children={showPass ? <ViewIcon /> : <ViewOffIcon />}
-          />
-        </InputGroup>
+          <FormLabel>Password</FormLabel>
+          {showPass && (
+            <ViewIcon
+              onClick={() => setShowPass(false)}
+              top='50%'
+              transform='translateY(-50%)'
+              right='8px'
+              pos='absolute'
+              zIndex={2}
+              cursor='pointer'
+              h='100%'
+              w='24px'
+            />
+          )}
+          {!showPass && (
+            <ViewOffIcon
+              onClick={() => setShowPass(true)}
+              top='50%'
+              transform='translateY(-50%)'
+              right='8px'
+              pos='absolute'
+              zIndex={2}
+              cursor='pointer'
+              h='100%'
+              w='24px'
+            />
+          )}
+        </FormControl>
+
         <Button type='submit' px='56px' py='16px'>
           Sign In
         </Button>
