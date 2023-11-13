@@ -1,5 +1,5 @@
 import { Box, Circle, Heading } from "@chakra-ui/react";
-import ItemCard from "../Shared/ItemCard";
+import ItemCard from "../Shared/UI/ItemCard";
 import Slider from "react-slick";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useState } from "react";

@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-import YouMightAlsoLike from "../Shared/YouMightAlsoLike";
+import YouMightAlsoLike from "../Shared/UI/YouMightAlsoLike";
 
 import AddedToast from "./AddedToast";
 import { AnimatePresence } from "framer-motion";

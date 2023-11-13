@@ -1,6 +1,6 @@
 import { Box, Grid, Heading } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import ItemCard from "../Shared/ItemCard";
+import ItemCard from "../Shared/UI/ItemCard";
 function ProductList() {
   const { category, brand } = useParams();
   const dummyProds = Array.from({ length: 8 });

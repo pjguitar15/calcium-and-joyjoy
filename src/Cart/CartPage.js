@@ -8,7 +8,7 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react";
-import YouMightAlsoLike from "../Shared/YouMightAlsoLike";
+import YouMightAlsoLike from "../Shared/UI/YouMightAlsoLike";
 import { Link } from "react-router-dom";
 function CartPage() {
   const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];

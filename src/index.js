@@ -10,7 +10,7 @@ import { lazy } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Homepage from "./Home/Homepage";
-import Layout from "./Shared/Layout";
+import Layout from "./Shared/UI/Layout";
 
 // import Overview from "./Admin/Overview";
 // import Roles from "./Admin/Users/Roles";
@@ -35,6 +35,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+
     children: [
       { index: true, element: <Homepage /> },
       {

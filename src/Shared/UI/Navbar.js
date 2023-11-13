@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import Searchbar from "./Searchbar";
 import { Link } from "react-router-dom";
-import CartPopOver from "../Cart/CartPopover";
+import CartPopOver from "../../Cart/CartPopover";
 function Navbar() {
   const navItems = ["Men", "Women", "Brand"];
   return (
