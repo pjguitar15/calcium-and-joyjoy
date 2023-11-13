@@ -39,21 +39,21 @@ function Register() {
         <Input p='8px 16px' placeholder='Email Address' />
         <Input p='8px 16px' placeholder='Password' />
         <HStack w='100%'>
-          <Input type='date' />
-          <Select>
+          {/* <Input type='date' /> */}
+          {/* <Select>
             <option value='' selected disabled hidden>
               Gender
             </option>
             <option value='option1'>String</option>
             <option value='option2'>Cobra</option>
             <option value='option3'>Coffee</option>
-          </Select>
+          </Select> */}
         </HStack>
-        <Select
+        {/* <Select
           as={CountryDropdown}
           value={country}
           onChange={(e) => SetCountry(e)}
-        />
+        /> */}
         <Button px='56px' py='16px'>
           Create Account
         </Button>
