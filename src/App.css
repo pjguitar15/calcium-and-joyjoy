@@ -1,4 +1,6 @@
 :root {
   /* --maxW: 1920px; */
   --maxW: 1440px;
+  --accent: #ebd569;
+  --primary: #403f3f;
 }

@@ -1,11 +1,9 @@
 import {
   Box,
   Button,
-  Circle,
   Divider,
   Grid,
   HStack,
-  Text,
   Menu,
   MenuButton,
   MenuList,
@@ -18,6 +16,9 @@ import { Link } from "react-router-dom";
 import CartPopOver from "../../Cart/CartPopover";
 function Navbar() {
   const navItems = ["Men", "Women", "Brand"];
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
   return (
     <Box
       pos='sticky'
@@ -101,11 +102,19 @@ function Navbar() {
         <HStack justifySelf='end' pr='24px'>
           <Searchbar />
           <Divider mx='8px' orientation='vertical' height='40px' />
-          <Link to='/auth/register'>
-            <Button variant='unstyled' borderRadius={0}>
-              Sign In
-            </Button>
-          </Link>
+          {!user ? (
+            <Link to='/auth/register'>
+              <Button variant='unstyled' borderRadius={0}>
+                Sign In
+              </Button>
+            </Link>
+          ) : (
+            <Link to='/auth/register'>
+              <Button variant='unstyled' borderRadius={0}>
+                {user.user_info.firstname}
+              </Button>
+            </Link>
+          )}
           <Divider mx='8px' orientation='vertical' height='40px' />
           <CartPopOver />
         </HStack>

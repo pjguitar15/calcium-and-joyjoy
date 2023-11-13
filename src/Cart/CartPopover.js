@@ -26,7 +26,7 @@ const CartPopOver = () => {
             pos='absolute'
             top='4px'
             right='-16px'
-            bgColor='red'
+            bgColor='#EBD569'
             size='20px'
             fontSize='12px'
           >

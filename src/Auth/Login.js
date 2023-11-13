@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../Shared/utils/axiosInstance";
 function Login() {
   const { register, handleSubmit, reset } = useForm();
@@ -28,11 +28,15 @@ function Login() {
     return res.data.data;
   };
 
+  const navigate = useNavigate();
+
   const { mutate } = useMutation({
     mutationFn: onLogin,
     onSuccess: (data) => {
       toast({ status: "success", title: "Login successful", position: "top" });
       reset();
+      localStorage.setItem("user", JSON.stringify(data));
+      navigate("/");
     },
     onError: () => {
       toast({ status: "error", title: "Invalid credentials", position: "top" });
