@@ -10,12 +10,15 @@ import {
   Input,
   Select,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { CountryDropdown } from "react-country-region-selector";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useMutation } from "react-query";
+import axiosInstance from "../Shared/utils/axiosInstance";
 
 const fields = [
   {
@@ -33,14 +36,30 @@ const fields = [
 ];
 
 function Register() {
+  // const [country, SetCountry] = useState("Philippines");
   const [showPass, setShowPass] = useState(true);
-  const [country, SetCountry] = useState("Philippines");
+  const toast = useToast();
 
   const { register, handleSubmit } = useForm();
-  const onReg = (data) => {
-    console.log(data);
+  const onReg = async (data) => {
+    const res = await axiosInstance.post("/register", data);
+    console.log(res.data.data);
+    // return
   };
 
+  const { mutate } = useMutation({
+    mutationFn: onReg,
+    onSuccess: () => {
+      toast({ title: "Account created", status: "success", position: "top" });
+    },
+    onError: (data) => {
+      toast({
+        title: data.response.data.message,
+        status: "error",
+        position: "top",
+      });
+    },
+  });
   return (
     <Box mx='auto' maxW='400px'>
       <Box mb='40px'>
@@ -59,7 +78,7 @@ function Register() {
         </Center>
       </Box>
 
-      <VStack as='form' onSubmit={handleSubmit(onReg)} gap='16px'>
+      <VStack as='form' onSubmit={handleSubmit(mutate)} gap='16px'>
         {fields.map((item) => (
           <FormControl key={item.label} variant='floating' isRequired>
             <Input {...register(item.id)} placeholder=' ' />
