@@ -17,12 +17,13 @@ import YouMightAlsoLike from "../Shared/UI/YouMightAlsoLike";
 import AddedToast from "./AddedToast";
 import { AnimatePresence } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
+import { addToCart } from "../Store/cart";
 
 function ProductPage() {
   const { productID } = useParams();
@@ -31,6 +32,7 @@ function ProductPage() {
   const [isHovered, setIsHovered] = useState(false);
   const [display, setDisplay] = useState("/dummyShoe.png");
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
 
   const getShoe = async () => {
     const res = await axiosInstance.get(`/shoes/${productID}`);
@@ -54,6 +56,9 @@ function ProductPage() {
   const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
 
   const handleAdd = () => {
+    dispatch(addToCart(shoe));
+    console.log(cart);
+
     if (showAdded === true) return;
     else {
       setShowAdded(true);

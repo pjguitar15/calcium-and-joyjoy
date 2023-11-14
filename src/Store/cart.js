@@ -11,7 +11,7 @@ const cartSlice = createSlice({
         state[existingIndex] = {
           ...existingItem,
           quantity: existingItem.quantity + 1,
-          price: existingItem.price + action.payload.price,
+          price: Number(existingItem.price) + Number(action.payload.price),
         };
       } else state.push({ ...action.payload, quantity: 1 });
     },

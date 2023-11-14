@@ -19,7 +19,8 @@ import { Link } from "react-router-dom";
 
 const CartPopOver = () => {
   const cart = useSelector((state) => state.cart);
-  console.log(cart);
+
+  const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <Popover placement='bottom-start'>
@@ -34,7 +35,8 @@ const CartPopOver = () => {
             size='20px'
             fontSize='12px'
           >
-            {cart.length}
+            {/* {cart.length} */}
+            {totalQuantity}
           </Circle>
         </Button>
       </PopoverTrigger>
@@ -58,6 +60,7 @@ const CartPopOver = () => {
                 justifyContent='center'
                 justifyItems='center'
                 columnGap='16px'
+                key={item.name + Math.random()}
               >
                 <Image src='/airJordan.png' />
                 <Box color='gray.500' fontSize='14px'>
@@ -80,7 +83,7 @@ const CartPopOver = () => {
             ))
           )}
           {/* GO TO CART/CHECKOUT */}
-          {cart.length > 1 && (
+          {cart.length > 0 && (
             <HStack mt='40px' justifyContent='center' align='normal'>
               <Link to='/cart'>
                 <Button
@@ -89,14 +92,18 @@ const CartPopOver = () => {
                   px='32px'
                   borderRadius='20px'
                   w='100%'
-                  border='solid 1px red'
+                  border='solid 1px var(--primary)'
                 >
                   View Cart
                 </Button>
               </Link>
               <Link to='/checkout'>
                 <Button
-                  bgColor='red'
+                  bgColor='var(--primary)'
+                  _hover={{
+                    bgColor: "var(--accent)",
+                  }}
+                  color='white'
                   fontSize='15px'
                   px='32px'
                   borderRadius='20px'
