@@ -57,7 +57,6 @@ function ProductPage() {
 
   const handleAdd = () => {
     dispatch(addToCart(shoe));
-    console.log(cart);
 
     if (showAdded === true) return;
     else {

@@ -21,7 +21,6 @@ function ShoeList() {
   });
 
   if (isLoading) return <LoadingSpinner />;
-  console.log(data.length);
 
   const settings = {
     dots: false,
