@@ -66,7 +66,7 @@ function ProductPage() {
         {/* DISPLAYED PRODUCT */}
         <Center bgColor='gray.100' px='40px' borderRadius='10px' h='100%'>
           <VStack pos='absolute' left='-100px' top='0'>
-            {dummy.map((img) => (
+            {dummy.map((img, i) => (
               <Box
                 bgColor='gray.100'
                 p='8px'
@@ -74,6 +74,7 @@ function ProductPage() {
                 filter={display === img ? "brightness(.8)" : ""}
                 cursor='pointer'
                 onClick={() => setDisplay(img)}
+                key={i}
               >
                 <Image w='64px' h='64px' src={img} />
               </Box>
@@ -94,6 +95,7 @@ function ProductPage() {
             <Grid mt='8px' gap='8px' gridTemplateColumns='repeat(4,1fr)'>
               {sizes.map((size) => (
                 <Button
+                  key={size}
                   borderRadius='none'
                   border='solid 1px gray'
                   variant='unstyled'

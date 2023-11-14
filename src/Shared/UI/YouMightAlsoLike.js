@@ -8,8 +8,8 @@ function YouMightAlsoLike() {
         You Might Also Like
       </Heading>
       <Grid gridTemplateColumns='repeat(3,1fr)'>
-        {dummy.map(() => (
-          <ItemCard img='/heroSocks.png' title={`Sting energy drink`} />
+        {dummy.map((item, i) => (
+          <ItemCard key={i} img='/heroSocks.png' title={`Sting energy drink`} />
         ))}
       </Grid>
     </Box>
