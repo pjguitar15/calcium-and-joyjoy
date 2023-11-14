@@ -22,6 +22,7 @@ import { useQuery } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import convertCurrency from "../Shared/utils/convertCurrency";
+import config from "../Shared/utils/config";
 
 function ProductPage() {
   const { productID } = useParams();
@@ -41,7 +42,7 @@ function ProductPage() {
   });
   if (isLoading) return <LoadingSpinner />;
 
-  const { name, gender, description, price } = shoe;
+  const { name, gender, description, price, image } = shoe;
 
   const dummy = [
     "/dummyShoe.png",
@@ -84,7 +85,7 @@ function ProductPage() {
         pos='relative'
       >
         {/* DISPLAYED PRODUCT */}
-        <Center bgColor='gray.100' px='40px' borderRadius='10px' h='100%'>
+        <Center px='40px' borderRadius='10px' h='100%'>
           <VStack pos='absolute' left='-100px' top='0'>
             {dummy.map((img, i) => (
               <Box
@@ -100,7 +101,7 @@ function ProductPage() {
               </Box>
             ))}
           </VStack>
-          <Image maxW='320px' src={display} />
+          <Image maxW='320px' src={`${config.apiUrl}/storage/${image}`} />
         </Center>
         {/* DETAILS AND CTAs */}
         <Box>
@@ -188,12 +189,7 @@ function ProductPage() {
         <Box gridColumn='span 2'>
           <Box py='16px' borderBlock='solid 1px #d1d1d1'>
             <Text fontWeight='semibold'>Product Description</Text>
-            <Text>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem
-              laboriosam expedita tenetur libero porro. Architecto dignissimos
-              illum nesciunt neque quia qui ratione itaque animi odit. Officia
-              pariatur natus accusamus blanditiis?
-            </Text>
+            <Text>{description}</Text>
           </Box>
           <Box py='16px'>
             <HStack alignItems='center' gap='40px'>
@@ -212,9 +208,10 @@ function ProductPage() {
                 <Text>Jon V.- 10 July 2023</Text>
               </HStack>
               <Text mt='8px'>
-                The Air Force 1 react shoes are definitely not stanky. I'd wear
-                these anywhere especially while swimming. I also love sting
-                energy drink.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel,
+                cumque qui amet eos iste non est illo exercitationem sapiente
+                vero natus minima necessitatibus fugiat dolores beatae,
+                recusandae voluptates quis asperiores!
               </Text>
             </Box>
           </Box>
@@ -222,7 +219,7 @@ function ProductPage() {
       </Grid>
 
       {/* YOU MIGHT ALSO LIKE */}
-      <YouMightAlsoLike />
+      {/* <YouMightAlsoLike /> */}
     </>
   );
 }
