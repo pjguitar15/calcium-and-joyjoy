@@ -88,7 +88,7 @@ function CartPage() {
           </Link>
         </Box>
       </Grid>
-      <YouMightAlsoLike />
+      {/* <YouMightAlsoLike /> */}
     </Box>
   );
 }
