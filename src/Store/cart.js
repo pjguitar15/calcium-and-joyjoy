@@ -29,11 +29,12 @@ const cartSlice = createSlice({
     },
 
     subtractOne(state, action) {
-      const existingItem = state.find((item) => item.id === action.payload.id);
+      const existingItem = state.find((item) => item.id == action.payload.id);
       const existingIndex = state.indexOf(existingItem);
+
+      console.log(existingItem);
       if (existingItem.quantity === 1)
         return (state = state.filter((item) => item.id !== action.payload.id));
-
       state[existingIndex] = {
         ...existingItem,
         quantity: existingItem.quantity - 1,

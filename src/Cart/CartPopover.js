@@ -25,8 +25,9 @@ const CartPopOver = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
-  const handleRemove = (id) => {
-    // dispatch(subtractOne(id));
+  const handleRemove = (item) => {
+    dispatch(subtractOne(item));
+    // console.log(id);
   };
 
   return (
@@ -62,7 +63,7 @@ const CartPopOver = () => {
             <Text textAlign='center'>There are no items in your cart.</Text>
           ) : (
             cart.map((item) => {
-              const { name, price, gender, quantity, image, id } = item;
+              const { name, price, gender, quantity, image } = item;
 
               return (
                 <Grid
@@ -98,7 +99,7 @@ const CartPopOver = () => {
                         fontSize='14px'
                         variant='unstyled'
                         color='red.500'
-                        onClick={() => handleRemove(id)}
+                        onClick={() => handleRemove(item)}
                       >
                         Remove
                       </Button>
