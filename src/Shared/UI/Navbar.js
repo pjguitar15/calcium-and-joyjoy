@@ -121,7 +121,7 @@ function Navbar() {
           <Box>
             <CartPopOver />
           </Box>
-          <Divider ml='12px' mr='8px' orientation='vertical' height='40px' />
+          <Divider ml='24px' mr='8px' orientation='vertical' height='40px' />
           <Icon as={AiOutlineHeart} cursor='pointer' />
         </HStack>
       </Grid>
