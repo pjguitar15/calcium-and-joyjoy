@@ -27,6 +27,7 @@ const cartSlice = createSlice({
         price: existingItem.price + action.payload.price,
       };
     },
+
     subtractOne(state, action) {
       const existingItem = state.find((item) => item.id === action.payload.id);
       const existingIndex = state.indexOf(existingItem);

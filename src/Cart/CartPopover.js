@@ -14,15 +14,20 @@ import {
   HStack,
   Center,
 } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
+import { subtractOne } from "../Store/cart";
 
 const CartPopOver = () => {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+  const handleRemove = (id) => {
+    // dispatch(subtractOne(id));
+  };
 
   return (
     <Popover placement='bottom-start'>
@@ -57,7 +62,7 @@ const CartPopOver = () => {
             <Text textAlign='center'>There are no items in your cart.</Text>
           ) : (
             cart.map((item) => {
-              const { name, price, gender, quantity, image } = item;
+              const { name, price, gender, quantity, image, id } = item;
 
               return (
                 <Grid
@@ -93,6 +98,7 @@ const CartPopOver = () => {
                         fontSize='14px'
                         variant='unstyled'
                         color='red.500'
+                        onClick={() => handleRemove(id)}
                       >
                         Remove
                       </Button>
