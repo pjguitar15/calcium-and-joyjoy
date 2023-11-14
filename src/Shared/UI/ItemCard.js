@@ -23,7 +23,7 @@ function ItemCard(props) {
 
   if (!data) return <LoadingSpinner />;
 
-  const { name, image, price, gender, discount } = data;
+  const { name, image, price, gender, discount, id } = data;
   const maxLength = 21;
   const formattedName =
     name.trim().length > maxLength ? name.slice(0, maxLength) + "..." : name;
@@ -41,7 +41,7 @@ function ItemCard(props) {
         boxShadow: "4px 8px 16px rgba(0,0,0,.4)",
       }}
       as={Link}
-      to='/shoe/1'
+      to={`/shoe/${id}`}
       borderRadius='20px'
       h='400px'
     >
