@@ -10,7 +10,9 @@ import {
   MenuItem,
   MenuDivider,
   Image,
+  Icon,
 } from "@chakra-ui/react";
+import { AiOutlineHeart } from "react-icons/ai";
 import Searchbar from "./Searchbar";
 import { Link } from "react-router-dom";
 import CartPopOver from "../../Cart/CartPopover";
@@ -116,7 +118,11 @@ function Navbar() {
             </Link>
           )}
           <Divider mx='8px' orientation='vertical' height='40px' />
-          <CartPopOver />
+          <Box>
+            <CartPopOver />
+          </Box>
+          <Divider ml='12px' mr='8px' orientation='vertical' height='40px' />
+          <Icon as={AiOutlineHeart} cursor='pointer' />
         </HStack>
       </Grid>
     </Box>
