@@ -10,6 +10,7 @@ import {
   useDisclosure,
   Text,
   HStack,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,15 +21,24 @@ function Sidebar({ onSelect }) {
   const [selected, setSelected] = useState("Details");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleSelect = (ui) => {
     setSelected(ui);
     onSelect(ui);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("user");
-    navigate("/");
+    toast({
+      title: "Logged out",
+      description: "Going back to home page",
+      status: "info",
+      position: "top",
+    });
+    setTimeout(() => {
+      navigate("/");
+    }, 1500);
   };
   return (
     <>

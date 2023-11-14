@@ -32,11 +32,18 @@ function Login() {
 
   const { mutate } = useMutation({
     mutationFn: onLogin,
-    onSuccess: (data) => {
-      toast({ status: "success", title: "Login successful", position: "top" });
+    onSuccess: async (data) => {
+      toast({
+        status: "success",
+        title: "Login successful",
+        position: "top",
+        description: "Going back to homepage",
+      });
       reset();
       localStorage.setItem("user", JSON.stringify(data));
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     },
     onError: () => {
       toast({ status: "error", title: "Invalid credentials", position: "top" });
