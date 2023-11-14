@@ -21,7 +21,7 @@ function ShoeList() {
   });
 
   if (isLoading) return <LoadingSpinner />;
-  console.log(activeIndex);
+  console.log(data.length);
 
   const settings = {
     dots: false,
@@ -30,7 +30,10 @@ function ShoeList() {
     slidesToShow: 5,
     slidesToScroll: 5,
     nextArrow: (
-      <Arrow variant='next' onLast={activeIndex === 10 ? true : false} />
+      <Arrow
+        variant='next'
+        onLast={activeIndex === data.length - 5 ? true : false}
+      />
     ),
     prevArrow: (
       <Arrow variant='prev' onLast={activeIndex === 0 ? true : false} />
