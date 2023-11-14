@@ -10,8 +10,19 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import config from "../utils/config";
+import LoadingSpinner from "./LoadingSpinner";
 function ItemCard(props) {
   const { cardW, data } = props;
+
+  let currency = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "PHP",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
+  if (!data) return <LoadingSpinner />;
+
   const { name, image, price, gender, discount } = data;
   const maxLength = 21;
   const formattedName =
@@ -32,6 +43,7 @@ function ItemCard(props) {
       as={Link}
       to='/shoe/1'
       borderRadius='20px'
+      h='400px'
     >
       {discount && (
         <CardHeader color='white' pos='relative' mt='-8px'>
@@ -51,31 +63,34 @@ function ItemCard(props) {
         </CardHeader>
       )}
       <CardBody>
-        <Image
-          mx='auto'
-          src={`${config.apiUrl}/storage/${image}`}
-          verticalAlign='bottom'
-          mb='16px'
-          // maxH='200px'
-          h='200px'
-        />
+        <Box display='flex' alignItems='center' alignContent='center' h='200px'>
+          <Image
+            mx='auto'
+            src={`${config.apiUrl}/storage/${image}`}
+            verticalAlign='bottom'
+            mb='16px'
+            maxH='200px'
+            // h='200px'
+            borderRadius='10px'
+          />
+        </Box>
         <Text fontWeight='semibold'>{formattedName}</Text>
         <Text color='gray.500'>Men/Women's Shoes</Text>
-        {discount && (
+        {discount ? (
           <HStack>
             <Text color='red' fontWeight='semibold'>
-              &#8369;{5495 * 0.1}
+              {5495 * 0.1}
             </Text>
             <Text my='16px' textDecor='line-through' fontWeight='semibold'>
-              &#8369;5,495
+              {currency.format(price)}
             </Text>
           </HStack>
-        )}
-        {!discount && (
+        ) : (
           <Text my='16px' fontWeight='semibold'>
-            &#8369;5,495
+            {currency.format(price)}
           </Text>
         )}
+
         <HStack color='goldenrod'>
           <StarIcon />
           <Text>5.0</Text>
