@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 import { CountryDropdown } from "react-country-region-selector";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useMutation } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
@@ -39,18 +39,28 @@ function Register() {
   // const [country, SetCountry] = useState("Philippines");
   const [showPass, setShowPass] = useState(true);
   const toast = useToast();
+  const nav = useNavigate();
 
   const { register, handleSubmit } = useForm();
   const onReg = async (data) => {
     const res = await axiosInstance.post("/register", data);
-    console.log(res.data.data);
-    // return
+    return res.data.data;
+    // console.log(res.data.data);
   };
 
   const { mutate } = useMutation({
     mutationFn: onReg,
-    onSuccess: () => {
-      toast({ title: "Account created", status: "success", position: "top" });
+    onSuccess: async (data) => {
+      localStorage.setItem("user", JSON.stringify(data));
+      toast({
+        title: "Account created",
+        status: "success",
+        position: "top",
+        description: "Going back to home page",
+      });
+      setTimeout(() => {
+        nav("/");
+      }, 1500);
     },
     onError: (data) => {
       toast({
