@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import { motion, isValidMotionProp } from "framer-motion";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
+import { useDispatch, useSelector } from "react-redux";
+import { subtractOne } from "../Store/cart";
 
 const ChakraBox = chakra(motion.div, {
   shouldForwardProp: (prop) =>
@@ -21,7 +23,10 @@ const ChakraBox = chakra(motion.div, {
 });
 
 function AddedToast({ item, show, dismount }) {
-  if (!item) return <div />;
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+
+  if (!item || cart.length < 1) return <div />;
 
   const { name, price, gender, image } = item;
   const handleHover = () => {
@@ -30,6 +35,7 @@ function AddedToast({ item, show, dismount }) {
   const handleDismount = () => {
     dismount();
   };
+
   return (
     <ChakraBox
       onHoverStart={handleHover}
@@ -93,7 +99,15 @@ function AddedToast({ item, show, dismount }) {
           </HStack>
           <HStack mt='-4px' justifyContent='space-between'>
             <Text>{convertCurrency(price)}</Text>
-            <Button fontSize='14px' variant='unstyled' color='red.500'>
+            <Button
+              onClick={() => {
+                dispatch(subtractOne(item));
+                dismount();
+              }}
+              fontSize='14px'
+              variant='unstyled'
+              color='red.500'
+            >
               Remove
             </Button>
           </HStack>
