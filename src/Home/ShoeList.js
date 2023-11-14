@@ -3,10 +3,24 @@ import ItemCard from "../Shared/UI/ItemCard";
 import Slider from "react-slick";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import { useQuery } from "react-query";
+import axiosInstance from "../Shared/utils/axiosInstance";
+import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 
 const dummy = Array.from({ length: 15 });
 function ShoeList() {
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const getShoes = async () => {
+    const res = await axiosInstance.get("/shoes");
+    return res.data;
+  };
+  const { data, isLoading } = useQuery({
+    queryKey: "shoes",
+    queryFn: getShoes,
+  });
+
+  if (isLoading) return <LoadingSpinner />;
 
   const settings = {
     dots: false,
@@ -81,10 +95,14 @@ function ShoeList() {
     <Box>
       <Heading mb='24px'>WHAT'S HOT?</Heading>
       <Box as={Slider} {...settings}>
-        {dummy.map((_, i) => {
+        {data.map((item, i) => {
           return (
             <Box py='16px' key={i}>
-              <ItemCard img='/dummyShoe.png' title={`Air Force ${i + 1}`} />
+              <ItemCard
+                img='/dummyShoe.png'
+                title={`Air Force ${i + 1}`}
+                data={item}
+              />
             </Box>
           );
         })}

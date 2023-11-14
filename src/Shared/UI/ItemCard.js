@@ -9,8 +9,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import config from "../utils/config";
 function ItemCard(props) {
-  const { cardW, img, title, discount } = props;
+  const { cardW, data } = props;
+  const { name, image, price, gender, discount } = data;
+  const maxLength = 21;
+  const formattedName =
+    name.trim().length > maxLength ? name.slice(0, maxLength) + "..." : name;
+
   return (
     <Card
       py='8px'
@@ -47,12 +53,13 @@ function ItemCard(props) {
       <CardBody>
         <Image
           mx='auto'
-          src={img}
+          src={`${config.apiUrl}/storage/${image}`}
           verticalAlign='bottom'
           mb='16px'
-          maxH='200px'
+          // maxH='200px'
+          h='200px'
         />
-        <Text fontWeight='semibold'>{title}</Text>
+        <Text fontWeight='semibold'>{formattedName}</Text>
         <Text color='gray.500'>Men/Women's Shoes</Text>
         {discount && (
           <HStack>
