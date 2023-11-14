@@ -11,15 +11,9 @@ import {
 import { Link } from "react-router-dom";
 import config from "../utils/config";
 import LoadingSpinner from "./LoadingSpinner";
+import convertCurrency from "../utils/convertCurrency";
 function ItemCard(props) {
   const { cardW, data } = props;
-
-  let currency = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "PHP",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
 
   if (!data) return <LoadingSpinner />;
 
@@ -82,12 +76,12 @@ function ItemCard(props) {
               {5495 * 0.1}
             </Text>
             <Text my='16px' textDecor='line-through' fontWeight='semibold'>
-              {currency.format(price)}
+              {convertCurrency(price)}
             </Text>
           </HStack>
         ) : (
           <Text my='16px' fontWeight='semibold'>
-            {currency.format(price)}
+            {convertCurrency(price)}
           </Text>
         )}
 

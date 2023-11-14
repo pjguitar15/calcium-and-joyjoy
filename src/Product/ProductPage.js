@@ -16,16 +16,33 @@ import YouMightAlsoLike from "../Shared/UI/YouMightAlsoLike";
 
 import AddedToast from "./AddedToast";
 import { AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useQuery } from "react-query";
+import axiosInstance from "../Shared/utils/axiosInstance";
+import LoadingSpinner from "../Shared/UI/LoadingSpinner";
+import convertCurrency from "../Shared/utils/convertCurrency";
 
 function ProductPage() {
+  const { productID } = useParams();
   const [selectedSize, setSelectedSize] = useState(7);
   const [showAdded, setShowAdded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [display, setDisplay] = useState("/dummyShoe.png");
-
   const dispatch = useDispatch();
+
+  const getShoe = async () => {
+    const res = await axiosInstance.get(`/shoes/${productID}`);
+    return res.data;
+  };
+  const { data: shoe, isLoading } = useQuery({
+    queryKey: "shoeItem",
+    queryFn: getShoe,
+  });
+  if (isLoading) return <LoadingSpinner />;
+
+  const { name, gender, description, price } = shoe;
+
   const dummy = [
     "/dummyShoe.png",
     "/airJordan.png",
@@ -88,10 +105,12 @@ function ProductPage() {
         {/* DETAILS AND CTAs */}
         <Box>
           <Box mb='16px' fontWeight='semibold'>
-            <Heading fontWeight='semibold'>Air Force 1 White</Heading>
-            <Text>Men/Women's Shoes</Text>
+            <Heading fontWeight='semibold' mb='16px'>
+              {name}
+            </Heading>
+            <Text>{gender === "male" ? "Men's" : "Women's"} shoes</Text>
           </Box>
-          <Text fontWeight='semibold'>&#8369;5,495</Text>
+          <Text fontWeight='semibold'>{convertCurrency(price)}</Text>
           <Text my='24px'>Color: Cloud White/ White</Text>
           <Box>
             <Text fontWeight='semibold'>Sizes</Text>
