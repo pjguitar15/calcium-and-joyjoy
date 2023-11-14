@@ -20,6 +20,7 @@ import { Suspense } from "react";
 import ErrorPage from "./Shared/UI/ErrorPage";
 import theme from "./Shared/UI/chakraTheme";
 import { QueryClient, QueryClientProvider } from "react-query";
+import Searchpage from "./Search/Searchpage";
 
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
 const CartPage = lazy(() => import("./Cart/CartPage"));
@@ -28,6 +29,7 @@ const CheckoutPage = lazy(() => import("./Checkout/CheckoutPage"));
 const ProductList = lazy(() => import("./Product/ProductList"));
 const CustomizePage = lazy(() => import("./Customize/CustomizePage"));
 const AccountPage = lazy(() => import("./Account/AccountPage"));
+const SearchPage = lazy(() => import("./Search/Searchpage"));
 
 const AdminPage = lazy(() => import("./Admin/AdminPage"));
 const Overview = lazy(() => import("./Admin/Overview"));
@@ -95,6 +97,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <AccountPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/search/:keyword",
+        element: (
+          <Suspense fallback={<div />}>
+            <Searchpage />
           </Suspense>
         ),
       },

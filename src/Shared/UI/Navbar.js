@@ -13,7 +13,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { AiOutlineHeart } from "react-icons/ai";
-import Searchbar from "./Searchbar";
+import Searchbar from "../../Search/Searchbar";
 import { Link } from "react-router-dom";
 import CartPopOver from "../../Cart/CartPopover";
 function Navbar() {
