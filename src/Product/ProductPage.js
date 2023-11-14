@@ -32,7 +32,6 @@ function ProductPage() {
   const [isHovered, setIsHovered] = useState(false);
   const [display, setDisplay] = useState("/dummyShoe.png");
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
 
   const getShoe = async () => {
     const res = await axiosInstance.get(`/shoes/${productID}`);
@@ -72,6 +71,7 @@ function ProductPage() {
       <AnimatePresence>
         {(showAdded || isHovered) && (
           <AddedToast
+            item={shoe}
             show={() => setIsHovered(true)}
             dismount={() => setIsHovered(false)}
           />

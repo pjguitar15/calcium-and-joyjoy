@@ -8,16 +8,22 @@ import {
   Button,
   chakra,
   shouldForwardProp,
+  Center,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { motion, isValidMotionProp } from "framer-motion";
+import convertCurrency from "../Shared/utils/convertCurrency";
+import config from "../Shared/utils/config";
 
 const ChakraBox = chakra(motion.div, {
   shouldForwardProp: (prop) =>
     isValidMotionProp(prop) || shouldForwardProp(prop),
 });
 
-function AddedToast({ show, dismount }) {
+function AddedToast({ item, show, dismount }) {
+  if (!item) return <div />;
+
+  const { name, price, gender, image } = item;
   const handleHover = () => {
     show();
   };
@@ -39,15 +45,17 @@ function AddedToast({ show, dismount }) {
       pos='fixed'
       bottom='24px'
       left='50%'
-      transform='translateX(-50%)'
       initial={{
         opacity: 0,
+        transform: "translate(-50%, 120px)",
       }}
       animate={{
         opacity: 1,
+        transform: "translate(-50%, 0)",
       }}
       exit={{
         opacity: 0,
+        transform: "translate(-50%, 120px)",
       }}
       transition={{
         duration: 0.4,
@@ -67,18 +75,24 @@ function AddedToast({ show, dismount }) {
         justifyItems='center'
         columnGap='16px'
       >
-        <Image src='/airJordan.png' />
+        <Center h='100px'>
+          <Image
+            borderRadius='10px'
+            src={`${config.apiUrl}/storage/${image}`}
+            maxH='100px'
+          />
+        </Center>
         <Box color='gray.500' fontSize='14px'>
           <Text color='black' fontSize='16px' fontWeight='semibold'>
-            Air Force 1 White
+            {name}
           </Text>
-          <Text>Men/Women's Shoes</Text>
+          <Text>{gender === "male" ? "Men's" : "Women's"} shoes</Text>
           <HStack justifyContent='space-between'>
             <Text fontSize='12px'>Size: 8</Text>
             <Text fontSize='12px'>Quantity: 1</Text>
           </HStack>
           <HStack mt='-4px' justifyContent='space-between'>
-            <Text>&#8369;5495</Text>
+            <Text>{convertCurrency(price)}</Text>
             <Button fontSize='14px' variant='unstyled' color='red.500'>
               Remove
             </Button>
@@ -94,14 +108,18 @@ function AddedToast({ show, dismount }) {
             px='32px'
             borderRadius='20px'
             w='100%'
-            border='solid 1px red'
+            border='solid 1px var(--primary)'
           >
             View Cart
           </Button>
         </Link>
         <Link to='/checkout'>
           <Button
-            bgColor='red'
+            bgColor='var(--primary)'
+            _hover={{
+              bgColor: "var(--accent)",
+            }}
+            color='white'
             fontSize='15px'
             px='32px'
             borderRadius='20px'
