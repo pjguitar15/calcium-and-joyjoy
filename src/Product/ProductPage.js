@@ -17,12 +17,15 @@ import YouMightAlsoLike from "../Shared/UI/YouMightAlsoLike";
 import AddedToast from "./AddedToast";
 import { AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 function ProductPage() {
   const [selectedSize, setSelectedSize] = useState(7);
   const [showAdded, setShowAdded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [display, setDisplay] = useState("/dummyShoe.png");
+
+  const dispatch = useDispatch();
   const dummy = [
     "/dummyShoe.png",
     "/airJordan.png",

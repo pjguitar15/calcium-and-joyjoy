@@ -21,6 +21,8 @@ import ErrorPage from "./Shared/UI/ErrorPage";
 import theme from "./Shared/UI/chakraTheme";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Searchpage from "./Search/Searchpage";
+import { Provider } from "react-redux";
+import store from "./Store/cart";
 
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
 const CartPage = lazy(() => import("./Cart/CartPage"));
@@ -160,7 +162,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ChakraProvider theme={theme}>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </QueryClientProvider>
   </ChakraProvider>
 );

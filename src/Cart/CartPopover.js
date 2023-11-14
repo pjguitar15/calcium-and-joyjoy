@@ -13,10 +13,14 @@ import {
   Text,
   HStack,
 } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
 
 const CartPopOver = () => {
+  const cart = useSelector((state) => state.cart);
+  console.log(cart);
+
   return (
     <Popover placement='bottom-start'>
       <PopoverTrigger>
@@ -30,7 +34,7 @@ const CartPopOver = () => {
             size='20px'
             fontSize='12px'
           >
-            0
+            {cart.length}
           </Circle>
         </Button>
       </PopoverTrigger>
@@ -38,33 +42,34 @@ const CartPopOver = () => {
         <PopoverArrow bgColor='#F2F0E6' />
         <PopoverCloseButton size='md' />
         <PopoverBody mt='40px' px='32px' py='16px'>
-          <Grid
-            maxH='320px'
-            gridTemplateColumns='1fr 1fr'
-            overflowY='auto'
-            justifyContent='center'
-            justifyItems='center'
-            columnGap='16px'
-          >
-            <Image src='/airJordan.png' />
-            <Box color='gray.500' fontSize='14px'>
-              <Text color='black' fontSize='16px' fontWeight='semibold'>
-                Air Force 1 White
-              </Text>
-              <Text>Men/Women's Shoes</Text>
-              <HStack justifyContent='space-between'>
-                <Text fontSize='12px'>Size: 8</Text>
-                <Text fontSize='12px'>Quantity: 1</Text>
-              </HStack>
-              <HStack mt='-4px' justifyContent='space-between'>
-                <Text>&#8369;5495</Text>
-                <Button fontSize='14px' variant='unstyled' color='red.500'>
-                  Remove
-                </Button>
-              </HStack>
-            </Box>
-          </Grid>
-
+          {cart.map((item) => (
+            <Grid
+              maxH='320px'
+              gridTemplateColumns='1fr 1fr'
+              overflowY='auto'
+              justifyContent='center'
+              justifyItems='center'
+              columnGap='16px'
+            >
+              <Image src='/airJordan.png' />
+              <Box color='gray.500' fontSize='14px'>
+                <Text color='black' fontSize='16px' fontWeight='semibold'>
+                  Air Force 1 White
+                </Text>
+                <Text>Men/Women's Shoes</Text>
+                <HStack justifyContent='space-between'>
+                  <Text fontSize='12px'>Size: 8</Text>
+                  <Text fontSize='12px'>Quantity: 1</Text>
+                </HStack>
+                <HStack mt='-4px' justifyContent='space-between'>
+                  <Text>&#8369;5495</Text>
+                  <Button fontSize='14px' variant='unstyled' color='red.500'>
+                    Remove
+                  </Button>
+                </HStack>
+              </Box>
+            </Grid>
+          ))}
           {/* GO TO CART/CHECKOUT */}
           <HStack mt='40px' justifyContent='center' align='normal'>
             <Link to='/cart'>
