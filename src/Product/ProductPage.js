@@ -19,6 +19,7 @@ import { AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
 function ProductPage() {
+  const [selectedSize, setSelectedSize] = useState(7);
   const [showAdded, setShowAdded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [display, setDisplay] = useState("/dummyShoe.png");
@@ -98,9 +99,12 @@ function ProductPage() {
                   variant='unstyled'
                   _hover={{
                     filter: "brightness(1.1)",
+                    opacity: 1,
                   }}
                   fontWeight='normal'
                   px='16px'
+                  opacity={selectedSize == size ? 1 : 0.3}
+                  onClick={() => setSelectedSize(size)}
                 >
                   US {size}
                 </Button>
@@ -124,16 +128,26 @@ function ProductPage() {
             </Button>
           </Link>
           <VStack gap='16px'>
-            <Button
-              onClick={handleAdd}
-              bgColor='gray'
-              color='white'
-              borderRadius='20px'
-              w='100%'
-            >
-              Add to Cart
-            </Button>
-
+            <HStack gap='16px' w='100%'>
+              <Button
+                onClick={handleAdd}
+                bgColor='gray'
+                color='white'
+                borderRadius='20px'
+                w='100%'
+              >
+                Add to Cart
+              </Button>
+              <Button
+                border='solid 2px gray'
+                bgColor='none'
+                color='gray'
+                borderRadius='20px'
+                w='100%'
+              >
+                Wishlist
+              </Button>
+            </HStack>
             <Button
               as={Link}
               to='/checkout'
