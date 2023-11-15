@@ -28,7 +28,7 @@ import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
-import { addToCart } from "../Store/cart";
+import { addToCart } from "../Store/Cart";
 
 function ProductPage() {
   const { productID } = useParams();

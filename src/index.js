@@ -14,7 +14,7 @@ import ErrorPage from "./Shared/UI/ErrorPage";
 import theme from "./Shared/UI/chakraTheme";
 import Searchpage from "./Search/Searchpage";
 import { Provider } from "react-redux";
-import store from "./Store/cart";
+import store from "./Store/Cart";
 
 // LAZY PAGES
 const AuthPage = lazy(() => import("./Auth/AuthPage"));

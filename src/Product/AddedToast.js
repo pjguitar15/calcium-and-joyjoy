@@ -15,7 +15,7 @@ import { motion, isValidMotionProp } from "framer-motion";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
 import { useDispatch, useSelector } from "react-redux";
-import { subtractOne } from "../Store/cart";
+import { subtractOne } from "../Store/Cart";
 
 const ChakraBox = chakra(motion.div, {
   shouldForwardProp: (prop) =>
