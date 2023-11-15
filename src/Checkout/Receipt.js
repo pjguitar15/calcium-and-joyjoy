@@ -8,7 +8,8 @@ function Receipt({ onUpload }) {
   const allowedExtensions = ["jpg", "jpeg", "png"];
   const handleChange = (e) => {
     const file = e.target.files[0];
-    const fileExtension = file.name.split(".").pop().toLowerCase();
+
+    const fileExtension = file?.name.split(".").pop().toLowerCase();
     if (allowedExtensions.includes(fileExtension)) {
       const reader = new FileReader();
       reader.onload = (e) => {
