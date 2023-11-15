@@ -4,16 +4,14 @@ import {
   Center,
   FormControl,
   FormLabel,
-  HStack,
   Heading,
   Image,
   Input,
-  Select,
   VStack,
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { CountryDropdown } from "react-country-region-selector";
+
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
