@@ -1,4 +1,4 @@
-import { StarIcon } from "@chakra-ui/icons";
+import { AddIcon, MinusIcon, StarIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -7,8 +7,13 @@ import {
   HStack,
   Heading,
   Image,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  InputRightAddon,
   Text,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -31,6 +36,7 @@ function ProductPage() {
   const [showAdded, setShowAdded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [display, setDisplay] = useState("/dummyShoe.png");
+  const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
 
   const getShoe = async () => {
@@ -41,6 +47,7 @@ function ProductPage() {
     queryKey: "shoeItem",
     queryFn: getShoe,
   });
+  const toast = useToast();
   if (isLoading) return <LoadingSpinner />;
 
   const { name, gender, description, price, image } = shoe;
@@ -53,6 +60,20 @@ function ProductPage() {
   ];
 
   const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
+
+  const handleQtyChange = (e) => {
+    if (e.target.value < 0 || !e.target.value) return setQty(1);
+    if (e.target.value > 10) {
+      toast({
+        title: "Max value is 10",
+        status: "warning",
+        position: "top",
+        isClosable: true,
+      });
+      return setQty(10);
+    }
+    setQty(e.target.value);
+  };
 
   const handleAdd = () => {
     dispatch(addToCart(shoe));
@@ -109,14 +130,44 @@ function ProductPage() {
         </Center>
         {/* DETAILS AND CTAs */}
         <Box>
-          <Box mb='16px' fontWeight='semibold'>
+          <Box mb='8px' fontWeight='semibold'>
             <Heading fontWeight='semibold' mb='16px'>
               {name}
             </Heading>
             <Text>{gender === "male" ? "Men's" : "Women's"} shoes</Text>
           </Box>
           <Text fontWeight='semibold'>{convertCurrency(price)}</Text>
-          <Text my='24px'>Color: Cloud White/ White</Text>
+          <Text my='16px'>Color: Cloud White/ White</Text>
+          <Box mb='8px'>
+            <InputGroup maxW='160px'>
+              <InputLeftAddon
+                cursor='pointer'
+                children={<MinusIcon />}
+                onClick={() =>
+                  setQty((prev) => {
+                    if (prev === 1) return prev;
+                    return prev - 1;
+                  })
+                }
+              />
+              <Input
+                textAlign='center'
+                value={qty}
+                type='number'
+                onChange={handleQtyChange}
+              />
+              <InputRightAddon
+                cursor='pointer'
+                children={<AddIcon />}
+                onClick={() =>
+                  setQty((prev) => {
+                    if (prev >= 10) return prev;
+                    return prev + 1;
+                  })
+                }
+              />
+            </InputGroup>
+          </Box>
           <Box>
             <Text fontWeight='semibold'>Sizes</Text>
             <Grid mt='8px' gap='8px' gridTemplateColumns='repeat(4,1fr)'>
