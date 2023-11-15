@@ -76,7 +76,14 @@ function ProductPage() {
   };
 
   const handleAdd = () => {
-    dispatch(addToCart({ ...shoe, quantity: qty, price: price * qty }));
+    dispatch(
+      addToCart({
+        ...shoe,
+        quantity: qty,
+        price: price * qty,
+        size: selectedSize,
+      })
+    );
     // dispatch(addToCart(shoe));
     if (showAdded === true) return;
     else {
@@ -92,7 +99,7 @@ function ProductPage() {
       <AnimatePresence>
         {(showAdded || isHovered) && (
           <AddedToast
-            item={{ ...shoe, quantity: qty }}
+            item={{ ...shoe, quantity: qty, size: selectedSize }}
             show={() => setIsHovered(true)}
             dismount={() => setIsHovered(false)}
           />

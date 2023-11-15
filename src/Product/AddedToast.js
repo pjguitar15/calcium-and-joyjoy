@@ -28,7 +28,7 @@ function AddedToast({ item, show, dismount }) {
 
   if (!item || cart.length < 1) return <div />;
 
-  const { name, price, gender, image, quantity } = item;
+  const { name, price, gender, image, quantity, size } = item;
   const handleHover = () => {
     show();
   };
@@ -94,7 +94,7 @@ function AddedToast({ item, show, dismount }) {
           </Text>
           <Text>{gender === "male" ? "Men's" : "Women's"} shoes</Text>
           <HStack justifyContent='space-between'>
-            <Text fontSize='12px'>Size: 8</Text>
+            <Text fontSize='12px'>Size: {size}</Text>
             <Text fontSize='12px'>Quantity: {quantity}</Text>
           </HStack>
           <HStack mt='-4px' justifyContent='space-between'>
