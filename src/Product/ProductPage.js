@@ -139,34 +139,39 @@ function ProductPage() {
           <Text fontWeight='semibold'>{convertCurrency(price)}</Text>
           <Text my='16px'>Color: Cloud White/ White</Text>
           <Box mb='8px'>
-            <InputGroup maxW='160px'>
-              <InputLeftAddon
-                cursor='pointer'
-                children={<MinusIcon />}
-                onClick={() =>
-                  setQty((prev) => {
-                    if (prev === 1) return prev;
-                    return prev - 1;
-                  })
-                }
-              />
-              <Input
-                textAlign='center'
-                value={qty}
-                type='number'
-                onChange={handleQtyChange}
-              />
-              <InputRightAddon
-                cursor='pointer'
-                children={<AddIcon />}
-                onClick={() =>
-                  setQty((prev) => {
-                    if (prev >= 10) return prev;
-                    return prev + 1;
-                  })
-                }
-              />
-            </InputGroup>
+            <HStack gap='24px'>
+              <Text fontWeight='semibold' role='label'>
+                Quantity:
+              </Text>
+              <InputGroup maxW='140px'>
+                <InputLeftAddon
+                  cursor='pointer'
+                  children={<MinusIcon />}
+                  onClick={() =>
+                    setQty((prev) => {
+                      if (prev === 1) return prev;
+                      return prev - 1;
+                    })
+                  }
+                />
+                <Input
+                  textAlign='center'
+                  value={qty}
+                  type='number'
+                  onChange={handleQtyChange}
+                />
+                <InputRightAddon
+                  cursor='pointer'
+                  children={<AddIcon />}
+                  onClick={() =>
+                    setQty((prev) => {
+                      if (prev >= 10) return prev;
+                      return prev + 1;
+                    })
+                  }
+                />
+              </InputGroup>
+            </HStack>
           </Box>
           <Box>
             <Text fontWeight='semibold'>Sizes</Text>
