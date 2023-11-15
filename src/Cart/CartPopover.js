@@ -63,7 +63,7 @@ const CartPopOver = () => {
             <Text textAlign='center'>There are no items in your cart.</Text>
           ) : (
             cart.map((item) => {
-              const { name, price, gender, quantity, image } = item;
+              const { name, price, gender, quantity, image, size } = item;
 
               return (
                 <Grid
@@ -90,7 +90,9 @@ const CartPopOver = () => {
                     </Text>
                     <Text>{gender === "male" ? "Men's" : "Women's"} shoes</Text>
                     <HStack justifyContent='space-between'>
-                      <Text fontSize='12px'>Size: 8</Text>
+                      <Text fontSize='12px' fontWeight='bold'>
+                        Size: {size}
+                      </Text>
                       <Text fontSize='12px'>Quantity: {quantity}</Text>
                     </HStack>
                     <HStack mt='-4px' justifyContent='space-between'>
