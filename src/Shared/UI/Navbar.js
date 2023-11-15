@@ -79,6 +79,24 @@ function Navbar() {
             >
               Accessorries
             </Button>
+            <Button
+              display='block'
+              as={Link}
+              to={`/about`}
+              variant='unstyled'
+              _hover={{
+                textDecor: "underline",
+                textUnderlineOffset: "8px",
+              }}
+              _active={{
+                textDecor: "underline",
+                textUnderlineOffset: "8px",
+              }}
+              fontWeight='semibold'
+              fontSize='20px'
+            >
+              About us
+            </Button>
           </HStack>
         </Box>
         <HStack justifySelf='end' pr='24px'>

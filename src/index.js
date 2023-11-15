@@ -30,6 +30,7 @@ const Overview = lazy(() => import("./Admin/Overview"));
 const Roles = lazy(() => import("./Admin/Users/Roles"));
 const Customers = lazy(() => import("./Admin/Users/Customers"));
 const UsersAuth = lazy(() => import("./Admin/Users/UsersAuth"));
+const AboutPage = lazy(() => import("./AboutPage"));
 
 const router = createBrowserRouter([
   {
@@ -99,6 +100,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <Searchpage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/about",
+        element: (
+          <Suspense fallback={<div />}>
+            <AboutPage />
           </Suspense>
         ),
       },
