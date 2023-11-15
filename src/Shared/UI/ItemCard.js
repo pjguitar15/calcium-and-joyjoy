@@ -13,7 +13,7 @@ import config from "../utils/config";
 import LoadingSpinner from "./LoadingSpinner";
 import convertCurrency from "../utils/convertCurrency";
 function ItemCard(props) {
-  const { cardW, data } = props;
+  const { cardW, data, variant } = props;
 
   if (!data) return <LoadingSpinner />;
 
@@ -69,7 +69,9 @@ function ItemCard(props) {
           />
         </Box>
         <Text fontWeight='semibold'>{formattedName}</Text>
-        <Text color='gray.500'>Men/Women's Shoes</Text>
+        <Text color='gray.500'>
+          {gender === "male" ? "Men's" : "Women's"} Shoes
+        </Text>
         {discount ? (
           <HStack>
             <Text color='red' fontWeight='semibold'>
