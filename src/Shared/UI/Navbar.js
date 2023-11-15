@@ -4,11 +4,6 @@ import {
   Divider,
   Grid,
   HStack,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
   Image,
   Icon,
 } from "@chakra-ui/react";
@@ -17,7 +12,7 @@ import Searchbar from "../../Search/Searchbar";
 import { Link } from "react-router-dom";
 import CartPopOver from "../../Cart/CartPopover";
 function Navbar() {
-  const navItems = ["Men", "Women", "Brand"];
+  const navItems = ["Men", "Women"];
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -47,58 +42,43 @@ function Navbar() {
         <Box justifySelf='center'>
           <HStack transform='translateX(-24px)' alignItems='center' gap='40px'>
             {navItems.map((item) => (
-              <Menu offset={item === "Men" ? [-90, 16] : [-75, 16]} key={item}>
-                <MenuButton
-                  _hover={{
-                    textDecor: "underline",
-                    textUnderlineOffset: "8px",
-                  }}
-                  _active={{
-                    textDecor: "underline",
-                    textUnderlineOffset: "8px",
-                  }}
-                  fontWeight='semibold'
-                  fontSize='20px'
-                >
-                  {item}
-                </MenuButton>
-                <MenuList>
-                  <Link
-                    to={
-                      item !== "Brand" ? `/browse/nike/${item}` : `/browse/nike`
-                    }
-                  >
-                    <MenuItem justifyContent='center' fontWeight='semibold'>
-                      Nike
-                    </MenuItem>
-                  </Link>
-                  <MenuDivider />
-                  <Link
-                    to={
-                      item !== "Brand"
-                        ? `/browse/jordan/${item}`
-                        : `/browse/Jordan`
-                    }
-                  >
-                    <MenuItem justifyContent='center' fontWeight='semibold'>
-                      Jordan
-                    </MenuItem>
-                  </Link>
-                  <MenuDivider />
-                  <Link
-                    to={
-                      item !== "Brand"
-                        ? `/browse/addiddas/${item}`
-                        : `/browse/addiddas`
-                    }
-                  >
-                    <MenuItem justifyContent='center' fontWeight='semibold'>
-                      Addidas
-                    </MenuItem>
-                  </Link>
-                </MenuList>
-              </Menu>
+              <Button
+                display='block'
+                as={Link}
+                to={`/browse/shoes/${item}`}
+                variant='unstyled'
+                _hover={{
+                  textDecor: "underline",
+                  textUnderlineOffset: "8px",
+                }}
+                _active={{
+                  textDecor: "underline",
+                  textUnderlineOffset: "8px",
+                }}
+                fontWeight='semibold'
+                fontSize='20px'
+              >
+                {item}
+              </Button>
             ))}
+            <Button
+              display='block'
+              as={Link}
+              to={`/browse/accessories`}
+              variant='unstyled'
+              _hover={{
+                textDecor: "underline",
+                textUnderlineOffset: "8px",
+              }}
+              _active={{
+                textDecor: "underline",
+                textUnderlineOffset: "8px",
+              }}
+              fontWeight='semibold'
+              fontSize='20px'
+            >
+              Accessorries
+            </Button>
           </HStack>
         </Box>
         <HStack justifySelf='end' pr='24px'>

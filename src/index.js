@@ -1,29 +1,22 @@
+import React, { Suspense, lazy } from "react";
+import ReactDOM from "react-dom/client";
+import { ChakraProvider } from "@chakra-ui/react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
 import "./App.css";
-
-import React from "react";
-import ReactDOM from "react-dom/client";
-
-import { ChakraProvider } from "@chakra-ui/react";
-import { lazy } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
 import Homepage from "./Home/Homepage";
 import Layout from "./Shared/UI/Layout";
-
-// import Overview from "./Admin/Overview";
-// import Roles from "./Admin/Users/Roles";
-// import Customers from "./Admin/Users/Customers";
-// import UsersAuth from "./Admin/Users/UsersAuth";
-import { Suspense } from "react";
 import ErrorPage from "./Shared/UI/ErrorPage";
 import theme from "./Shared/UI/chakraTheme";
-import { QueryClient, QueryClientProvider } from "react-query";
 import Searchpage from "./Search/Searchpage";
 import { Provider } from "react-redux";
 import store from "./Store/cart";
 
+// LAZY PAGES
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
 const CartPage = lazy(() => import("./Cart/CartPage"));
 const ProductPage = lazy(() => import("./Product/ProductPage"));
@@ -32,7 +25,6 @@ const ProductList = lazy(() => import("./Product/ProductList"));
 const CustomizePage = lazy(() => import("./Customize/CustomizePage"));
 const AccountPage = lazy(() => import("./Account/AccountPage"));
 const SearchPage = lazy(() => import("./Search/Searchpage"));
-
 const AdminPage = lazy(() => import("./Admin/AdminPage"));
 const Overview = lazy(() => import("./Admin/Overview"));
 const Roles = lazy(() => import("./Admin/Users/Roles"));
@@ -63,10 +55,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/browse/:brand/:category?",
+        path: "/browse/:variant/:gender?",
         element: (
           <Suspense fallback={<div />}>
-            <ProductList />,
+            <ProductList />
           </Suspense>
         ),
       },

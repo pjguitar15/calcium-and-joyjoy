@@ -1,13 +1,20 @@
 import { Box, Grid, Heading } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import ItemCard from "../Shared/UI/ItemCard";
+import { useGetShoes } from "../Shared/Hooks/useShoes";
+import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 function ProductList() {
-  const { category, brand } = useParams();
-  const dummyProds = Array.from({ length: 8 });
+  const { gender, variant } = useParams();
+  const sex = gender === "Men" ? "male" : "female";
+  const { data, isLoading } = useGetShoes();
+  if (isLoading) return <LoadingSpinner />;
+
+  const filteredData = data.filter((item) => item.gender === sex);
+
   return (
     <Box pt='40px' pb='80px'>
       <Grid
-        columnGapgap='24px'
+        columnGap='24px'
         rowGap='48px'
         gridTemplateColumns='repeat(auto-fit,minmax(357px,1fr))'
       >
@@ -17,17 +24,10 @@ function ProductList() {
           gridColumn='1/-1'
           textTransform='capitalize'
         >
-          {category ? `${category}'s ${brand}` : brand} (8)
+          {variant === "shoes" ? `${gender}'s shoes` : "Accessories"}
         </Heading>
-        {dummyProds.map((_, i) => {
-          return (
-            <ItemCard
-              cardW='300px'
-              title={`Abbibas ${i}`}
-              img='/dummyShoe.png'
-              key={i}
-            />
-          );
+        {filteredData.map((item, i) => {
+          return <ItemCard data={item} key={item.id} cardW='300px' />;
         })}
       </Grid>
     </Box>
