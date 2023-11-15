@@ -36,16 +36,22 @@ const fields = [
 ];
 
 function Register() {
-  // const [country, SetCountry] = useState("Philippines");
   const [showPass, setShowPass] = useState(true);
+
   const toast = useToast();
   const nav = useNavigate();
 
   const { register, handleSubmit } = useForm();
   const onReg = async (data) => {
+    const { password, confirmPassword } = data;
+    if (password.trim() !== confirmPassword.trim())
+      return toast({
+        title: "Passwords do not match",
+        position: "top",
+        status: "error",
+      });
     const res = await axiosInstance.post("/register", data);
     return res.data.data;
-    // console.log(res.data.data);
   };
 
   const { mutate } = useMutation({
@@ -130,23 +136,42 @@ function Register() {
             />
           )}
         </FormControl>
+        <FormControl pos='relative' isRequired variant='floating'>
+          <Input
+            {...register("confirmpPassword")}
+            placeholder=' '
+            type={!showPass ? "password" : "text"}
+            pr='40px'
+          />
+          <FormLabel>Confirm Password</FormLabel>
+          {showPass && (
+            <ViewIcon
+              onClick={() => setShowPass(false)}
+              top='50%'
+              transform='translateY(-50%)'
+              right='8px'
+              pos='absolute'
+              zIndex={2}
+              cursor='pointer'
+              h='100%'
+              w='24px'
+            />
+          )}
+          {!showPass && (
+            <ViewOffIcon
+              onClick={() => setShowPass(true)}
+              top='50%'
+              transform='translateY(-50%)'
+              right='8px'
+              pos='absolute'
+              zIndex={2}
+              cursor='pointer'
+              h='100%'
+              w='24px'
+            />
+          )}
+        </FormControl>
 
-        <HStack w='100%'>
-          {/* <Input type='date' /> */}
-          {/* <Select>
-            <option value='' selected disabled hidden>
-              Gender
-            </option>
-            <option value='option1'>String</option>
-            <option value='option2'>Cobra</option>
-            <option value='option3'>Coffee</option>
-          </Select> */}
-        </HStack>
-        {/* <Select
-          as={CountryDropdown}
-          value={country}
-          onChange={(e) => SetCountry(e)}
-        /> */}
         <Button
           color='white'
           bgColor='var(--primary)'
