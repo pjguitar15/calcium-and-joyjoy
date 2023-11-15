@@ -43,6 +43,7 @@ function Navbar() {
           <HStack transform='translateX(-24px)' alignItems='center' gap='40px'>
             {navItems.map((item) => (
               <Button
+                key={item}
                 display='block'
                 as={Link}
                 to={`/browse/shoes/${item}`}
