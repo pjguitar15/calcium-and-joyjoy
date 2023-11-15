@@ -10,10 +10,10 @@ const cartSlice = createSlice({
         const existingIndex = state.indexOf(existingItem);
         state[existingIndex] = {
           ...existingItem,
-          quantity: existingItem.quantity + 1,
+          quantity: existingItem.quantity + action.payload.quantity,
           price: Number(existingItem.price) + Number(action.payload.price),
         };
-      } else state.push({ ...action.payload, quantity: 1 });
+      } else state.push(action.payload);
     },
     clearCart(state) {
       return (state = []);

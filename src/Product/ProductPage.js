@@ -76,9 +76,8 @@ function ProductPage() {
   };
 
   const handleAdd = () => {
-    // dispatch(addToCart({ ...shoe, quantity: qty }));
-    dispatch(addToCart(shoe));
-
+    dispatch(addToCart({ ...shoe, quantity: qty, price: price * qty }));
+    // dispatch(addToCart(shoe));
     if (showAdded === true) return;
     else {
       setShowAdded(true);

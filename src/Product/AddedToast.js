@@ -98,7 +98,7 @@ function AddedToast({ item, show, dismount }) {
             <Text fontSize='12px'>Quantity: {quantity}</Text>
           </HStack>
           <HStack mt='-4px' justifyContent='space-between'>
-            <Text>{convertCurrency(price)}</Text>
+            <Text>{convertCurrency(price * quantity)}</Text>
             <Button
               onClick={() => {
                 dispatch(subtractOne(item));
