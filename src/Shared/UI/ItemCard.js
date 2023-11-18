@@ -83,7 +83,7 @@ function ItemCard(props) {
         {discount ? (
           <HStack>
             <Text color='red' fontWeight='semibold'>
-              {5495 * 0.1}
+              {convertCurrency(price * 0.1)}
             </Text>
             <Text my='16px' textDecor='line-through' fontWeight='semibold'>
               {convertCurrency(price)}
