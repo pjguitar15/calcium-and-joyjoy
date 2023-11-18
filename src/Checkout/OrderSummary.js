@@ -8,7 +8,10 @@ import {
   VStack,
   Divider,
 } from "@chakra-ui/react";
+import useSubtotal from "../Shared/Hooks/useSubtotal";
+import convertCurrency from "../Shared/utils/convertCurrency";
 function OrderSummary() {
+  const subtotal = useSubtotal();
   return (
     <Box>
       <Heading fontWeight='normal' mb='24px'>
@@ -17,11 +20,11 @@ function OrderSummary() {
       <Box color='gray.500' borderBottom='solid 1px #d1d1d1' pb='16px'>
         <HStack justifyContent='space-between'>
           <Text>Subtotal</Text>
-          <Text>&#8369;1</Text>
+          <Text> {convertCurrency(subtotal)} </Text>
         </HStack>
         <HStack justifyContent='space-between'>
           <Text>Shipping</Text>
-          <Text>&#8369;1</Text>
+          <Text>{convertCurrency(300)}</Text>
         </HStack>
       </Box>
       <HStack
@@ -31,7 +34,7 @@ function OrderSummary() {
         pb='16px'
       >
         <Text>Total</Text>
-        <Text>&#8369;1</Text>
+        <Text>{convertCurrency(subtotal + 300)}</Text>
       </HStack>
 
       <Grid gap='16px' alignItems='center' gridTemplateColumns='1fr 1fr'>
