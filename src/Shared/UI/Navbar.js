@@ -50,7 +50,7 @@ function Navbar() {
           <HStack transform='translateX(-24px)' alignItems='center' gap='40px'>
             {navItems.map((item) => (
               <Button
-                key={item}
+                key={item.text}
                 display='block'
                 as={Link}
                 to={item.page}
