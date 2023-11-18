@@ -56,7 +56,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/browse/:variant/:gender?",
+        path: "/products",
         element: (
           <Suspense fallback={<div />}>
             <ProductList />

@@ -1,15 +1,11 @@
 import { Box, Grid, Heading } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+
 import ItemCard from "../Shared/UI/ItemCard";
 import { useGetShoes } from "../Shared/Hooks/useShoes";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 function ProductList() {
-  const { gender, variant } = useParams();
-  const sex = gender === "Men" ? "male" : "female";
   const { data, isLoading } = useGetShoes();
   if (isLoading) return <LoadingSpinner />;
-
-  const filteredData = data.filter((item) => item.gender === sex);
 
   return (
     <Box pt='40px' pb='80px'>
@@ -24,9 +20,9 @@ function ProductList() {
           gridColumn='1/-1'
           textTransform='capitalize'
         >
-          {variant === "shoes" ? `${gender}'s shoes` : "Accessories"}
+          Products
         </Heading>
-        {filteredData.map((item, i) => {
+        {data.map((item, i) => {
           return <ItemCard data={item} key={item.id} cardW='300px' />;
         })}
       </Grid>
