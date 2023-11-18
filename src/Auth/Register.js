@@ -10,11 +10,10 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+
 import { useMutation } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 
@@ -34,22 +33,24 @@ const fields = [
 ];
 
 function Register() {
-  const [showPass, setShowPass] = useState(true);
-
   const toast = useToast();
   const nav = useNavigate();
 
   const { register, handleSubmit } = useForm();
   const onReg = async (data) => {
     const { password, confirmPassword } = data;
-    if (password !== confirmPassword)
-      return toast({
+    if (password.trim() !== confirmPassword.trim()) {
+      // console.log(password, data.confirmPassword);
+      toast({
         title: "Passwords do not match",
         position: "top",
         status: "error",
       });
-    const res = await axiosInstance.post("/register", data);
-    return res.data.data;
+      throw new Error("Passwords do not match");
+    } else {
+      const res = await axiosInstance.post("/register", data);
+      return res.data.data;
+    }
   };
 
   const { mutate } = useMutation({
@@ -110,7 +111,7 @@ function Register() {
         </FormControl>
         <FormControl pos='relative' isRequired variant='floating'>
           <Input
-            {...register("confirmpPassword")}
+            {...register("confirmPassword")}
             placeholder=' '
             type='password'
             pr='40px'
