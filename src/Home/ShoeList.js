@@ -101,11 +101,7 @@ function ShoeList() {
         {data.map((item, i) => {
           return (
             <Box py='16px' key={i}>
-              <ItemCard
-                img='/dummyShoe.png'
-                title={`Air Force ${i + 1}`}
-                data={item}
-              />
+              <ItemCard variant='shoe' data={item} />
             </Box>
           );
         })}

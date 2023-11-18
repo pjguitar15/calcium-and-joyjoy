@@ -59,8 +59,13 @@ function ItemCard(props) {
       <CardBody>
         <Box display='flex' alignItems='center' alignContent='center' h='200px'>
           <Image
+            alt='product'
             mx='auto'
-            src={`${config.apiUrl}/storage/${image}`}
+            src={
+              variant === "shoe"
+                ? `${config.apiUrl}/storage/${image}`
+                : "/dummySocks.png"
+            }
             verticalAlign='bottom'
             mb='16px'
             maxH='200px'
@@ -69,9 +74,11 @@ function ItemCard(props) {
           />
         </Box>
         <Text fontWeight='semibold'>{formattedName}</Text>
-        <Text color='gray.500'>
-          {gender === "male" ? "Men's" : "Women's"} Shoes
-        </Text>
+        {variant === "shoes" && (
+          <Text color='gray.500'>
+            {gender === "male" ? "Men's" : "Women's"} Shoes
+          </Text>
+        )}
         {discount ? (
           <HStack>
             <Text color='red' fontWeight='semibold'>

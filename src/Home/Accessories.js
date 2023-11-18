@@ -5,9 +5,7 @@ import ItemCard from "../Shared/UI/ItemCard";
 import Slider from "react-slick";
 import { useState } from "react";
 
-const dummy = Array.from({ length: 5 });
-
-function Accessories() {
+function Accessories({ data }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const settings = {
     dots: false,
@@ -31,7 +29,7 @@ function Accessories() {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === dummy.length - 4 ? true : false}
+              onLast={activeIndex === data.length - 4 ? true : false}
             />
           ),
         },
@@ -44,7 +42,7 @@ function Accessories() {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === dummy.length - 3 ? true : false}
+              onLast={activeIndex === data.length - 3 ? true : false}
             />
           ),
         },
@@ -57,7 +55,7 @@ function Accessories() {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === dummy.length - 2 ? true : false}
+              onLast={activeIndex === data.length - 2 ? true : false}
             />
           ),
         },
@@ -70,7 +68,7 @@ function Accessories() {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === dummy.length - 1 ? true : false}
+              onLast={activeIndex === data.length - 1 ? true : false}
             />
           ),
         },
@@ -82,14 +80,10 @@ function Accessories() {
     <Box>
       <Heading mb='24px'>ACCESSORIES</Heading>
       <Box as={Slider} {...settings}>
-        {dummy.map((_, i) => {
+        {data.map((item, i) => {
           return (
-            <Box py='16px' key={i}>
-              <ItemCard
-                title={`Nike socks ${i + 1}`}
-                img='/dummySocks.png'
-                discount={0.1}
-              />
+            <Box py='16px' key={item.id}>
+              <ItemCard data={item} />
             </Box>
           );
         })}
