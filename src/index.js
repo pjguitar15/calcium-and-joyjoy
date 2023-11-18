@@ -12,7 +12,6 @@ import Homepage from "./Home/Homepage";
 import Layout from "./Shared/UI/Layout";
 import ErrorPage from "./Shared/UI/ErrorPage";
 import theme from "./Shared/UI/chakraTheme";
-import Searchpage from "./Search/Searchpage";
 import { Provider } from "react-redux";
 import store from "./Store/cart";
 
@@ -99,7 +98,7 @@ const router = createBrowserRouter([
         path: "/search/:keyword",
         element: (
           <Suspense fallback={<div />}>
-            <Searchpage />
+            <SearchPage />
           </Suspense>
         ),
       },
