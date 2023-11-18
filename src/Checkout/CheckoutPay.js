@@ -3,13 +3,8 @@ import {
   Button,
   Divider,
   Grid,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  InputRightElement,
   Radio,
   RadioGroup,
-  Select,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -20,25 +15,21 @@ function CheckoutPay({ onBack, onPay }) {
   const [payment, setPayment] = useState("1");
   return (
     <Box>
-      <Box borderRadius='10px' py='8px' px='16px' border='solid 1px #d1d1d1'>
-        <Select>
-          <option value='' disabled selected>
-            Select courier
-          </option>
-          <option value={1}>LBC</option>
-          <option value={2}>JRS Express</option>
-          <option value={3}>Borzo</option>
-        </Select>
-        <Divider my='8px' />
-        <InputGroup>
-          <Input border='none' placeholder='Ship to' />
-          <InputRightElement pr='40px'>
-            <Button textDecor='underline' variant='unstyled'>
-              Change
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </Box>
+      <Text fontSize='24px' fontWeight='semibold' mb='24px' mt='48px'>
+        Courier
+      </Text>
+      <RadioGroup
+        defaultValue='1'
+        borderRadius='10px'
+        p='16px 32px'
+        border='solid 1px #d1d1d1'
+      >
+        <VStack align='normal'>
+          <Radio value='1'>J&T Express</Radio>
+          <Divider />
+          <Radio value='2'>LBC</Radio>
+        </VStack>
+      </RadioGroup>
 
       <Text fontSize='24px' fontWeight='semibold' mb='24px' mt='48px'>
         Payment Method
