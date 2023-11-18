@@ -10,8 +10,12 @@ import {
 } from "@chakra-ui/react";
 import useSubtotal from "../Shared/Hooks/useSubtotal";
 import convertCurrency from "../Shared/utils/convertCurrency";
+import { useSelector } from "react-redux";
+import config from "../Shared/utils/config";
 function OrderSummary() {
   const subtotal = useSubtotal();
+
+  const cart = useSelector((state) => state.cart);
   return (
     <Box>
       <Heading fontWeight='normal' mb='24px'>
@@ -36,23 +40,31 @@ function OrderSummary() {
         <Text>Total</Text>
         <Text>{convertCurrency(subtotal + 300)}</Text>
       </HStack>
-
-      <Grid gap='16px' alignItems='center' gridTemplateColumns='1fr 1fr'>
-        <Image w='200px' h='200px' src='dummyShoe.png' loading='lazy' />
-        <VStack
-          fontWeight='semibold'
-          fontSize='14px'
-          gap='0px'
-          alignItems='normal'
-        >
-          <Text fontWeight='bold'>Air Force 1 White</Text>
-          <Text color='gray.500'>Men/Women's Shoes</Text>
-          <Text>Size: 9</Text>
-          <Text>Quantity: 1</Text>
-          <Text>&#8369;1</Text>
-        </VStack>
-      </Grid>
-      <Divider mt='-32px' />
+      <VStack gap='8px' mt='24px' maxH='45vh' overflowY='auto'>
+        {cart.map((item) => (
+          <Grid gap='16px' alignItems='start' gridTemplateColumns='1fr 1fr'>
+            <Box overflow='hidden' borderRadius='10px' maxH='160px'>
+              <Image
+                src={`${config.apiUrl}/storage/${item.image}`}
+                alt={item.name}
+                loading='lazy'
+              />
+            </Box>
+            <VStack
+              fontWeight='semibold'
+              fontSize='14px'
+              gap='0px'
+              alignItems='normal'
+            >
+              <Text fontWeight='bold'>{item.name}</Text>
+              <Text color='gray.500'>Men/Women's Shoes</Text>
+              <Text>Size: {item.size}</Text>
+              <Text>Quantity: {item.quantity}</Text>
+              <Text>{convertCurrency(item.price)}</Text>
+            </VStack>
+          </Grid>
+        ))}
+      </VStack>
     </Box>
   );
 }
