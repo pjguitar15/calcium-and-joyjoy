@@ -18,19 +18,20 @@ function Layout() {
       {isLg && <Navbar />}
       {!isLg && <DrawerNav />}
 
-      <Box display='flex' flexDir='column' minH='100vh'>
-        <Joypop />
-        <Box
-          flexGrow='1'
-          maxW='var(--maxW)'
-          w='100%'
-          mx='auto'
-          p='56px 8px 120px'
-        >
-          <Outlet />
-        </Box>
-        <Footer />
+      {/* <Box display='flex' flexDir='column' minH='100vh'> */}
+      <Joypop />
+      <Box
+        flexGrow='1'
+        maxW='var(--maxW)'
+        w='100%'
+        mx='auto'
+        p='40px 8px 120px'
+        minH='100vh'
+      >
+        <Outlet />
       </Box>
+      <Footer />
+      {/* </Box> */}
     </>
   );
 }
