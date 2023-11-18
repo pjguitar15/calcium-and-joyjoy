@@ -33,6 +33,7 @@ function Joypop() {
           css={{
             WebkitTextStroke: "4px black",
           }}
+          border='solid 2px black'
         >
           J
         </Center>

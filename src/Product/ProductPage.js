@@ -28,7 +28,7 @@ import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
-import { addToCart } from "../Store/Cart";
+import { addToCart } from "../Store/cart";
 
 function ProductPage() {
   const { productID } = useParams();
@@ -189,20 +189,21 @@ function ProductPage() {
                   borderRadius='none'
                   border='solid 1px'
                   borderColor={size === selectedSize ? "#daa520" : "black"}
+                  borderWidth={size === selectedSize ? "2px" : "1px"}
                   color={size === selectedSize ? "#daa520" : "black"}
                   variant='unstyled'
-                  _hover={{
-                    filter: "brightness(1.1)",
-                    opacity: 1,
-                  }}
+                  // _hover={{
+                  //   filter: "brightness(1.1)",
+                  //   opacity: 1,
+                  // }}
                   fontWeight='normal'
                   px='16px'
                   onClick={() => setSelectedSize(size)}
-                  filter={
-                    size === selectedSize
-                      ? "drop-shadow(0px 2px 4px #daa520)"
-                      : ""
-                  }
+                  // filter={
+                  //   size === selectedSize
+                  //     ? "drop-shadow(0px 2px 4px #daa520)"
+                  //     : ""
+                  // }
                 >
                   US {size}
                 </Button>

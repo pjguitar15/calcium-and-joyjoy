@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
-import { subtractOne } from "../Store/Cart";
+import { subtractOne } from "../Store/cart";
 
 const CartPopOver = () => {
   const dispatch = useDispatch();
