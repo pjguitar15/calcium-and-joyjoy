@@ -74,11 +74,12 @@ function ItemCard(props) {
           />
         </Box>
         <Text fontWeight='semibold'>{formattedName}</Text>
-        {variant === "shoes" && (
-          <Text color='gray.500'>
-            {gender === "male" ? "Men's" : "Women's"} Shoes
-          </Text>
-        )}
+
+        <Text color='gray.500'>
+          {gender === "male" ? "Men's" : "Women's"}{" "}
+          {variant === "shoe" ? "shoes" : "accessory"}
+        </Text>
+
         {discount ? (
           <HStack>
             <Text color='red' fontWeight='semibold'>
