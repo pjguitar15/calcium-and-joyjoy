@@ -42,7 +42,7 @@ function Register() {
   const { register, handleSubmit } = useForm();
   const onReg = async (data) => {
     const { password, confirmPassword } = data;
-    if (password.trim() !== confirmPassword.trim())
+    if (password !== confirmPassword)
       return toast({
         title: "Passwords do not match",
         position: "top",
@@ -103,71 +103,19 @@ function Register() {
           <Input
             {...register("password")}
             placeholder=' '
-            type={!showPass ? "password" : "text"}
+            type='password'
             pr='40px'
           />
           <FormLabel>Password</FormLabel>
-          {showPass && (
-            <ViewIcon
-              onClick={() => setShowPass(false)}
-              top='50%'
-              transform='translateY(-50%)'
-              right='8px'
-              pos='absolute'
-              zIndex={2}
-              cursor='pointer'
-              h='100%'
-              w='24px'
-            />
-          )}
-          {!showPass && (
-            <ViewOffIcon
-              onClick={() => setShowPass(true)}
-              top='50%'
-              transform='translateY(-50%)'
-              right='8px'
-              pos='absolute'
-              zIndex={2}
-              cursor='pointer'
-              h='100%'
-              w='24px'
-            />
-          )}
         </FormControl>
         <FormControl pos='relative' isRequired variant='floating'>
           <Input
             {...register("confirmpPassword")}
             placeholder=' '
-            type={!showPass ? "password" : "text"}
+            type='password'
             pr='40px'
           />
           <FormLabel>Confirm Password</FormLabel>
-          {showPass && (
-            <ViewIcon
-              onClick={() => setShowPass(false)}
-              top='50%'
-              transform='translateY(-50%)'
-              right='8px'
-              pos='absolute'
-              zIndex={2}
-              cursor='pointer'
-              h='100%'
-              w='24px'
-            />
-          )}
-          {!showPass && (
-            <ViewOffIcon
-              onClick={() => setShowPass(true)}
-              top='50%'
-              transform='translateY(-50%)'
-              right='8px'
-              pos='absolute'
-              zIndex={2}
-              cursor='pointer'
-              h='100%'
-              w='24px'
-            />
-          )}
         </FormControl>
 
         <Button
