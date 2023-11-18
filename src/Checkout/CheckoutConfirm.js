@@ -1,15 +1,7 @@
-import {
-  Grid,
-  HStack,
-  Input,
-  Select,
-  VStack,
-  Text,
-  Button,
-} from "@chakra-ui/react";
+import { HStack, Input, Select, VStack, Text, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { CountryDropdown } from "react-country-region-selector";
-import OrderSummary from "./OrderSummary";
+import { RegionDropdown } from "react-country-region-selector";
+
 function CheckoutConfirm({ onConfirm }) {
   const [userInfo, setUserInfo] = useState({
     firstname: "",
@@ -17,7 +9,7 @@ function CheckoutConfirm({ onConfirm }) {
     email: "",
     phone_number: "",
   });
-  const [country, setCountry] = useState("Philippines");
+  const [region, setRegion] = useState("Philippines");
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
@@ -28,10 +20,11 @@ function CheckoutConfirm({ onConfirm }) {
   return (
     <VStack gap='16px' align='normal'>
       <Select
-        defaultOptionLabel='Country/Region'
-        as={CountryDropdown}
-        value={country}
-        onChange={(e) => setCountry(e)}
+        defaultOptionLabel='Select region'
+        as={RegionDropdown}
+        value={region}
+        onChange={(e) => setRegion(e)}
+        country='Philippines'
       />
       <HStack>
         <Input placeholder='First Name' defaultValue={userInfo.firstname} />
