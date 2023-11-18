@@ -12,10 +12,17 @@ import Searchbar from "../../Search/Searchbar";
 import { Link } from "react-router-dom";
 import CartPopOver from "../../Cart/CartPopover";
 function Navbar() {
-  const navItems = ["Men", "Women"];
-
+  const navItems = [
+    {
+      text: "Products",
+      page: "/products",
+    },
+    {
+      text: "About us",
+      page: "about",
+    },
+  ];
   const user = JSON.parse(localStorage.getItem("user"));
-
   return (
     <Box
       pos='sticky'
@@ -46,7 +53,7 @@ function Navbar() {
                 key={item}
                 display='block'
                 as={Link}
-                to={`/browse/shoes/${item}`}
+                to={item.page}
                 variant='unstyled'
                 _hover={{
                   textDecor: "underline",
@@ -59,45 +66,9 @@ function Navbar() {
                 fontWeight='semibold'
                 fontSize='20px'
               >
-                {item}
+                {item.text}
               </Button>
             ))}
-            <Button
-              display='block'
-              as={Link}
-              to={`/browse/accessories`}
-              variant='unstyled'
-              _hover={{
-                textDecor: "underline",
-                textUnderlineOffset: "8px",
-              }}
-              _active={{
-                textDecor: "underline",
-                textUnderlineOffset: "8px",
-              }}
-              fontWeight='semibold'
-              fontSize='20px'
-            >
-              Accessorries
-            </Button>
-            <Button
-              display='block'
-              as={Link}
-              to={`/about`}
-              variant='unstyled'
-              _hover={{
-                textDecor: "underline",
-                textUnderlineOffset: "8px",
-              }}
-              _active={{
-                textDecor: "underline",
-                textUnderlineOffset: "8px",
-              }}
-              fontWeight='semibold'
-              fontSize='20px'
-            >
-              About us
-            </Button>
           </HStack>
         </Box>
         <HStack justifySelf='end' pr='24px'>
