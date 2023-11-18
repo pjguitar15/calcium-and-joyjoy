@@ -9,6 +9,7 @@ import {
   InputRightElement,
   Radio,
   RadioGroup,
+  Select,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -20,15 +21,15 @@ function CheckoutPay({ onBack, onPay }) {
   return (
     <Box>
       <Box borderRadius='10px' py='8px' px='16px' border='solid 1px #d1d1d1'>
-        <InputGroup>
-          <Input border='none' placeholder='Contact' />
-          <InputRightElement pr='40px'>
-            <Button textDecor='underline' variant='unstyled'>
-              Change
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-        <Divider />
+        <Select>
+          <option value='' disabled selected>
+            Select courier
+          </option>
+          <option value={1}>LBC</option>
+          <option value={2}>JRS Express</option>
+          <option value={3}>Borzo</option>
+        </Select>
+        <Divider my='8px' />
         <InputGroup>
           <Input border='none' placeholder='Ship to' />
           <InputRightElement pr='40px'>
