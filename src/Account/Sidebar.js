@@ -27,38 +27,41 @@ function Sidebar({ onSelect }) {
   };
 
   return (
-    <>
-      <Box pos='relative'>
-        <VStack gap='32px' align='start'>
-          {detailItems.map((item) => (
-            <Box
-              borderBottom={selected === item ? "solid 1px black" : ""}
-              pb='16px'
-              w='90%'
-              key={item}
-            >
-              <Button
-                color={selected === item ? "black" : "white"}
-                fontSize='24px'
-                variant='unstyled'
-                fontWeight='normal'
-                onClick={() => handleSelect(item)}
-              >
-                {item}
-              </Button>
-            </Box>
-          ))}
+    <Box py='48px' bgColor='blackAlpha.500' pos='relative'>
+      <VStack gap='32px' align='start' justify='center'>
+        {detailItems.map((item) => (
+          <Box
+            // borderBottom={selected === item ? "solid 1px black" : ""}
+            key={item}
+            w='100%'
+            pl='40px'
+            py='16px'
+            pos='relative'
+            role='group'
+            cursor='pointer'
+            bgColor={selected === item ? "blackAlpha.600" : ""}
+            onClick={() => handleSelect(item)}
+            _hover={{
+              color: "blackAlpha.600",
+            }}
+          >
+            <Button fontSize='24px' variant='unstyled' fontWeight='normal'>
+              {item}
+            </Button>
+          </Box>
+        ))}
+        <Box pl='40px'>
           <LogoutModal />
-        </VStack>
-        <Divider
-          pos='absolute'
-          right='0'
-          top='0'
-          orientation='vertical'
-          borderColor='black'
-        />
-      </Box>
-    </>
+        </Box>
+      </VStack>
+      <Divider
+        pos='absolute'
+        right='0'
+        top='0'
+        orientation='vertical'
+        borderColor='black'
+      />
+    </Box>
   );
 }
 

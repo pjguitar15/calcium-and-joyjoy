@@ -18,16 +18,16 @@ function AccountPage() {
         My Account
       </Heading>
       <Grid
-        px='24px'
-        py='48px'
         columnGap='40px'
         gridTemplateColumns='3fr 7fr'
         borderRadius='10px'
         color='white'
-        bgColor='blackAlpha.600'
+        minH='70vh'
+        overflow='hidden'
+        border='solid 1px black'
       >
         <Sidebar onSelect={(ui) => setShow(ui)} />
-        <Container color='black' px='32px'>
+        <Container px='24px' py='48px' color='black'>
           {handleShow()}
         </Container>
       </Grid>

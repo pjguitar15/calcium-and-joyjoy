@@ -32,7 +32,7 @@ function LogoutModal() {
       <Button
         fontSize='24px'
         fontWeight='semibold'
-        color='red.500'
+        color='red.600'
         variant='unstyled'
         onClick={onOpen}
       >
