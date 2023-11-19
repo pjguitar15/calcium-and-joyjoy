@@ -117,7 +117,13 @@ function ProductPage() {
         pos='relative'
       >
         {/* DISPLAYED PRODUCT */}
-        <Center px='40px' borderRadius='10px' h='100%'>
+        <HStack
+          px='40px'
+          borderRadius='10px'
+          h='100%'
+          alignItems='start'
+          justify='center'
+        >
           <VStack pos='absolute' left='-100px' top='0'>
             {dummy.map((img, i) => (
               <Box
@@ -133,8 +139,13 @@ function ProductPage() {
               </Box>
             ))}
           </VStack>
-          <Image maxW='320px' src={`${config.apiUrl}/storage/${image}`} />
-        </Center>
+
+          <Image
+            mt='40px'
+            maxW='320px'
+            src={`${config.apiUrl}/storage/${image}`}
+          />
+        </HStack>
         {/* DETAILS AND CTAs */}
         <Box>
           <Box mb='8px' fontWeight='semibold'>
