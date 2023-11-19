@@ -2,7 +2,6 @@ import { AddIcon, MinusIcon, StarIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  Center,
   Grid,
   HStack,
   Heading,

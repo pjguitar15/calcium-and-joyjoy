@@ -47,7 +47,7 @@ function AccountDetails() {
             placeholder=' '
             defaultValue={item.defaultVal}
           />
-          <FormLabel>
+          <FormLabel bgColor='red'>
             {item.defaultVal.trim().length !== 0
               ? item.label
               : `Add ${item.label}`}

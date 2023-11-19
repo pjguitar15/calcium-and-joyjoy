@@ -13,13 +13,25 @@ function AccountPage() {
   };
 
   return (
-    <Grid columnGap='40px' gridTemplateColumns='3fr 7fr'>
+    <>
       <Heading mb='40px' gridColumn='1/-1' fontWeight='semibold'>
         My Account
       </Heading>
-      <Sidebar onSelect={(ui) => setShow(ui)} />
-      <Container px='32px'>{handleShow()}</Container>
-    </Grid>
+      <Grid
+        px='24px'
+        py='48px'
+        columnGap='40px'
+        gridTemplateColumns='3fr 7fr'
+        borderRadius='10px'
+        color='white'
+        bgColor='blackAlpha.600'
+      >
+        <Sidebar onSelect={(ui) => setShow(ui)} />
+        <Container color='black' px='32px'>
+          {handleShow()}
+        </Container>
+      </Grid>
+    </>
   );
 }
 
