@@ -4,12 +4,24 @@ import Sidebar from "./Sidebar";
 import AccountDetails from "./AccountDetails";
 import { useState } from "react";
 import OrderDetails from "./OrderDetails";
+import OrderHistory from "./OrderHistory";
+import Addresses from "./Addresses";
 function AccountPage() {
   const [show, setShow] = useState("Details");
 
   const handleShow = () => {
-    if (show === "Details") return <AccountDetails />;
-    if (show === "Order Details") return <OrderDetails />;
+    switch (show) {
+      case "Details":
+        return <AccountDetails />;
+      case "Order Details":
+        return <OrderDetails />;
+      case "Order History":
+        return <OrderHistory />;
+      case "Delivery Addresses":
+        return <Addresses />;
+      default:
+        return null;
+    }
   };
 
   return (

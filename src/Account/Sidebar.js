@@ -1,22 +1,14 @@
-import {
-  Box,
-  VStack,
-  Divider,
-  Button,
-  Modal,
-  ModalBody,
-  ModalOverlay,
-  ModalContent,
-  useDisclosure,
-  Text,
-  HStack,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, VStack, Divider, Button } from "@chakra-ui/react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import LogoutModal from "./LogoutModal";
 
-const detailItems = ["Details", "Order Details", "Delivery Addresses"];
+const detailItems = [
+  "Details",
+  "Order Details",
+  "Order History",
+  "Delivery Addresses",
+];
 
 function Sidebar({ onSelect }) {
   const [selected, setSelected] = useState("Details");

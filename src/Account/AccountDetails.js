@@ -26,6 +26,12 @@ function AccountDetails() {
       defaultVal: email,
     },
     {
+      label: "Password",
+      id: "password",
+      defaultVal: ".",
+      type: "password",
+    },
+    {
       label: "Phone Number",
       id: "phone_number",
       defaultVal: "",
