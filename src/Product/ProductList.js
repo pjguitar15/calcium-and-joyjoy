@@ -23,10 +23,12 @@ function ProductList() {
         pt='40px'
         pb='80px'
         columnGap='80px'
+        h='88vh'
+        alignItems='start'
       >
         <FilterBar />
 
-        <Box as={Scrollbars} h='90vh'>
+        <Box as={Scrollbars}>
           <Grid
             columnGap='16px'
             rowGap='32px'
