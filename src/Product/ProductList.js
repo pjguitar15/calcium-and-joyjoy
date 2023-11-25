@@ -4,6 +4,7 @@ import ItemCard from "../Shared/UI/ItemCard";
 import { useGetShoes } from "../Shared/Hooks/useShoes";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import FilterBar from "./Filter/FilterBar";
+import Scrollbars from "rc-scrollbars";
 function ProductList() {
   const { data, isLoading } = useGetShoes();
   if (isLoading) return <LoadingSpinner />;
@@ -24,18 +25,24 @@ function ProductList() {
         columnGap='80px'
       >
         <FilterBar />
-        <Grid
-          columnGap='16px'
-          rowGap='48px'
-          gridTemplateColumns='repeat(auto-fit,minmax(320px,1fr))'
-          maxH='80vh'
-          overflowY='scroll'
-          py='16px'
-        >
-          {data.map((item, i) => {
-            return <ItemCard data={item} key={item.id} cardW='300px' />;
-          })}
-        </Grid>
+
+        <Box Box as={Scrollbars} h='90vh'>
+          <Grid
+            columnGap='16px'
+            rowGap='32px'
+            gridTemplateColumns='repeat(auto-fit,minmax(320px,1fr))'
+            // overflowY='scroll'
+            py='16px'
+          >
+            {data.map((item) => {
+              return (
+                <Box>
+                  <ItemCard data={item} key={item.id} cardW='300px' />
+                </Box>
+              );
+            })}
+          </Grid>
+        </Box>
       </Grid>
     </>
   );
