@@ -52,11 +52,15 @@ function Footer() {
         </VStack>
         <VStack gap='24px' alignItems='start'>
           {socials.map((item) => (
-            <HStack gap='16px' alignItems='center' justify='start'>
+            <HStack
+              gap='16px'
+              key={item.text}
+              alignItems='center'
+              justify='start'
+            >
               <Icon
                 cursor='pointer'
                 bgColor='#FFDC83'
-                key={item.link}
                 as={item.icon}
                 borderRadius='full'
                 p='6px'
