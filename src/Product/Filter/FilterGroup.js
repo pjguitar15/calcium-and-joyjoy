@@ -28,7 +28,7 @@ function FilterGroup({ main, items }) {
     <Accordion defaultIndex={[0]} allowToggle>
       <AccordionItem borderTop='none'>
         <AccordionButton>
-          <Box as='span' flex='1' textAlign='left'>
+          <Box fontWeight='semibold' as='span' flex='1' textAlign='left'>
             {main}
           </Box>
           <AccordionIcon />
@@ -38,7 +38,11 @@ function FilterGroup({ main, items }) {
           <VStack align='normal'>
             {items.map((filter) => {
               return (
-                <Checkbox key={filter} {...getCheckboxProps({ value: filter })}>
+                <Checkbox
+                  colorScheme='yellow'
+                  key={filter}
+                  {...getCheckboxProps({ value: filter })}
+                >
                   {filter}
                 </Checkbox>
               );
