@@ -30,6 +30,7 @@ const Roles = lazy(() => import("./Admin/Users/Roles"));
 const Customers = lazy(() => import("./Admin/Users/Customers"));
 const UsersAuth = lazy(() => import("./Admin/Users/UsersAuth"));
 const AboutPage = lazy(() => import("./AboutPage"));
+const WishListPage = lazy(() => import("./WishList/WishListPage"));
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <AuthPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/wishlist",
+        element: (
+          <Suspense fallback={<div />}>
+            <WishListPage />
           </Suspense>
         ),
       },

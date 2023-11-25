@@ -92,7 +92,9 @@ function Navbar() {
             <CartPopOver />
           </Box>
           <Divider ml='24px' mr='8px' orientation='vertical' height='40px' />
-          <Icon as={AiOutlineHeart} cursor='pointer' />
+          <Link to='/wishlist'>
+            <Icon as={AiOutlineHeart} cursor='pointer' />
+          </Link>
         </HStack>
       </Grid>
     </Box>
