@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import FilterGroup from "./FilterGroup";
 import SizesFilter from "./SizesFilter";
+import ScrollBars from "rc-scrollbars";
 
 function FilterBar() {
   const filters = [
@@ -23,11 +24,13 @@ function FilterBar() {
   ];
 
   return (
-    <Box maxH='80vh' overflowY='auto' pr='24px'>
-      {filters.map((f) => (
-        <FilterGroup key={f.main} main={f.main} items={f.items} />
-      ))}
-      <SizesFilter />
+    <Box h='70vh' pr='24px'>
+      <ScrollBars>
+        {filters.map((f) => (
+          <FilterGroup key={f.main} main={f.main} items={f.items} />
+        ))}
+        <SizesFilter />
+      </ScrollBars>
       {/* <FilterGroup main={"Type"} items={types} /> */}
     </Box>
   );

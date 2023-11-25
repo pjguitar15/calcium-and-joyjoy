@@ -1,9 +1,17 @@
-import { Box, Grid } from "@chakra-ui/react";
-import { useState } from "react";
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Grid,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
 function SizesFilter() {
-  const [selected, setSelected] = useState([7]);
+  const [selected, setSelected] = useState([]);
 
   const [searchParams, setSeachParams] = useSearchParams();
 
@@ -15,25 +23,52 @@ function SizesFilter() {
     }
   };
 
+  useEffect(() => {
+    if (selected.length < 1) {
+      searchParams.delete("sizes");
+      setSeachParams(searchParams);
+    } else {
+      searchParams.set("sizes", selected.join("-"));
+      setSeachParams(searchParams);
+    }
+  }, [selected]);
+
   console.log(selected);
   return (
-    <Grid mt='8px' gridTemplateColumns='repeat(3,1fr)' gap='8px'>
-      {sizes.map((s) => (
-        <Box
-          textAlign='center'
-          key={s}
-          px='8x'
-          py='2px'
-          border='solid 1px black'
-          borderRadius='5px'
-          opacity={selected.includes(s) ? 1 : 0.3}
-          onClick={() => handleSelect(s)}
-          cursor='pointer'
-        >
-          {s}
-        </Box>
-      ))}
-    </Grid>
+    <Accordion allowToggle defaultIndex={[0]}>
+      <AccordionItem>
+        <AccordionButton>
+          <Box fontWeight='semibold' as='span' flex='1' textAlign='left'>
+            Sizes
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
+        <AccordionPanel>
+          <Grid
+            mt='8px'
+            gridTemplateColumns='repeat(3,1fr)'
+            gap='8px'
+            pr='16px'
+          >
+            {sizes.map((s) => (
+              <Box
+                textAlign='center'
+                key={s}
+                px='8x'
+                py='2px'
+                border='solid 1px black'
+                borderRadius='5px'
+                opacity={selected.includes(s) ? 1 : 0.3}
+                onClick={() => handleSelect(s)}
+                cursor='pointer'
+              >
+                {s}
+              </Box>
+            ))}
+          </Grid>
+        </AccordionPanel>
+      </AccordionItem>
+    </Accordion>
   );
 }
 
