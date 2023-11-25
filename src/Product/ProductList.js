@@ -17,12 +17,17 @@ function ProductList() {
       >
         Products
       </Heading>
-      <Grid gridTemplateColumns='240px 1fr' pt='40px' pb='80px'>
+      <Grid
+        gridTemplateColumns='240px 1fr'
+        pt='40px'
+        pb='80px'
+        columnGap='80px'
+      >
         <FilterBar />
         <Grid
-          columnGap='24px'
+          columnGap='16px'
           rowGap='48px'
-          gridTemplateColumns='repeat(auto-fit,minmax(357px,1fr))'
+          gridTemplateColumns='repeat(auto-fit,minmax(320px,1fr))'
           maxH='80vh'
           overflowY='scroll'
           py='16px'
