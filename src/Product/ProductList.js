@@ -26,7 +26,7 @@ function ProductList() {
       >
         <FilterBar />
 
-        <Box Box as={Scrollbars} h='90vh'>
+        <Box as={Scrollbars} h='90vh'>
           <Grid
             columnGap='16px'
             rowGap='32px'
@@ -35,11 +35,7 @@ function ProductList() {
             py='16px'
           >
             {data.map((item) => {
-              return (
-                <Box>
-                  <ItemCard data={item} key={item.id} cardW='300px' />
-                </Box>
-              );
+              return <ItemCard data={item} key={item.id} cardW='300px' />;
             })}
           </Grid>
         </Box>

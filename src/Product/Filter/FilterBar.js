@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import FilterGroup from "./FilterGroup";
+import SizesFilter from "./SizesFilter";
 
 function FilterBar() {
   const filters = [
@@ -24,8 +25,9 @@ function FilterBar() {
   return (
     <Box maxH='80vh' overflowY='auto' pr='24px'>
       {filters.map((f) => (
-        <FilterGroup main={f.main} items={f.items} />
+        <FilterGroup key={f.main} main={f.main} items={f.items} />
       ))}
+      <SizesFilter />
       {/* <FilterGroup main={"Type"} items={types} /> */}
     </Box>
   );
