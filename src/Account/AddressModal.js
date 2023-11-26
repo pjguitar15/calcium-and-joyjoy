@@ -3,33 +3,70 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Box,
   useDisclosure,
   Button,
   VStack,
   Input,
-  HStack,
   Select,
   Grid,
+  useToast,
 } from "@chakra-ui/react";
 import { RegionDropdown } from "react-country-region-selector";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useMutation } from "react-query";
+import axiosInstance from "../Shared/utils/axiosInstance";
 function AddressModal() {
   const [region, setRegion] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const { register, handleSubmit, reset } = useForm();
+  const toast = useToast();
+  const token = JSON.parse(localStorage.getItem("user"))?.token;
 
-  const handleSave = (data) => {
-    console.log(data);
+  const handleSave = async (data) => {
+    const { street, bldg, city, barangay, postCode } = data;
+    const finalAddress = `${bldg}, ${street}, ${barangay}, ${city}, ${region} ${postCode}`;
+
+    try {
+      await axiosInstance.post(
+        "/user/update",
+        { address: finalAddress },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    } catch (e) {
+      throw new Error();
+    }
+
     onClose();
     setRegion("");
     reset();
   };
+
+  const { mutate } = useMutation({
+    mutationKey: "address",
+    mutationFn: handleSave,
+    onSuccess: () => {
+      toast({
+        status: "success",
+        position: "top",
+        title: "Address saved.",
+        description: "Reloading page",
+      });
+    },
+    onError: (e) => {
+      toast({
+        status: "error",
+        position: "top",
+        title: "Something went wrong.",
+      });
+    },
+  });
 
   return (
     <>
@@ -55,7 +92,7 @@ function AddressModal() {
             <VStack
               as='form'
               align='normal'
-              onSubmit={handleSubmit(handleSave)}
+              onSubmit={handleSubmit(mutate)}
               gap='16px'
             >
               <Input placeholder='Street address' {...register("street")} />
