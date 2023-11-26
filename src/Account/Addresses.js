@@ -1,4 +1,5 @@
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import AddressModal from "./AddressModal";
 function Addresses() {
   return (
     <>
@@ -7,17 +8,7 @@ function Addresses() {
         <Text mt='8px'>You currently don't have any delivery addresses.</Text>
       </Box>
       <Box mt='24px' display='flex' justifyContent='end'>
-        <Button
-          color='white'
-          bgColor='black'
-          borderRadius='20px'
-          px='40px'
-          _hover={{
-            bgColor: "var(--accent)",
-          }}
-        >
-          Add address
-        </Button>
+        <AddressModal />
       </Box>
     </>
   );
