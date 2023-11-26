@@ -23,11 +23,14 @@ function AddressModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit, reset } = useForm();
   const toast = useToast();
-  const token = JSON.parse(localStorage.getItem("user"))?.token;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userInfo = user?.user_info;
 
   const handleSave = async (data) => {
     const { street, bldg, city, barangay, postCode } = data;
     const finalAddress = `${bldg}, ${street}, ${barangay}, ${city}, ${region} ${postCode}`;
+
+    const newUserInfo = { ...userInfo, address: finalAddress };
 
     try {
       await axiosInstance.post(
@@ -35,9 +38,17 @@ function AddressModal() {
         { address: finalAddress },
         {
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + user?.token,
           },
         }
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          token: user.token,
+          user_info: { ...newUserInfo },
+        })
       );
     } catch (e) {
       throw new Error();

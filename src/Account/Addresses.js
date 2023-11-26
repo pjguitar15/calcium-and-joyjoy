@@ -1,6 +1,7 @@
-import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import AddressModal from "./AddressModal";
 function Addresses() {
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <>
       <Box>
