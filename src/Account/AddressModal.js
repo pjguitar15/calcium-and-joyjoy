@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useMutation } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
-function AddressModal() {
+function AddressModal({ onReload }) {
   const [region, setRegion] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit, reset } = useForm();
@@ -50,6 +50,9 @@ function AddressModal() {
           user_info: { ...newUserInfo },
         })
       );
+      setTimeout(() => {
+        onReload();
+      }, 700);
     } catch (e) {
       throw new Error();
     }
