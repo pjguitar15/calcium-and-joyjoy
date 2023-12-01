@@ -61,11 +61,7 @@ function ItemCard(props) {
           <Image
             alt='product'
             mx='auto'
-            src={
-              variant === "shoe"
-                ? `${config.apiUrl}/storage/${image}`
-                : "/dummySocks.png"
-            }
+            src={`${config.apiUrl}/storage/${image}`}
             verticalAlign='bottom'
             mb='16px'
             maxH='200px'
