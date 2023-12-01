@@ -33,7 +33,6 @@ function SizesFilter() {
     }
   }, [selected]);
 
-  console.log(selected);
   return (
     <Accordion allowToggle defaultIndex={[0]}>
       <AccordionItem>
