@@ -5,7 +5,7 @@ import CustomizeRes from "./CustomizeRes";
 import Carousels from "./Carousels";
 function CustomizePage() {
   return (
-    <Grid gridTemplateColumns='2fr 8fr'>
+    <Grid gridTemplateColumns='2fr 8fr' columnGap='40px'>
       <FilterBar />
       <Box>
         <CustomizeRes />

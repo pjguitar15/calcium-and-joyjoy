@@ -8,7 +8,7 @@ import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 
 const dummy = Array.from({ length: 15 });
-function ShoeList() {
+function ShoeList({ propSettings }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const getShoes = async () => {
@@ -95,17 +95,14 @@ function ShoeList() {
   };
 
   return (
-    <Box>
-      <Heading mb='24px'>WHAT'S HOT?</Heading>
-      <Box as={Slider} {...settings}>
-        {data.map((item, i) => {
-          return (
-            <Box py='16px' key={i}>
-              <ItemCard variant='shoe' data={item} />
-            </Box>
-          );
-        })}
-      </Box>
+    <Box as={Slider} {...settings} {...propSettings}>
+      {data.map((item, i) => {
+        return (
+          <Box py='16px' key={i}>
+            <ItemCard variant='shoe' data={item} />
+          </Box>
+        );
+      })}
     </Box>
   );
 }
