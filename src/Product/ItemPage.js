@@ -220,23 +220,7 @@ function ItemPage() {
               ))}
             </Grid>
           </Box>
-          <Link to='/shoe/1/customize'>
-            <Button
-              color='goldenrod'
-              variant='unstyled'
-              border='solid 1px goldenrod'
-              mt='24px'
-              w='100%'
-              mb='24px'
-              _hover={{
-                bgColor: "goldenrod",
-                color: "white",
-              }}
-            >
-              Customize
-            </Button>
-          </Link>
-          <VStack gap='16px'>
+          <VStack mt='32px' gap='16px'>
             <HStack gap='16px' w='100%'>
               <Button
                 onClick={handleAdd}
