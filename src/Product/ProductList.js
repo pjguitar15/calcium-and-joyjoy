@@ -1,13 +1,22 @@
-import { Box, Grid, Heading } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 
 import ItemCard from "../Shared/UI/ItemCard";
 import { useGetShoes } from "../Shared/Hooks/useShoes";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
-import FilterBar from "./Filter/FilterBar";
+
 import Scrollbars from "rc-scrollbars";
+import { useSearchParams } from "react-router-dom";
 
 function ProductList() {
-  const { data, isLoading } = useGetShoes(["shoes"]);
+  const [searchParams] = useSearchParams();
+
+  const queryObj = {};
+  for (const [key, value] of searchParams.entries()) {
+    queryObj[key] = value;
+  }
+
+  console.log(queryObj);
+  const { data, isLoading } = useGetShoes(["shoes", queryObj], queryObj);
   if (isLoading) return <LoadingSpinner />;
 
   return (
