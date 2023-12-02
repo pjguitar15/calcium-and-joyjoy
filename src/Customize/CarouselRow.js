@@ -10,7 +10,6 @@ function CarouselRow({ name, data }) {
     slidesToScroll: 3,
   };
 
-  console.log(data);
   return (
     <Box>
       <Text fontSize='24px'>Add {name}</Text>
