@@ -29,7 +29,7 @@ import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
 import { addToCart } from "../Store/cart";
 
-function ProductPage() {
+function ItemPage() {
   const { productID } = useParams();
   const [selectedSize, setSelectedSize] = useState(7);
   const [showAdded, setShowAdded] = useState(false);
@@ -308,4 +308,4 @@ function ProductPage() {
   );
 }
 
-export default ProductPage;
+export default ItemPage;

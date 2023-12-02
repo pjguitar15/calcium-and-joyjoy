@@ -14,11 +14,12 @@ import ErrorPage from "./Shared/UI/ErrorPage";
 import theme from "./Shared/UI/chakraTheme";
 import { Provider } from "react-redux";
 import store from "./Store/cart";
+import ProductsPage from "./Product/ProductsPage";
 
 // LAZY PAGES
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
 const CartPage = lazy(() => import("./Cart/CartPage"));
-const ProductPage = lazy(() => import("./Product/ProductPage"));
+const ItemPage = lazy(() => import("./Product/ItemPage"));
 const CheckoutPage = lazy(() => import("./Checkout/CheckoutPage"));
 const ProductList = lazy(() => import("./Product/ProductList"));
 const CustomizePage = lazy(() => import("./Customize/CustomizePage"));
@@ -67,7 +68,7 @@ const router = createBrowserRouter([
         path: "/products",
         element: (
           <Suspense fallback={<div />}>
-            <ProductList />
+            <ProductsPage />
           </Suspense>
         ),
       },
@@ -75,7 +76,7 @@ const router = createBrowserRouter([
         path: "/shoe/:productID",
         element: (
           <Suspense fallback={<div />}>
-            <ProductPage />
+            <ItemPage />
           </Suspense>
         ),
       },

@@ -24,7 +24,7 @@ function FilterBar() {
   ];
 
   return (
-    <Box h='70vh' pr='24px'>
+    <Box h='80vh' pr='24px'>
       <ScrollBars>
         {filters.map((f) => (
           <FilterGroup key={f.main} main={f.main} items={f.items} />

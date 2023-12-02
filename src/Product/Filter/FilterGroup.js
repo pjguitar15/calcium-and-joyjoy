@@ -8,12 +8,17 @@ import {
   VStack,
   Checkbox,
   useCheckboxGroup,
+  CheckboxGroup,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 function FilterGroup({ main, items }) {
-  const { value, getCheckboxProps } = useCheckboxGroup();
   const [searchParams, setSearchParams] = useSearchParams();
+  const defaultVal = searchParams.getAll(main)[0]?.split("-");
+
+  const { value, getCheckboxProps } = useCheckboxGroup({
+    defaultValue: defaultVal,
+  });
 
   useEffect(() => {
     if (value.length > 0) {
@@ -24,6 +29,7 @@ function FilterGroup({ main, items }) {
       setSearchParams(searchParams);
     }
   }, [value]);
+
   return (
     <Accordion defaultIndex={[0]} allowToggle>
       <AccordionItem borderTop='none'>
@@ -33,20 +39,22 @@ function FilterGroup({ main, items }) {
           </Box>
           <AccordionIcon />
         </AccordionButton>
-
         <AccordionPanel pb='8px'>
           <VStack align='normal'>
-            {items.map((filter) => {
-              return (
-                <Checkbox
-                  colorScheme='yellow'
-                  key={filter}
-                  {...getCheckboxProps({ value: filter })}
-                >
-                  {filter}
-                </Checkbox>
-              );
-            })}
+            <CheckboxGroup value={value}>
+              {items.map((filter) => {
+                return (
+                  <Checkbox
+                    colorScheme='yellow'
+                    key={filter}
+                    {...getCheckboxProps({ value: filter })}
+                    value={filter}
+                  >
+                    {filter}
+                  </Checkbox>
+                );
+              })}
+            </CheckboxGroup>
           </VStack>
         </AccordionPanel>
       </AccordionItem>
