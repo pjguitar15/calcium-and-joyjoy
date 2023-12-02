@@ -81,7 +81,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/shoe/:productID/customize",
+        path: "/customize",
         element: (
           <Suspense fallback={<div />}>
             <CustomizePage />

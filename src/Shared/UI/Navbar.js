@@ -15,11 +15,15 @@ function Navbar() {
   const navItems = [
     {
       text: "Products",
-      page: "/products",
+      page: "products",
     },
     {
       text: "About us",
       page: "about",
+    },
+    {
+      text: "Customize",
+      page: "/customize",
     },
   ];
   const user = JSON.parse(localStorage.getItem("user"));
