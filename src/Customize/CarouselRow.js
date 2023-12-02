@@ -2,7 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import "../Home/HeroCarousel.css";
 import ShoeList from "../Home/ShoeList";
 
-function CarouselRow({ name, data }) {
+function CarouselRow({ name }) {
   const settings = {
     infinite: true,
     speed: 500,
