@@ -8,12 +8,15 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import config from "../utils/config";
 import LoadingSpinner from "./LoadingSpinner";
 import convertCurrency from "../utils/convertCurrency";
+
 function ItemCard(props) {
-  const { cardW, data, variant } = props;
+  const { cardW, data, variant, onSelect, isSelected } = props;
+
+  const { pathname } = useLocation();
 
   if (!data) return <LoadingSpinner />;
 
@@ -22,8 +25,15 @@ function ItemCard(props) {
   const formattedName =
     name.trim().length > maxLength ? name.slice(0, maxLength) + "..." : name;
 
+  const clickHandler = () => {
+    if (pathname !== "/customize") return;
+    const { id } = data;
+    onSelect(id);
+  };
+
   return (
     <Card
+      onClick={clickHandler}
       py='8px'
       boxShadow='4px 4px 16px rgba(0,0,0,.3)'
       w={cardW || "250px"}
@@ -34,10 +44,11 @@ function ItemCard(props) {
         transform: "translateY(-8px)",
         boxShadow: "4px 8px 16px rgba(0,0,0,.4)",
       }}
-      as={Link}
+      as={pathname !== "/customize" ? Link : Card}
       to={`/shoe/${id}`}
       borderRadius='20px'
       h='400px'
+      bgColor={isSelected ? "var(--accent)" : ""}
     >
       {discount && (
         <CardHeader color='white' pos='relative' mt='-8px'>

@@ -7,8 +7,6 @@ function Carousels() {
   return (
     <VStack align='normal' gap='32px'>
       <CarouselRow name={"Shoes"} data={shoes} />
-      <CarouselRow name={"Socks"} data={shoes} />
-      <CarouselRow name={"Accessories"} data={shoes} />
     </VStack>
   );
 }

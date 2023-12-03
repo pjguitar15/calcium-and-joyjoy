@@ -10,6 +10,10 @@ import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 const dummy = Array.from({ length: 15 });
 function ShoeList({ propSettings }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const handleSelect = (id) => {
+    setSelected(id);
+  };
 
   const getShoes = async () => {
     const res = await axiosInstance.get("/shoes");
@@ -99,7 +103,12 @@ function ShoeList({ propSettings }) {
       {data.map((item, i) => {
         return (
           <Box py='16px' key={i}>
-            <ItemCard variant='shoe' data={item} />
+            <ItemCard
+              onSelect={handleSelect}
+              variant='shoe'
+              data={item}
+              isSelected={item.id === selected}
+            />
           </Box>
         );
       })}
