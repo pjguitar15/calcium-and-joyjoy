@@ -56,10 +56,16 @@ function SizesFilter() {
                 px='8x'
                 py='2px'
                 border='solid 1px black'
+                borderColor={selected.includes(s) ? "var(--accent)" : ""}
                 borderRadius='5px'
-                opacity={selected.includes(s) ? 1 : 0.3}
+                // opacity={selected.includes(s) ? 1 : 0.3}
                 onClick={() => handleSelect(s)}
                 cursor='pointer'
+                filter={
+                  selected.includes(s)
+                    ? "drop-shadow(1px 1px 2px var(--accent))"
+                    : ""
+                }
               >
                 {s}
               </Box>
