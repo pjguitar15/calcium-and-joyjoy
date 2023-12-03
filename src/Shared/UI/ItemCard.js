@@ -27,8 +27,7 @@ function ItemCard(props) {
 
   const clickHandler = () => {
     if (pathname !== "/customize") return;
-    const { id } = data;
-    onSelect(id);
+    onSelect(data);
   };
 
   return (

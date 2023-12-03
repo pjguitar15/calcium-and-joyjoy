@@ -8,11 +8,12 @@ import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 
 const dummy = Array.from({ length: 15 });
-function ShoeList({ propSettings }) {
+function ShoeList({ propSettings, onItemSelect }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selected, setSelected] = useState(null);
-  const handleSelect = (id) => {
-    setSelected(id);
+  const handleSelect = (item) => {
+    setSelected(item.id);
+    onItemSelect(item);
   };
 
   const getShoes = async () => {
