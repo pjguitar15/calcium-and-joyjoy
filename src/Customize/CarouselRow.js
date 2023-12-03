@@ -9,7 +9,6 @@ function CarouselRow({ name, onItemSelect }) {
     slidesToShow: 3,
     slidesToScroll: 3,
   };
-
   return (
     <Box>
       <Text fontSize='24px'>Add {name}</Text>

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
+import { useGetShoes } from "../Shared/Hooks/useShoes";
 
 const dummy = Array.from({ length: 15 });
 function ShoeList({ propSettings, onItemSelect }) {
@@ -16,15 +17,16 @@ function ShoeList({ propSettings, onItemSelect }) {
     onItemSelect(item);
   };
 
-  const getShoes = async () => {
-    const res = await axiosInstance.get("/shoes");
-    return res.data;
-  };
-  const { data, isLoading } = useQuery({
-    queryKey: "shoes",
-    queryFn: getShoes,
-  });
+  // const getShoes = async () => {
+  //   const res = await axiosInstance.get("/shoes");
+  //   return res.data;
+  // };
+  // const { data, isLoading } = useQuery({
+  //   queryKey: "shoes",
+  //   queryFn: getShoes,
+  // });
 
+  const { data, isLoading } = useGetShoes();
   if (isLoading) return <LoadingSpinner />;
 
   const settings = {
