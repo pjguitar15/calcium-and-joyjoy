@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 
 const colors = [
-  "white",
   "black",
   "red",
   "blue",
@@ -37,10 +36,17 @@ function ColorFilter() {
             columnGap='16px'
             rowGap='8px'
           >
+            <Box
+              cursor='pointer'
+              border='solid 1px black'
+              aspectRatio='1/1'
+              w='32px'
+              bgColor='white'
+              borderRadius='10px'
+            />
             {colors.map((color) => (
               <Box
                 cursor='pointer'
-                border='solid 1px black'
                 key={color}
                 aspectRatio='1/1'
                 w='32px'
