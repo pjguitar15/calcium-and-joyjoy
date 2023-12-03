@@ -19,7 +19,6 @@ function CartPage() {
   // const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
 
   const cart = useSelector((state) => state.cart);
-  console.log(cart);
 
   return (
     <Box maxW='1100px' mx='auto'>

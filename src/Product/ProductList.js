@@ -15,7 +15,6 @@ function ProductList() {
     queryObj[key] = value;
   }
 
-  console.log(queryObj);
   const { data, isLoading } = useGetShoes(["shoes", queryObj], queryObj);
   if (isLoading) return <LoadingSpinner />;
 

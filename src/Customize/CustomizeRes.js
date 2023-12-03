@@ -1,6 +1,5 @@
 import { Box, HStack, Image, Text } from "@chakra-ui/react";
 function CustomizeRes({ results }) {
-  console.log(results);
   return (
     <Box
       maxW='1200px'
