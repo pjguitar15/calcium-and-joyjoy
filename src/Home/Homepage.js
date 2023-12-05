@@ -2,6 +2,7 @@ import { Box, Heading, VStack } from "@chakra-ui/react";
 import ShoeList from "./ShoeList";
 import Accessories from "./Accessories";
 import HeroCarousel from "./HeroCarousel";
+import { useGetShoes } from "../Shared/Hooks/useShoes";
 
 // const { name, image, price, gender, discount, id } = data;
 
@@ -19,12 +20,14 @@ function Homepage() {
       discount: 0.1,
     })
   );
+
+  const { data, isLoading } = useGetShoes();
   return (
     <VStack align='normal' justify='normal' gap='80px'>
       <HeroCarousel />
       <Box>
         <Heading mb='24px'>WHAT'S HOT?</Heading>
-        <ShoeList />
+        <ShoeList data={data} />
       </Box>
       <Accessories data={dummyAccessories} />
     </VStack>

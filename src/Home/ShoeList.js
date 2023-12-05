@@ -9,7 +9,7 @@ import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import { useGetShoes } from "../Shared/Hooks/useShoes";
 
 const dummy = Array.from({ length: 15 });
-function ShoeList({ propSettings, onItemSelect }) {
+function ShoeList({ propSettings, onItemSelect, data }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selected, setSelected] = useState(null);
   const handleSelect = (item) => {
@@ -26,8 +26,8 @@ function ShoeList({ propSettings, onItemSelect }) {
   //   queryFn: getShoes,
   // });
 
-  const { data, isLoading } = useGetShoes();
-  if (isLoading) return <LoadingSpinner />;
+  // const { data, isLoading } = useGetShoes();
+  if (!data) return <LoadingSpinner />;
 
   const settings = {
     dots: false,

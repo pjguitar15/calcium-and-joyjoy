@@ -2,7 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import "../Home/HeroCarousel.css";
 import ShoeList from "../Home/ShoeList";
 
-function CarouselRow({ name, onItemSelect }) {
+function CarouselRow({ name, onItemSelect, data }) {
   const settings = {
     infinite: true,
     speed: 500,
@@ -13,7 +13,11 @@ function CarouselRow({ name, onItemSelect }) {
     <Box>
       <Text fontSize='24px'>Add {name}</Text>
       <Box maxW='1000px' mx='auto'>
-        <ShoeList onItemSelect={onItemSelect} propSettings={settings} />
+        <ShoeList
+          data={data}
+          onItemSelect={onItemSelect}
+          propSettings={settings}
+        />
       </Box>
     </Box>
   );
