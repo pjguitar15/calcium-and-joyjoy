@@ -39,8 +39,16 @@ function Login() {
         position: "top",
         description: "Going back to homepage",
       });
+
+      console.log(data);
       reset();
-      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...data,
+          token: data.token.split("|")[1].trim(),
+        })
+      );
       setTimeout(() => {
         navigate("/");
       }, 1500);
