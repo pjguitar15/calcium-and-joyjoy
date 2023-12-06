@@ -4,15 +4,12 @@ import ItemCarousel, { Arrow } from "../Shared/UI/ItemCarousel";
 import { useState } from "react";
 
 function CarouselRow({ name, onItemSelect, data }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  console.log(activeIndex);
   const settings = {
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
-    beforeChange: (current, next) => setActiveIndex(next),
+
     nextArrow: <Arrow variant='next' onLast={false} />,
     prevArrow: <Arrow variant='prev' onLast={false} />,
   };

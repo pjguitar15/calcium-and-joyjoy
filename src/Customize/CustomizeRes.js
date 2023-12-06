@@ -1,5 +1,6 @@
 import { Box, HStack, Image, Text } from "@chakra-ui/react";
 function CustomizeRes({ results }) {
+  console.log(results);
   return (
     <Box
       maxW='1200px'
@@ -11,17 +12,9 @@ function CustomizeRes({ results }) {
       display='flex'
     >
       <HStack w='100%' justifyItems='center' justifyContent='center' gap='24px'>
-        {results?.shoe && (
-          <Box>
-            <Text>{results.shoe.name}</Text>
-            <Image
-              src={
-                "https://m.media-amazon.com/images/I/71zKZNtIxGL._AC_UY580_.jpg"
-              }
-              maxW='200px'
-            />
-          </Box>
-        )}
+        <Text>{results.shoe?.name}</Text>
+        <Text>{results.sock?.name}</Text>
+        <Text>{results.accessory?.name}</Text>
       </HStack>
     </Box>
   );
