@@ -1,7 +1,25 @@
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import axiosInstance from "../Shared/utils/axiosInstance";
+import LoadingSpinner from "../Shared/UI/LoadingSpinner";
+import WishList from "./WishList";
 function WishListPage() {
-  const user = localStorage.getItem("user");
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const { data, isLoading } = useQuery("wishlist", async () => {
+    const res = await axiosInstance.get("/user/wishlist", {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    return res.data;
+  });
+
+  if (isLoading) return <LoadingSpinner />;
+
+  const { data: list } = data;
+  console.log(list);
 
   return (
     <Box>
@@ -10,7 +28,7 @@ function WishListPage() {
           Wishlist
         </Heading>
         {user ? (
-          <Text>There are no items in your wishlist.</Text>
+          <WishList list={list} />
         ) : (
           <Box>
             <Text mb='16px'>You need an account to have a wishlist.</Text>
