@@ -7,8 +7,7 @@ import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import { useQuery } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 function Carousels({ onSelectItems }) {
-  const { data: shoes, isLoading } = useGetShoes();
-  const { data: mix, isLoading: mixLoading } = useQuery("mix", async () => {
+  const { data: mix, isLoading } = useQuery("mix", async () => {
     const res = await axiosInstance.get("/mix-and-match");
     return res.data;
   });
@@ -21,13 +20,13 @@ function Carousels({ onSelectItems }) {
     onSelectItems({ shoe, sock, accessory });
   }, [shoe?.id, sock?.id, accessory?.id]);
 
-  if (isLoading || mixLoading) return <LoadingSpinner />;
-  console.log(mix.socks, mix.accessories);
+  if (isLoading) return <LoadingSpinner />;
+
   return (
     <VStack align='normal' gap='32px'>
       <CarouselRow
         name={"Shoes"}
-        data={shoes}
+        data={mix.shoes}
         onItemSelect={(shoe) => setShoe(shoe)}
       />
       <CarouselRow

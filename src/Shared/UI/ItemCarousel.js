@@ -1,15 +1,12 @@
-import { Box, Circle, Heading } from "@chakra-ui/react";
-import ItemCard from "../Shared/UI/ItemCard";
+import { Box, Circle } from "@chakra-ui/react";
+import ItemCard from "./ItemCard";
 import Slider from "react-slick";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useState } from "react";
-import { useQuery } from "react-query";
-import axiosInstance from "../Shared/utils/axiosInstance";
-import LoadingSpinner from "../Shared/UI/LoadingSpinner";
-import { useGetShoes } from "../Shared/Hooks/useShoes";
 
-const dummy = Array.from({ length: 15 });
-function ShoeList({ propSettings, onItemSelect, data }) {
+import LoadingSpinner from "./LoadingSpinner";
+
+function ItemCarousel({ propSettings, onItemSelect, data }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selected, setSelected] = useState(null);
   const handleSelect = (item) => {
@@ -17,20 +14,9 @@ function ShoeList({ propSettings, onItemSelect, data }) {
     onItemSelect(item);
   };
 
-  // const getShoes = async () => {
-  //   const res = await axiosInstance.get("/shoes");
-  //   return res.data;
-  // };
-  // const { data, isLoading } = useQuery({
-  //   queryKey: "shoes",
-  //   queryFn: getShoes,
-  // });
-
-  // const { data, isLoading } = useGetShoes();
   if (!data) return <LoadingSpinner />;
 
   const settings = {
-    dots: false,
     infinite: false,
     speed: 500,
     slidesToShow: 5,
@@ -54,7 +40,7 @@ function ShoeList({ propSettings, onItemSelect, data }) {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === dummy.length - 4 ? true : false}
+              onLast={activeIndex === data.length - 4 ? true : false}
             />
           ),
         },
@@ -67,7 +53,7 @@ function ShoeList({ propSettings, onItemSelect, data }) {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === dummy.length - 3 ? true : false}
+              onLast={activeIndex === data.length - 3 ? true : false}
             />
           ),
         },
@@ -80,7 +66,7 @@ function ShoeList({ propSettings, onItemSelect, data }) {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === dummy.length - 2 ? true : false}
+              onLast={activeIndex === data.length - 2 ? true : false}
             />
           ),
         },
@@ -93,7 +79,7 @@ function ShoeList({ propSettings, onItemSelect, data }) {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === dummy.length - 1 ? true : false}
+              onLast={activeIndex === data.length - 1 ? true : false}
             />
           ),
         },
@@ -119,9 +105,9 @@ function ShoeList({ propSettings, onItemSelect, data }) {
   );
 }
 
-export default ShoeList;
+export default ItemCarousel;
 
-const Arrow = ({ onClick, variant, onLast }) => {
+export const Arrow = ({ onClick, variant, onLast }) => {
   return (
     <Circle
       opacity={onLast ? 0 : 1}

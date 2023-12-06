@@ -1,5 +1,5 @@
 import { Box, Heading, VStack } from "@chakra-ui/react";
-import ShoeList from "./ShoeList";
+import ItemCarousel from "../Shared/UI/ItemCarousel";
 import Accessories from "./Accessories";
 import HeroCarousel from "./HeroCarousel";
 import { useGetShoes } from "../Shared/Hooks/useShoes";
@@ -27,7 +27,7 @@ function Homepage() {
       <HeroCarousel />
       <Box>
         <Heading mb='24px'>WHAT'S HOT?</Heading>
-        <ShoeList data={data} />
+        <ItemCarousel data={data} />
       </Box>
       <Accessories data={dummyAccessories} />
     </VStack>

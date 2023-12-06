@@ -1,19 +1,26 @@
 import { Box, Text } from "@chakra-ui/react";
 import "../Home/HeroCarousel.css";
-import ShoeList from "../Home/ShoeList";
+import ItemCarousel, { Arrow } from "../Shared/UI/ItemCarousel";
+import { useState } from "react";
 
 function CarouselRow({ name, onItemSelect, data }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  console.log(activeIndex);
   const settings = {
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
+    beforeChange: (current, next) => setActiveIndex(next),
+    nextArrow: <Arrow variant='next' onLast={false} />,
+    prevArrow: <Arrow variant='prev' onLast={false} />,
   };
   return (
     <Box>
       <Text fontSize='24px'>Add {name}</Text>
       <Box maxW='1000px' mx='auto'>
-        <ShoeList
+        <ItemCarousel
           data={data}
           onItemSelect={onItemSelect}
           propSettings={settings}
