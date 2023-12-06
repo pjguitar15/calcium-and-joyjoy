@@ -9,8 +9,19 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import convertCurrency from "../Shared/utils/convertCurrency";
+import { useEffect, useState } from "react";
 function CustomizeRes({ results }) {
+  const [shoePrice, setShoePrice] = useState(0);
+  const [sockPrice, setSockPrice] = useState(0);
+  const [accessoryPrice, setAccessoryPrice] = useState(0);
+
   const { shoe, sock, accessory } = results;
+
+  useEffect(() => {
+    if (shoe) setShoePrice(Number(shoe.price));
+    if (sock) setSockPrice(Number(sock.price));
+    if (accessory) setAccessoryPrice(Number(accessory.price));
+  }, [shoe, sock, accessory]);
   return (
     <Grid
       maxW='1200px'
@@ -24,9 +35,10 @@ function CustomizeRes({ results }) {
       pt='40px'
       px='32px'
       pb='24px'
+      columnGap='80px'
     >
       <VStack gap='24px' align='start' flexGrow='1'>
-        <HStack>
+        <HStack w='100%' justify='space-between'>
           <Box>
             <HStack gap='16px'>
               <Center
@@ -43,14 +55,16 @@ function CustomizeRes({ results }) {
                   maxW='160px'
                 />
               </Center>
+
               <Box>
                 <Text fontWeight='semibold'>{shoe?.name || "Shoe"}</Text>
                 <Text opacity='.7'>Men's shoes</Text>
               </Box>
             </HStack>
           </Box>
+          <Text>{convertCurrency(shoePrice)}</Text>
         </HStack>
-        <HStack>
+        <HStack w='100%' justify='space-between'>
           <Box>
             <HStack gap='16px'>
               <Center
@@ -73,8 +87,9 @@ function CustomizeRes({ results }) {
               </Box>
             </HStack>
           </Box>
+          <Text>{convertCurrency(sockPrice)}</Text>
         </HStack>
-        <HStack>
+        <HStack w='100%' justify='space-between'>
           <Box>
             <HStack gap='16px'>
               <Center
@@ -99,6 +114,7 @@ function CustomizeRes({ results }) {
               </Box>
             </HStack>
           </Box>
+          <Text>{convertCurrency(accessoryPrice)}</Text>
         </HStack>
       </VStack>
       <Box minW='320px'>
@@ -109,10 +125,12 @@ function CustomizeRes({ results }) {
           <Box borderBottom='solid 1px black' pb='12px'>
             <HStack justify='space-between'>
               <Text>Subtotal</Text>
-              <Text>{convertCurrency(7025)}</Text>
+              <Text>
+                {convertCurrency(shoePrice + sockPrice + accessoryPrice)}
+              </Text>
             </HStack>
             <HStack justify='space-between'>
-              <Text>Subtotal</Text>
+              <Text>Shipping</Text>
               <Text>{convertCurrency(300)}</Text>
             </HStack>
           </Box>
@@ -122,7 +140,9 @@ function CustomizeRes({ results }) {
             pb='12px'
           >
             <Text>Total</Text>
-            <Text>{convertCurrency(7325)}</Text>
+            <Text>
+              {convertCurrency(shoePrice + sockPrice + accessoryPrice + 300)}
+            </Text>
           </HStack>
           <HStack mt='24px' justify='space-around'>
             <Button
