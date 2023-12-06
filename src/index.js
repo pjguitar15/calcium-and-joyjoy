@@ -15,6 +15,7 @@ import theme from "./Shared/UI/chakraTheme";
 import { Provider } from "react-redux";
 import store from "./Store/cart";
 import ProductsPage from "./Product/ProductsPage";
+import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 
 // LAZY PAGES
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
@@ -174,6 +175,10 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <RouterProvider router={router} />
+        <TawkMessengerReact
+          propertyId='656e7c74ff45ca7d4786dfc0'
+          widgetId='1hgrpca5t'
+        />
       </Provider>
     </QueryClientProvider>
   </ChakraProvider>
