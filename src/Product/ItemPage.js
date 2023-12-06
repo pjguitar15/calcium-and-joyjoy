@@ -22,7 +22,7 @@ import AddedToast from "./AddedToast";
 import { AnimatePresence } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import convertCurrency from "../Shared/utils/convertCurrency";
@@ -35,6 +35,7 @@ function ItemPage() {
   const [showAdded, setShowAdded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [display, setDisplay] = useState("/dummyShoe.png");
+  const toast = useToast();
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
 
@@ -46,8 +47,28 @@ function ItemPage() {
     queryKey: "shoeItem",
     queryFn: getShoe,
   });
-  const toast = useToast();
+
   if (isLoading) return <LoadingSpinner />;
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleWish = async () => {
+    if (!user)
+      return toast({
+        position: "top",
+        status: "error",
+        description: "Login to add a wishlist",
+      });
+
+    toast({ position: "top", status: "success", title: "Added to wishlist" });
+    const res = await axiosInstance.post(
+      "/user/wishlist/store",
+      { user_id: user.user_info.id, product_id: productID },
+      { headers: { Authorization: `Bearer ${user.token}` } }
+    );
+
+    console.log(res);
+  };
 
   const { name, gender, description, price, image } = shoe;
 
@@ -237,6 +258,7 @@ function ItemPage() {
                 color='gray'
                 borderRadius='20px'
                 w='100%'
+                onClick={handleWish}
               >
                 Wishlist
               </Button>
