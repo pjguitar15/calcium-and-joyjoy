@@ -28,7 +28,7 @@ function AccountDetails() {
     {
       label: "Password",
       id: "password",
-      defaultVal: ".",
+      defaultVal: "password",
       type: "password",
     },
     {

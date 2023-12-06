@@ -123,7 +123,7 @@ function AddressModal({ onReload }) {
                 <Input placeholder='Barangay' {...register("barangay")} />
                 <Input placeholder='Postal Code' {...register("postCode")} />
               </Grid>
-
+              <Input placeholder='Add label' {...register("label")} />
               <Button
                 color='white'
                 bgColor='black'
