@@ -21,6 +21,10 @@ function CustomizeRes({ results }) {
     if (shoe) setShoePrice(Number(shoe.price));
     if (sock) setSockPrice(Number(sock.price));
     if (accessory) setAccessoryPrice(Number(accessory.price));
+
+    if (!shoe) setShoePrice(0);
+    if (!sock) setSockPrice(0);
+    if (!accessory) setAccessoryPrice(0);
   }, [shoe, sock, accessory]);
   return (
     <Grid

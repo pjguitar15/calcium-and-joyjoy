@@ -10,6 +10,10 @@ function ItemCarousel({ propSettings, onItemSelect, data }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selected, setSelected] = useState(null);
   const handleSelect = (item) => {
+    if (item.id === selected) {
+      setSelected(null);
+      return onItemSelect(null);
+    }
     setSelected(item.id);
     onItemSelect(item);
   };
