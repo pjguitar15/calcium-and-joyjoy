@@ -30,7 +30,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const { mutate } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: onLogin,
     onSuccess: async (data) => {
       toast({
@@ -40,7 +40,6 @@ function Login() {
         description: "Going back to homepage",
       });
 
-      console.log(data);
       reset();
       localStorage.setItem(
         "user",
@@ -127,6 +126,7 @@ function Login() {
           _hover={{
             bgColor: "var(--accent)",
           }}
+          isLoading={isLoading}
         >
           Sign In
         </Button>

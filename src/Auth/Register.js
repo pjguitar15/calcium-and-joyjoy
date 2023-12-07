@@ -32,9 +32,9 @@ const fields = [
   },
 ];
 
-function Register() {
+function Register({ onVerify }) {
   const toast = useToast();
-  const nav = useNavigate();
+  // const nav = useNavigate();
 
   const { register, handleSubmit } = useForm();
   const onReg = async (data) => {
@@ -56,15 +56,14 @@ function Register() {
   const { mutate } = useMutation({
     mutationFn: onReg,
     onSuccess: async (data) => {
-      localStorage.setItem("user", JSON.stringify(data));
+      // localStorage.setItem("user", JSON.stringify(data));
       toast({
-        title: "Account created",
-        status: "success",
+        status: "info",
+        description: "Verify your email",
         position: "top",
-        description: "Going back to home page",
       });
       setTimeout(() => {
-        nav("/");
+        onVerify();
       }, 1500);
     },
     onError: (data) => {
