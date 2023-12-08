@@ -7,7 +7,7 @@ function Searchbar() {
   const [searchVal, setSearchVal] = useState("");
   const handleSearch = (e) => {
     e.preventDefault();
-    nav(`/search/${searchVal}`);
+    nav(`/products?Type=${searchVal}`);
   };
 
   return (
