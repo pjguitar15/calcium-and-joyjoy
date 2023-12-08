@@ -14,7 +14,12 @@ function Layout() {
   }, [pathname]);
 
   return (
-    <>
+    <Box
+      bg={pathname.includes("about") ? `url('/assets/BigLogo.svg')` : ""}
+      bgPos='center'
+      bgRepeat='no-repeat'
+      bgColor={pathname.includes("about") ? "#413F3FFA" : ""}
+    >
       {isLg && <Navbar />}
       {!isLg && <DrawerNav />}
 
@@ -32,7 +37,7 @@ function Layout() {
       </Box>
       <Footer />
       {/* </Box> */}
-    </>
+    </Box>
   );
 }
 

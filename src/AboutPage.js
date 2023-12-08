@@ -1,11 +1,10 @@
 import { Box, Container, Heading, Image, Text } from "@chakra-ui/react";
 function AboutPage() {
   return (
-    <Box bgColor='#413F3FFA'>
+    <Box>
       <Container
         textAlign='center'
         maxW='768px'
-        bg={`url('/assets/BigLogo.svg')`}
         color='var(--accent)'
         py='80px'
       >
