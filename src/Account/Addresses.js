@@ -2,11 +2,23 @@ import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import AddressModal from "./AddressModal";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import { useState } from "react";
+import { useQuery } from "react-query";
+import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 function Addresses() {
   const [refresh, setRefresh] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
-  const address = user?.user_info.address;
 
+  const { data: address, isLoading } = useQuery({
+    queryKey: "user",
+    queryFn: async () => {
+      const res = await axiosInstance.get("/user/address", {
+        headers: { Authorization: `Bearer ${user?.token}` },
+      });
+      return res.data.data;
+    },
+  });
+  // const address = user?.user_info.address;
+  if (isLoading) return <LoadingSpinner />;
   const handleRemove = async () => {
     await axiosInstance.post(
       "/user/update",
@@ -34,18 +46,18 @@ function Addresses() {
     <>
       <Box>
         <Heading fontWeight='semibold'>Delivery Addresses</Heading>
-        {!address ? (
+        {address.length < 1 ? (
           <Text mt='8px'>You currently don't have any delivery addresses.</Text>
         ) : (
           <Box>
-            <Text mt='24px'>{address}</Text>
+            <Text mt='24px'>{address[0]}</Text>
             <Button onClick={handleRemove} variant='unstyled' color='red.500'>
               Remove
             </Button>
           </Box>
         )}
       </Box>
-      {!address && (
+      {address.length < 1 && (
         <Box mt='24px' display='flex' justifyContent='end'>
           <AddressModal onReload={() => setRefresh((prev) => !prev)} />
         </Box>
