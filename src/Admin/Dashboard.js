@@ -129,7 +129,7 @@ function Dashboard() {
       pos='fixed'
       left='0'
       w='350px'
-      bgColor='gray.600'
+      bgColor='#403F3F'
       color='white'
       h='100%'
       overflowY='auto'
