@@ -88,18 +88,18 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
       >
         <VStack align='normal'>
           <Radio value='Gcash'>Gcash</Radio>
-          {payment === "1" && (
+          {payment === "Gcash" && (
             <VStack alignItems='normal' fontWeight='semibold'>
-              <Text>Number: 0922-tutunog-tunog</Text>
-              <Text>Name: Calcium A. Joyjoy</Text>
+              <Text>Number: 09999999999</Text>
+              <Text>Name: MJ MUIT</Text>
             </VStack>
           )}
           <Divider />
           <Radio value='Bank transfer'>Bank Transfer</Radio>
-          {payment === "2" && (
+          {payment === "Bank transfer" && (
             <VStack alignItems='normal' fontWeight='semibold'>
-              <Text>Bank: BDO Unibank</Text>
-              <Text>Account Number: 123-4567-8901</Text>
+              <Text>Name: MJ MUIT</Text>
+              <Text>Account Number: 123-4567-8901 (BDO) </Text>
             </VStack>
           )}
           <Receipt onUpload={(file) => console.log(file)} />
