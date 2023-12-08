@@ -22,7 +22,7 @@ function Navbar() {
       page: "about",
     },
     {
-      text: "Customize",
+      text: "Mix & Match",
       page: "/customize",
     },
   ];
