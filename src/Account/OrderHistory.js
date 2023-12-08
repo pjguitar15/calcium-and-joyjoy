@@ -6,14 +6,14 @@ function OrderHistory() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const getOrders = async () => {
-    const res = await axiosInstance.get("/user/order", {
+    const res = await axiosInstance.get("/user/orders", {
       headers: { Authorization: `Bearer ${user?.token}` },
     });
     return res.data;
   };
   const { data: orders, isLoading } = useQuery("orders", getOrders);
   if (isLoading) return <LoadingSpinner />;
-  if (orders.length < 1) return <Box>No order history.</Box>;
+  if (!orders || orders.length < 1) return <Box>No order history.</Box>;
 
   return <Box>List of orders here</Box>;
 }
