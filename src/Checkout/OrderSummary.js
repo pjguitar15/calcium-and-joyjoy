@@ -12,11 +12,18 @@ import useSubtotal from "../Shared/Hooks/useSubtotal";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import { useSelector } from "react-redux";
 import config from "../Shared/utils/config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 function OrderSummary() {
   const subtotal = useSubtotal();
   const cart = useSelector((state) => state.cart);
   const [voucher, setVoucher] = useState("");
+  const [params, setParams] = useSearchParams();
+
+  useEffect(() => {
+    params.set("voucher", voucher);
+    setParams(params);
+  }, [voucher]);
 
   return (
     <Box>
