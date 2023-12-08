@@ -12,10 +12,12 @@ import useSubtotal from "../Shared/Hooks/useSubtotal";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import { useSelector } from "react-redux";
 import config from "../Shared/utils/config";
+import { useState } from "react";
 function OrderSummary() {
   const subtotal = useSubtotal();
-
   const cart = useSelector((state) => state.cart);
+  const [voucher, setVoucher] = useState("");
+
   return (
     <Box>
       <Heading fontWeight='normal' mb='24px'>
@@ -32,7 +34,13 @@ function OrderSummary() {
         </HStack>
         <HStack mt='16px' justifyContent='space-between'>
           <Text>Voucher</Text>
-          <Input textAlign='right' maxW='160px' placeholder='Enter code' />
+          <Input
+            value={voucher}
+            onChange={(e) => setVoucher(e.target.value)}
+            textAlign='center'
+            maxW='160px'
+            placeholder='Enter code'
+          />
         </HStack>
       </Box>
       <HStack
@@ -42,7 +50,19 @@ function OrderSummary() {
         pb='16px'
       >
         <Text>Total</Text>
-        <Text>{convertCurrency(subtotal + 300)}</Text>
+        <HStack>
+          {voucher === "voucher" && (
+            <Box as='span' color='red.500'>
+              {convertCurrency((subtotal + 300) * 0.8)}
+            </Box>
+          )}
+          <Text
+            textDecor={voucher === "voucher" ? "line-through" : ""}
+            opacity={voucher === "voucher" ? 0.7 : 1}
+          >
+            {convertCurrency(subtotal + 300)}
+          </Text>
+        </HStack>
       </HStack>
       <VStack gap='8px' mt='24px' maxH='45vh' overflowY='auto'>
         {cart.map((item, i) => (
