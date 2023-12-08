@@ -6,6 +6,7 @@ import {
   Grid,
   Image,
   VStack,
+  Input,
 } from "@chakra-ui/react";
 import useSubtotal from "../Shared/Hooks/useSubtotal";
 import convertCurrency from "../Shared/utils/convertCurrency";
@@ -28,6 +29,10 @@ function OrderSummary() {
         <HStack justifyContent='space-between'>
           <Text>Shipping</Text>
           <Text>{convertCurrency(300)}</Text>
+        </HStack>
+        <HStack mt='16px' justifyContent='space-between'>
+          <Text>Voucher</Text>
+          <Input textAlign='right' maxW='160px' placeholder='Enter code' />
         </HStack>
       </Box>
       <HStack
