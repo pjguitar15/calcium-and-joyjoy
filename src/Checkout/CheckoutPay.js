@@ -8,26 +8,71 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Receipt from "./Receipt";
+import { useSelector } from "react-redux";
+import { useMutation } from "react-query";
+import axiosInstance from "../Shared/utils/axiosInstance";
 
-function CheckoutPay({ onBack, onPay }) {
-  const [payment, setPayment] = useState("1");
+function CheckoutPay({ onBack, onPay, checkoutData }) {
+  const [payment, setPayment] = useState("Gcash");
+  const [courier, setCourier] = useState("1");
+
+  const cart = useSelector((state) => state.cart);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handlePay = async () => {
+    const cartsData = cart.map((item) => ({
+      product_id: item.id,
+      size: item.size,
+      session_id: "session123",
+      user_id: user?.user_info.id,
+      quantity: item.quantity,
+      price: item.price,
+      total: item.quantity * item.price,
+    }));
+    const postData = {
+      checkoutData: {
+        ...checkoutData,
+        user_id: user?.user_info.id,
+        payment_method: payment,
+        courier,
+        receipt_img: "proof_1231231.jpg",
+        grand_total: 200,
+        region: "kantot",
+      },
+      cartsData,
+    };
+
+    console.log(postData);
+    const res = await axiosInstance.post("/checkout", JSON.stringify(postData));
+    console.log(res);
+  };
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: handlePay,
+    onSuccess: () => {},
+    onError: () => {},
+  });
+
   return (
     <Box>
       <Text fontSize='24px' fontWeight='semibold' mb='24px' mt='48px'>
         Courier
       </Text>
       <RadioGroup
-        defaultValue='1'
         borderRadius='10px'
         p='16px 32px'
         border='solid 1px #d1d1d1'
+        defaultValue='J&T'
+        value={courier}
+        onChange={(e) => setCourier(e)}
       >
         <VStack align='normal'>
-          <Radio value='1'>J&T Express</Radio>
+          <Radio value='J&T'>J&T Express</Radio>
           <Divider />
-          <Radio value='2'>LBC</Radio>
+          <Radio value='LBC'>LBC</Radio>
         </VStack>
       </RadioGroup>
 
@@ -42,7 +87,7 @@ function CheckoutPay({ onBack, onPay }) {
         onChange={setPayment}
       >
         <VStack align='normal'>
-          <Radio value='1'>Gcash</Radio>
+          <Radio value='Gcash'>Gcash</Radio>
           {payment === "1" && (
             <VStack alignItems='normal' fontWeight='semibold'>
               <Text>Number: 0922-tutunog-tunog</Text>
@@ -50,7 +95,7 @@ function CheckoutPay({ onBack, onPay }) {
             </VStack>
           )}
           <Divider />
-          <Radio value='2'>Bank Transfer</Radio>
+          <Radio value='Bank transfer'>Bank Transfer</Radio>
           {payment === "2" && (
             <VStack alignItems='normal' fontWeight='semibold'>
               <Text>Bank: BDO Unibank</Text>
@@ -65,7 +110,12 @@ function CheckoutPay({ onBack, onPay }) {
         <Button borderRadius='20px' p='16px 40px' onClick={onBack}>
           Back
         </Button>
-        <Button borderRadius='20px' p='16px 40px' onClick={onPay}>
+        <Button
+          isLoading={isLoading}
+          borderRadius='20px'
+          p='16px 40px'
+          onClick={mutate}
+        >
           Continue
         </Button>
       </Grid>

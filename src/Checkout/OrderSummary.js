@@ -6,7 +6,6 @@ import {
   Grid,
   Image,
   VStack,
-  Divider,
 } from "@chakra-ui/react";
 import useSubtotal from "../Shared/Hooks/useSubtotal";
 import convertCurrency from "../Shared/utils/convertCurrency";
@@ -41,8 +40,13 @@ function OrderSummary() {
         <Text>{convertCurrency(subtotal + 300)}</Text>
       </HStack>
       <VStack gap='8px' mt='24px' maxH='45vh' overflowY='auto'>
-        {cart.map((item) => (
-          <Grid gap='16px' alignItems='start' gridTemplateColumns='1fr 1fr'>
+        {cart.map((item, i) => (
+          <Grid
+            key={i}
+            gap='16px'
+            alignItems='start'
+            gridTemplateColumns='1fr 1fr'
+          >
             <Box overflow='hidden' borderRadius='10px' maxH='160px'>
               <Image
                 src={`${config.apiUrl}/storage/${item.image}`}
