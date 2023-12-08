@@ -40,7 +40,7 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
         courier,
         receipt_img: "proof_1231231.jpg",
         grand_total: 200,
-        region: "kantot",
+        region: "Abra",
       },
       cartsData,
     };
