@@ -136,9 +136,8 @@ function Dashboard() {
     >
       <VStack fontSize='18px' py='24px'>
         <Image src='/assets/logoheader.png' />
-        <Text fontSize='32px'>Admin Dashboard</Text>
+        <Text fontSize='26px'>Admin Dashboard</Text>
         <Divider w='80%' />
-
         <HStack
           as={NavLink}
           to='/admin'

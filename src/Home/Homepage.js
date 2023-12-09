@@ -3,6 +3,7 @@ import ItemCarousel from "../Shared/UI/ItemCarousel";
 import Accessories from "./Accessories";
 import HeroCarousel from "./HeroCarousel";
 import { useGetShoes } from "../Shared/Hooks/useShoes";
+import { useEffect } from 'react';
 
 // const { name, image, price, gender, discount, id } = data;
 
@@ -22,6 +23,7 @@ function Homepage() {
   );
 
   const { data, isLoading } = useGetShoes();
+
   return (
     <VStack align='normal' justify='normal' gap='80px'>
       <HeroCarousel />

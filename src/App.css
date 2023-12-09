@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 :root {
   /* --maxW: 1920px; */
   --maxW: 1440px;

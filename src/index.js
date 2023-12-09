@@ -16,6 +16,8 @@ import { Provider } from "react-redux";
 import store from "./Store/cart";
 import ProductsPage from "./Product/ProductsPage";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
+import Login from './Auth/Login';
+import AdminLogin from './Admin/AdminLogin';
 
 // LAZY PAGES
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
@@ -27,8 +29,8 @@ const CustomizePage = lazy(() => import("./Customize/CustomizePage"));
 const AccountPage = lazy(() => import("./Account/AccountPage"));
 const SearchPage = lazy(() => import("./Search/Searchpage"));
 const AdminPage = lazy(() => import("./Admin/AdminPage"));
-const Overview = lazy(() => import("./Admin/Overview"));
-const Roles = lazy(() => import("./Admin/Users/Roles"));
+const Overview = lazy(() => import("./Admin/Overview/Overview"));
+const Roles = lazy(() => import("./Admin/Users/Roles/Roles"));
 const Customers = lazy(() => import("./Admin/Users/Customers"));
 const UsersAuth = lazy(() => import("./Admin/Users/UsersAuth"));
 const AboutPage = lazy(() => import("./AboutPage"));
@@ -144,6 +146,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <Roles />
+          </Suspense>
+        ),
+      },
+      {
+        path: "login",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminLogin />
           </Suspense>
         ),
       },

@@ -46,14 +46,15 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
     };
 
     console.log(postData);
-    const res = await axiosInstance.post("/checkout", JSON.stringify(postData));
+    // const res = await axiosInstance.post("/checkout", JSON.stringify(postData));
+    const res = await axiosInstance.post("/checkout", postData);
     console.log(res);
   };
 
   const { mutate, isLoading } = useMutation({
     mutationFn: handlePay,
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => { },
+    onError: () => { },
   });
 
   return (

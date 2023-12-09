@@ -11,6 +11,7 @@ export function useGetShoes() {
     const res = await axiosInstance.get("/shoes", {
       params: queryObj,
     });
+    console.log(res.data)
     return res.data;
   };
   const { data, isLoading } = useQuery({
