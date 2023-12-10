@@ -96,7 +96,6 @@ function AdminLogin() {
             />
           )}
         </FormControl>
-
         <Button
           bgColor="var(--primary)"
           color="white"
@@ -109,14 +108,6 @@ function AdminLogin() {
         >
           Sign In
         </Button>
-        <Box fontSize="14px">
-          Not a member?{" "}
-          <Link to="/auth/register">
-            <Button color="#A5B92D" variant="link" fontSize="14px">
-              Create Account
-            </Button>
-          </Link>
-        </Box>
       </VStack>
     </Box>
   )
