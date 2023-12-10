@@ -14,10 +14,12 @@ import ErrorPage from "./Shared/UI/ErrorPage";
 import theme from "./Shared/UI/chakraTheme";
 import { Provider } from "react-redux";
 import store from "./Store/cart";
-import ProductsPage from "./Product/ProductsPage";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 import Login from './Auth/Login';
 import AdminLogin from './Admin/AdminLogin';
+import ProductsPage from './Product/ProductsPage'
+import AdminProductsPage from './Admin/Products/AdminProductsPage';
+
 
 // LAZY PAGES
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
@@ -170,6 +172,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <UsersAuth />
+          </Suspense>
+        ),
+      },
+      {
+        path: "products",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminProductsPage />
           </Suspense>
         ),
       },
