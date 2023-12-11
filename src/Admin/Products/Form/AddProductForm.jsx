@@ -29,165 +29,201 @@ const AddProductForm = ({ handleBackToProducts }) => {
   }
   return (
     <div>
-      <div className="flex justify-between mb-10">
-        <h1 className="text-2xl font-bold">ADD PRODUCT</h1>
-        <IoClose
-          onClick={handleBackToProducts}
-          className="text-3xl cursor-pointer"
-        />
-      </div>
-      <div className="relative inline-block text-left">
-        <select
-          value={selectedProductType}
-          onChange={handleProductTypeChange}
-          className="block appearance-none w-full bg-blue-500 text-white py-2 px-4 pr-8 rounded-md shadow-sm leading-tight focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 font-semibold"
-        >
-          <option className="bg-white" value="" disabled>
-            Select Product Type
-          </option>
-          <option className="bg-white text-black" value="lifestyle">
-            Lifestyle
-          </option>
-          <option className="bg-white text-black" value="running">
-            Running
-          </option>
-          <option className="bg-white text-black" value="basketball">
-            Basketball
-          </option>
-          <option className="bg-white text-black" value="training">
-            Training
-          </option>
-        </select>
+      <div className="max-w-xl mx-auto bg-white p-6 rounded-md shadow-md">
+        <h2 className="text-2xl font-bold mb-4">Product Form</h2>
+        <form onSubmit={handleFormSubmit}>
+          <div className="mb-4">
+            <label
+              htmlFor="productName"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Product Name
+            </label>
+            <input
+              type="text"
+              id="productName"
+              name="productName"
+              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              required
+            />
+          </div>
 
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-          <FaCaretDown className="text-white" />
-        </div>
-      </div>
+          <div className="mb-4">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Description
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              required
+            ></textarea>
+          </div>
 
-      <div className="border border-gray-500 rounded mt-7">
-        <div className="px-4 py-2 border-b border-gray-500 bg-gray-200">
-          <h6 className="font-semibold text-lg">Basic Information</h6>
-        </div>
-        <div className="px-4 pt-2 pb-3 flex gap-6">
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Name</h6>
+          <div className="mb-4">
+            <label
+              htmlFor="price"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Price
+            </label>
             <input
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
-              placeholder="Enter name"
-              type="text"
+              type="number"
+              id="price"
+              name="price"
+              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              required
             />
           </div>
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Description</h6>
-            <input
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
-              placeholder="Enter description"
-              type="text"
-            />
-          </div>
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Price</h6>
-            <input
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
-              placeholder="Enter price"
-              type="text"
-            />
-          </div>
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Type</h6>
-            <input
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
-              placeholder="Enter type"
-              type="text"
-            />
-          </div>
-        </div>
-      </div>
 
-      <div className="border border-gray-500 rounded mt-7">
-        <div className="px-4 py-2 border-b border-gray-500 bg-gray-200">
-          <h6 className="font-semibold text-lg">Additional Information</h6>
-        </div>
-        <div className="px-4 pt-2 pb-3 flex gap-6">
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Status</h6>
-            <input
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
-              placeholder="Enter status"
-              type="text"
-            />
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Status
+            </label>
+            <div className="flex items-center space-x-4">
+              <label>
+                <input
+                  type="radio"
+                  name="status"
+                  value="inStock"
+                  className="mr-1"
+                  defaultChecked
+                />
+                In Stock
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="status"
+                  value="outOfStock"
+                  className="mr-1"
+                />
+                Out of Stock
+              </label>
+            </div>
           </div>
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Gender</h6>
-            <input
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
-              placeholder="Enter gender"
-              type="text"
-            />
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Gender
+            </label>
+            <div className="flex items-center space-x-4">
+              <label>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="men"
+                  className="mr-1"
+                />
+                Men
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="women"
+                  className="mr-1"
+                />
+                Women
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="unisex"
+                  className="mr-1"
+                  defaultChecked
+                />
+                Unisex
+              </label>
+            </div>
           </div>
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Brand name</h6>
-            <input
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
-              placeholder="Enter brand name"
-              type="text"
-            />
+
+          <div className="mb-4">
+            <label
+              htmlFor="productCategory"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Product Category
+            </label>
+            <select
+              id="productCategory"
+              name="productCategory"
+              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              required
+            >
+              <option value="One">One</option>
+              <option value="Two">Two</option>
+              <option value="Three">Three</option>
+            </select>
           </div>
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Main Image</h6>
+
+          <div className="mb-4">
+            <label
+              htmlFor="types"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Types
+            </label>
+            <select
+              id="types"
+              name="types"
+              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              required
+            >
+              <option value="One">One</option>
+              <option value="Two">Two</option>
+              <option value="Three">Three</option>
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="colors"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Colors
+            </label>
+            <select
+              id="colors"
+              name="colors"
+              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              required
+            >
+              <option value="One">One</option>
+              <option value="Two">Two</option>
+              <option value="Three">Three</option>
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="productImages"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Product Images
+            </label>
             <input
               type="file"
-              accept="image/*"
-              onChange={handleMainImageChange}
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
+              id="productImages"
+              name="productImages"
+              accept="image/jpeg, image/png"
+              multiple
+              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             />
           </div>
-        </div>
-      </div>
 
-      <div className="border border-gray-500 rounded mt-7">
-        <div className="px-4 py-2 border-b border-gray-500 bg-gray-200">
-          <h6 className="font-semibold text-lg">Product Variants</h6>
-        </div>
-        <div className="px-4 pt-2 pb-3 flex gap-6">
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Color</h6>
-            <input
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
-              placeholder="Enter color"
-              type="text"
-            />
-          </div>
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Size</h6>
-            <input
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
-              placeholder="Enter size"
-              type="text"
-            />
-          </div>
-          <div className="flex-1">
-            <h6 className="font-semibold text-md">Stock</h6>
-            <input
-              className="border border-gray-500 rounded px-3 py-1 mt-1 w-full"
-              placeholder="Enter stock"
-              type="text"
-            />
-          </div>
-          <div className="flex-1 flex items-end justify-center">
-            <button className="bg-red-600 px-4 py-2 rounded-md text-white">
-              Remove
-            </button>
-          </div>
-        </div>
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+          >
+            Submit
+          </button>
+        </form>
       </div>
-
-      <button
-        onClick={handleFormSubmit}
-        className="bg-black py-2 px-4 text-white rounded-md mt-4"
-      >
-        Submit
-      </button>
     </div>
   )
 }
