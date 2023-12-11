@@ -19,6 +19,9 @@ export const ActionButtons = () => {
 const Table = () => {
   const [allOrders, setAllOrders] = useState([])
   const bearerToken = localStorage.getItem("adminLoginToken")
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const [ordersPerPage] = useState(5) // Adjust this value based on your pagination preference
   useEffect(() => {
     axios
       .get("http://18.223.157.202/backend/api/user/orders", {
@@ -31,6 +34,14 @@ const Table = () => {
         setAllOrders(res.data.data)
       })
   }, [])
+
+  const indexOfLastOrder = currentPage * ordersPerPage
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
+  const currentOrders = allOrders.slice(indexOfFirstOrder, indexOfLastOrder)
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber)
+  }
 
   return (
     <div className="container mx-auto mt-2">
@@ -59,7 +70,7 @@ const Table = () => {
         </thead>
         <tbody>
           {/* reference_number, user_id, grand_total, created_at, status */}
-          {allOrders.map((item, index) => (
+          {currentOrders.map((item, index) => (
             <tr>
               <td className="py-3 px-4 last:border-b-0 border-b border-gray-400">
                 {item.reference_number}
@@ -81,6 +92,25 @@ const Table = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-4">
+        {Array.from({
+          length: Math.ceil(allOrders.length / ordersPerPage),
+        }).map((_, index) => (
+          <button
+            key={index}
+            onClick={() => paginate(index + 1)}
+            className={`mx-2 px-4 py-2 rounded focus:outline-none ${
+              currentPage === index + 1
+                ? "bg-blue-500 text-white"
+                : "bg-gray-300 text-gray-700"
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
