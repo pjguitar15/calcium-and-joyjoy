@@ -1,11 +1,35 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { IoClose } from "react-icons/io5"
 import { FaCaretDown } from "react-icons/fa"
 import config from "../../../Shared/utils/config"
+import axios from "axios"
 
 const AddProductForm = ({ handleBackToProducts }) => {
   const [selectedProductType, setSelectedProductType] = useState("")
   const [mainImage, setMainImage] = useState(null)
+  const [productCategories, setProductCategories] = useState([])
+  const [productTypes, setProductTypes] = useState([])
+  const [productColors, setProductColors] = useState([])
+
+  useEffect(() => {
+    axios
+      .get("http://18.223.157.202/backend/api/admin/product/categories")
+      .then((res) => {
+        setProductCategories(res.data)
+      })
+
+    axios
+      .get("http://18.223.157.202/backend/api/admin/product/types")
+      .then((res) => {
+        setProductTypes(res.data)
+      })
+
+    axios
+      .get("http://18.223.157.202/backend/api/admin/product/colors")
+      .then((res) => {
+        setProductColors(res.data)
+      })
+  }, [])
 
   const handleMainImageChange = (event) => {
     const file = event.target.files[0]
@@ -30,7 +54,15 @@ const AddProductForm = ({ handleBackToProducts }) => {
   return (
     <div>
       <div className="max-w-xl mx-auto bg-white p-6 rounded-md shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Product Form</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">Product Form</h2>
+          <button
+            onClick={handleBackToProducts}
+            className="text-gray-600 hover:text-gray-800 focus:outline-none"
+          >
+            <IoClose className="text-2xl" />
+          </button>
+        </div>
         <form onSubmit={handleFormSubmit}>
           <div className="mb-4">
             <label
@@ -40,6 +72,7 @@ const AddProductForm = ({ handleBackToProducts }) => {
               Product Name
             </label>
             <input
+              placeholder="Enter product name"
               type="text"
               id="productName"
               name="productName"
@@ -56,6 +89,7 @@ const AddProductForm = ({ handleBackToProducts }) => {
               Description
             </label>
             <textarea
+              placeholder="Enter product description"
               id="description"
               name="description"
               className="mt-1 p-2 border border-gray-300 rounded-md w-full"
@@ -71,6 +105,7 @@ const AddProductForm = ({ handleBackToProducts }) => {
               Price
             </label>
             <input
+              placeholder="Enter product price"
               type="number"
               id="price"
               name="price"
@@ -155,9 +190,11 @@ const AddProductForm = ({ handleBackToProducts }) => {
               className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               required
             >
-              <option value="One">One</option>
-              <option value="Two">Two</option>
-              <option value="Three">Three</option>
+              {productCategories.map((item, index) => (
+                <option key={index} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -174,9 +211,11 @@ const AddProductForm = ({ handleBackToProducts }) => {
               className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               required
             >
-              <option value="One">One</option>
-              <option value="Two">Two</option>
-              <option value="Three">Three</option>
+              {productTypes.map((item, index) => (
+                <option key={index} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -193,9 +232,11 @@ const AddProductForm = ({ handleBackToProducts }) => {
               className="mt-1 p-2 border border-gray-300 rounded-md w-full"
               required
             >
-              <option value="One">One</option>
-              <option value="Two">Two</option>
-              <option value="Three">Three</option>
+              {productColors.map((item, index) => (
+                <option key={index} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
             </select>
           </div>
 
