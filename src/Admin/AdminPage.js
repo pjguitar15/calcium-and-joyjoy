@@ -1,17 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import Dashboard from "./Dashboard";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 function AdminPage() {
-  const [isLoginPage, setIsLoginPage] = useState(true)
-  const location = useLocation()
+  const navigate = useNavigate()
   useEffect(() => {
-    setIsLoginPage(location.pathname === "/admin/login");
-  }, [location])
+    if (!localStorage.getItem('adminLoginToken')) navigate("/admin/login")
+  }, [])
+
   return (
     <Box>
-      {!isLoginPage && <Dashboard />}
-      <Box ml={!isLoginPage && `350px`} p='32px 32px'>
+      <Dashboard />
+      <Box ml={`350px`} p='32px 32px'>
         <Outlet />
       </Box>
     </Box>

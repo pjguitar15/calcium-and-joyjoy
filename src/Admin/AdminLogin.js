@@ -25,10 +25,22 @@ function AdminLogin() {
 
   const toast = useToast()
 
+  useEffect(() => {
+    if (localStorage.getItem('adminLoginToken')) navigate("/admin")
+  }, [])
+
   const onLogin = async (e) => {
+    // axios.post(`http://18.223.157.202/backend/api/login?email=${email}&password=${password}`).then((res) => {
     e.preventDefault()
-    axios.post(`http://18.223.157.202/backend/api/admin/login?email=${email}&password=${password}`).then((res) => {
-      console.log(res.data)
+    axios.post(`http://18.223.157.202/backend/api/login`, {
+      email, password
+    }).then((res) => {
+      if (res.data) {
+        const token = res.data.data.token
+        localStorage.setItem('adminLoginToken', token);
+        navigate("/admin")
+      }
+
       if (res.data.message) {
         toast({ status: "error", title: res.data.message, position: "top" });
       }

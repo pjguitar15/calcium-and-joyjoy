@@ -128,6 +128,14 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "/admin/login",
+    element: (
+      <Suspense fallback={<div />}>
+        <AdminLogin />
+      </Suspense>
+    ),
+  },
+  {
     path: "/admin",
     element: (
       <Suspense fallback={<div />}>

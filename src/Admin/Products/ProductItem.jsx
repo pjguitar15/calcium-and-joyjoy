@@ -1,7 +1,4 @@
 const ProductItem = (props) => {
-  // useEffect(() => {
-  //   console.log(props.price)
-  // }, [props])
   return (
     <div className="border shadow-lg rounded-lg">
       <div className="w-100">

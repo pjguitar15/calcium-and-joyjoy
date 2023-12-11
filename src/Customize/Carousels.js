@@ -52,7 +52,7 @@ function Carousels({ onSelectItems }) {
     <VStack align="normal" gap="32px">
       <CarouselRow
         name="Shoes"
-        data={filteredShoes}
+        data={filteredShoes.length > 0 ? filteredShoes : mix.shoes}
         onItemSelect={(shoe) => setShoe(shoe)}
       />
       <CarouselRow
