@@ -19,6 +19,7 @@ import Login from './Auth/Login';
 import AdminLogin from './Admin/AdminLogin';
 import ProductsPage from './Product/ProductsPage'
 import AdminProductsPage from './Admin/Products/AdminProductsPage';
+import OrdersPage from './Admin/Orders/OrdersPage';
 
 
 // LAZY PAGES
@@ -164,6 +165,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <AdminLogin />
+          </Suspense>
+        ),
+      },
+      {
+        path: "orders",
+        element: (
+          <Suspense fallback={<div />}>
+            <OrdersPage />
           </Suspense>
         ),
       },
