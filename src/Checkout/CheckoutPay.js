@@ -7,31 +7,49 @@ import {
   RadioGroup,
   Text,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import Receipt from "./Receipt";
 import { useSelector } from "react-redux";
 import { useMutation } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function CheckoutPay({ onBack, onPay, checkoutData }) {
   const [payment, setPayment] = useState("Gcash");
-  const [courier, setCourier] = useState("1");
+  const [courier, setCourier] = useState("J&T");
+  const [loading, setLoading] = useState(false)
 
   const cart = useSelector((state) => state.cart);
 
   const user = JSON.parse(localStorage.getItem("user"));
+  const toast = useToast();
+  const navigate = useNavigate()
 
-  const handlePay = async () => {
+  const handlePay = () => {
+
+    const deliveryFee = 300;
+    console.log(checkoutData)
+
     const cartsData = cart.map((item) => ({
       product_id: item.id,
-      size: item.size,
+      size: item.size.toString(),
       session_id: "session123",
       user_id: user?.user_info.id,
       quantity: item.quantity,
       price: item.price,
       total: item.quantity * item.price,
     }));
+
+    // Calculate the total price of items in the cart
+    const totalCartPrice = cartsData.reduce((total, item) => total + item.total, 0);
+
+    if (!totalCartPrice) {
+      return
+    }
+
     const postData = {
       checkoutData: {
         ...checkoutData,
@@ -39,23 +57,32 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
         payment_method: payment,
         courier,
         receipt_img: "proof_1231231.jpg",
-        grand_total: 200,
-        region: "Abra",
+        grand_total: totalCartPrice + deliveryFee,
       },
       cartsData,
     };
 
-    console.log(postData);
-    // const res = await axiosInstance.post("/checkout", JSON.stringify(postData));
-    const res = await axiosInstance.post("/checkout", postData);
-    console.log(res);
-  };
+    if (postData) {
+      console.log(postData)
+      setLoading(true)
+      // const res = await axiosInstance.post("/checkout", JSON.stringify(postData));
+      axios.post("http://18.223.157.202/backend/api/checkout", postData).then((res) => {
+        console.log(res)
+        setLoading(false)
+        toast({
+          title: "Your order has been processed successfully!",
+          description: "Going back to home page",
+          status: "success",
+          position: "top",
+        });
 
-  const { mutate, isLoading } = useMutation({
-    mutationFn: handlePay,
-    onSuccess: () => { },
-    onError: () => { },
-  });
+        navigate("/")
+      }).catch((err) => {
+        console.log(err)
+        setLoading(false)
+      })
+    }
+  };
 
   return (
     <Box>
@@ -112,12 +139,12 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
           Back
         </Button>
         <Button
-          isLoading={isLoading}
+          disabled={loading}
           borderRadius='20px'
           p='16px 40px'
-          onClick={mutate}
+          onClick={handlePay}
         >
-          Continue
+          {loading ? "Processing..." : "Continue"}
         </Button>
       </Grid>
     </Box>

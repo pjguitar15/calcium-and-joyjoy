@@ -12,7 +12,7 @@ function CheckoutConfirm({ onConfirm }) {
   });
   const [region, setRegion] = useState("Philippines");
   const user = JSON.parse(localStorage.getItem("user"));
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState } = useForm();
 
   useEffect(() => {
     if (user) setUserInfo(user.user_info);
@@ -22,54 +22,50 @@ function CheckoutConfirm({ onConfirm }) {
     onConfirm({ ...data, region });
   };
 
-  // const
   return (
-    <VStack gap='16px' align='normal'>
+    <VStack gap="16px" align="normal">
       <Select
-        defaultOptionLabel='Select region'
+        defaultOptionLabel="Select region"
         as={RegionDropdown}
         value={region}
         onChange={(e) => setRegion(e)}
-        country='Philippines'
+        country="Philippines"
+        required
       />
       <HStack>
         <Input
-          placeholder='First Name'
-          defaultValue={userInfo.firstname}
-          {...register("first_name")}
+          placeholder="First Name"
+          {...register("first_name", { required: true })}
         />
         <Input
-          placeholder='Last Name'
-          defaultValue={userInfo.lastname}
-          {...register("last_name")}
+          placeholder="Last Name"
+          {...register("last_name", { required: true })}
         />
       </HStack>
-      <Input placeholder='Barangay' {...register("barangay")} />
+      <Input placeholder="Barangay" {...register("barangay", { required: true })} />
       <Input
-        placeholder='Street/Building Name'
-        {...register("street_bldg_name")}
+        placeholder="Street/Building Name"
+        {...register("street_bldg_name", { required: true })}
       />
       <HStack>
-        <Input placeholder='Postal Code' {...register("postal_code")} />
-        <Input placeholder='City' {...register("city")} />
+        <Input placeholder="Postal Code" {...register("postal_code", { required: true })} />
+        <Input placeholder="City" {...register("city", { required: true })} />
       </HStack>
       <Text>Contact information:</Text>
+      <Input placeholder="Email" {...register("email", { required: true })} />
       <Input
-        placeholder='Email'
-        defaultValue={userInfo.email}
-        {...register("email")}
-      />
-      <Input
-        placeholder='Phone Number'
-        defaultValue={userInfo.phone_number}
-        {...register("phone_number")}
+        placeholder="Phone Number"
+        {...register("phone_number", { required: true })}
       />
       <Button
         onClick={handleSubmit(handleConfirm)}
-        borderRadius='80px'
-        w='fit-content'
-        mx='auto'
-        px='120px'
+        borderRadius="80px"
+        w="fit-content"
+        mx="auto"
+        px="120px"
+        disabled={Object.keys(formState.errors).length !== 0}
+        className={`${Object.keys(formState.errors).length !== 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
+          } text-white py-2 px-4 rounded`}
       >
         Continue
       </Button>
