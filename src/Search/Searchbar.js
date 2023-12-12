@@ -7,8 +7,9 @@ function Searchbar() {
   const [searchVal, setSearchVal] = useState("");
   const handleSearch = (e) => {
     e.preventDefault();
-    nav(`/products?Type=${searchVal}`);
+    nav(`/products?keyword=${searchVal}`);
   };
+  
 
   return (
     <Box as='form' onSubmit={handleSearch}>
