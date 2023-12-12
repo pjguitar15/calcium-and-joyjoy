@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { fakeTableData } from "../Users/Roles/fakeTableData"
 import axios from "axios"
 import { FaPenClip } from "react-icons/fa6"
 import { FaTrashAlt } from "react-icons/fa"
@@ -18,21 +17,13 @@ export const ActionButtons = () => {
 
 const Table = () => {
   const [allOrders, setAllOrders] = useState([])
-  const bearerToken = localStorage.getItem("adminLoginToken")
 
   const [currentPage, setCurrentPage] = useState(1)
   const [ordersPerPage] = useState(5) // Adjust this value based on your pagination preference
   useEffect(() => {
-    axios
-      .get("http://18.223.157.202/backend/api/user/orders", {
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Content-Type": "application/json", // Include this header if needed
-        },
-      })
-      .then((res) => {
-        setAllOrders(res.data.data)
-      })
+    axios.get("http://18.223.157.202/backend/api/admin/orders").then((res) => {
+      setAllOrders(res.data)
+    })
   }, [])
 
   const indexOfLastOrder = currentPage * ordersPerPage

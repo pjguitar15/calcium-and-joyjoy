@@ -5,46 +5,71 @@ import config from "../../../Shared/utils/config"
 import axios from "axios"
 
 const AddProductForm = ({ handleBackToProducts }) => {
-  const [selectedProductType, setSelectedProductType] = useState("")
+  const [selectedProductCategories, setSelectedProductCategories] = useState([])
+  const [selectedProductTypes, setSelectedProductTypes] = useState([])
+  const [selectedProductColors, setSelectedProductColors] = useState([])
+  const [selectedProductSizes, setSelectedProductSizes] = useState([])
   const [mainImage, setMainImage] = useState(null)
   const [productCategories, setProductCategories] = useState([])
   const [productTypes, setProductTypes] = useState([])
   const [productColors, setProductColors] = useState([])
-  const [imagePreviews, setImagePreviews] = useState([]);
-
+  const [productSizes, setProductSizes] = useState([])
+  const [imagePreviews, setImagePreviews] = useState([])
 
   useEffect(() => {
     axios
       .get("http://18.223.157.202/backend/api/admin/product/categories")
       .then((res) => {
         setProductCategories(res.data)
+        setSelectedProductCategories([res.data[0].name])
       })
 
     axios
       .get("http://18.223.157.202/backend/api/admin/product/types")
       .then((res) => {
         setProductTypes(res.data)
+        setSelectedProductTypes([res.data[0].name])
       })
 
     axios
       .get("http://18.223.157.202/backend/api/admin/product/colors")
       .then((res) => {
         setProductColors(res.data)
+        setSelectedProductColors([res.data[0].name])
+      })
+
+    axios
+      .get("http://18.223.157.202/backend/api/admin/product/sizes")
+      .then((res) => {
+        setProductSizes(res.data)
+        setSelectedProductSizes([res.data[0].name])
       })
   }, [])
 
+  const handleCheckboxChange = (event, setStateFunction) => {
+    const { value } = event.target
+
+    setStateFunction((prevSelection) => {
+      if (prevSelection.includes(value)) {
+        return prevSelection.filter((item) => item !== value)
+      } else {
+        return [...prevSelection, value]
+      }
+    })
+  }
+
   const handleImageChange = (event) => {
-    const files = Array.from(event.target.files);
-    const newImagePreviews = files.map(file => ({
+    const files = Array.from(event.target.files)
+    const newImagePreviews = files.map((file) => ({
       file,
-      preview: URL.createObjectURL(file)
-    }));
-    setImagePreviews([...imagePreviews, ...newImagePreviews]);
-  };
+      preview: URL.createObjectURL(file),
+    }))
+    setImagePreviews([...imagePreviews, ...newImagePreviews])
+  }
 
   const removeImagePreview = (index) => {
-    setImagePreviews(imagePreviews.filter((_, idx) => idx !== index));
-  };
+    setImagePreviews(imagePreviews.filter((_, idx) => idx !== index))
+  }
 
   const handleMainImageChange = (event) => {
     const file = event.target.files[0]
@@ -54,17 +79,18 @@ const AddProductForm = ({ handleBackToProducts }) => {
 
   // Handler for updating the selected product type
   const handleProductTypeChange = (event) => {
-    setSelectedProductType(event.target.value)
+    setSelectedProductTypes(event.target.value)
   }
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
     const baseUrl = config.apiUrl
     // http://18.223.157.202/backend/api/admin/products/store
     /* 
       Payload
 
     */
-    console.log(baseUrl)
+    console.log(selectedProductCategories)
   }
   return (
     <div className="add-product-form">
@@ -192,72 +218,127 @@ const AddProductForm = ({ handleBackToProducts }) => {
             </div>
           </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="productCategory"
-              className="block text-sm font-medium text-gray-600"
-            >
-              Product Category
-            </label>
-            <select
-              id="productCategory"
-              name="productCategory"
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            >
-              {productCategories.map((item, index) => (
-                <option key={index} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
+          <div className="grid grid-cols-4">
+            <div className="mb-4">
+              <label
+                htmlFor="productCategory"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Product Category
+              </label>
+              <div className="mt-1">
+                {productCategories.map((item, index) => (
+                  <div key={index} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id={`productCategory_${index}`}
+                      name="productCategory"
+                      value={item.name}
+                      checked={selectedProductCategories.includes(item.name)}
+                      onChange={(event) =>
+                        handleCheckboxChange(
+                          event,
+                          setSelectedProductCategories
+                        )
+                      }
+                      className="mr-2"
+                    />
+                    <label htmlFor={`productCategory_${index}`}>
+                      {item.name}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="types"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Types
+              </label>
+              <div className="mt-1">
+                {productTypes.map((item, index) => (
+                  <div key={index} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id={`types_${index}`}
+                      name="types"
+                      value={item.name}
+                      checked={selectedProductTypes.includes(item.name)}
+                      onChange={(event) =>
+                        handleCheckboxChange(event, setSelectedProductTypes)
+                      }
+                      className="mr-2"
+                    />
+                    <label htmlFor={`types_${index}`}>{item.name}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="colors"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Colors
+              </label>
+              <div className="mt-1">
+                {productColors.map((item, index) => (
+                  <div key={index} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id={`colors_${index}`}
+                      name="colors"
+                      value={item.name}
+                      checked={selectedProductColors.includes(item.name)}
+                      onChange={(event) =>
+                        handleCheckboxChange(event, setSelectedProductColors)
+                      }
+                      className="mr-2"
+                    />
+                    <label htmlFor={`colors_${index}`}>{item.name}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="sizes"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Sizes
+              </label>
+              <div className="mt-1">
+                {productSizes.map((item, index) => (
+                  <div key={index} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id={`sizes_${index}`}
+                      name="sizes"
+                      value={item.name}
+                      checked={selectedProductSizes.includes(item.name)}
+                      onChange={(event) =>
+                        handleCheckboxChange(event, setSelectedProductSizes)
+                      }
+                      className="mr-2"
+                    />
+                    <label htmlFor={`sizes_${index}`}>{item.name}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
+          {/* Image Upload Section */}
           <div className="mb-4">
             <label
-              htmlFor="types"
+              htmlFor="productImages"
               className="block text-sm font-medium text-gray-600"
             >
-              Types
-            </label>
-            <select
-              id="types"
-              name="types"
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            >
-              {productTypes.map((item, index) => (
-                <option key={index} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-4">
-            <label
-              htmlFor="colors"
-              className="block text-sm font-medium text-gray-600"
-            >
-              Colors
-            </label>
-            <select
-              id="colors"
-              name="colors"
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            >
-              {productColors.map((item, index) => (
-                <option key={index} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-        {/* Image Upload Section */}
-        <div className="mb-4">
-            <label htmlFor="productImages" className="block text-sm font-medium text-gray-600">
               Product Images
             </label>
             <input
@@ -272,22 +353,32 @@ const AddProductForm = ({ handleBackToProducts }) => {
             <div className="flex flex-wrap mt-4">
               {imagePreviews.map((image, index) => (
                 <div key={index} className="relative m-2">
-                  <img src={image.preview} alt="Preview" className="w-24 h-24 object-cover rounded-md" />
-                  <button onClick={() => removeImagePreview(index)} className="absolute top-0 right-0 bg-white rounded-full p-1">
-                    <IoClose className="text-lg text-gray-800"/>
+                  <img
+                    src={image.preview}
+                    alt="Preview"
+                    className="w-24 h-24 object-cover rounded-md"
+                  />
+                  <button
+                    onClick={() => removeImagePreview(index)}
+                    className="absolute top-0 right-0 bg-white rounded-full p-1"
+                  >
+                    <IoClose className="text-lg text-gray-800" />
                   </button>
                 </div>
               ))}
             </div>
           </div>
 
-          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+          >
             Submit
           </button>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddProductForm;
+export default AddProductForm
