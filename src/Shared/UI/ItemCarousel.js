@@ -93,7 +93,7 @@ function ItemCarousel({ propSettings, onItemSelect, data }) {
 
   return (
     <Box as={Slider} {...settings} {...propSettings}>
-      {data.map((item, i) => {
+      {data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map((item, i) => {
         return (
           <Box py='16px' key={i}>
             <ItemCard
