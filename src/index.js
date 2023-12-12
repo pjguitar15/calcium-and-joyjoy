@@ -42,7 +42,13 @@ const WishListPage = lazy(() => import("./WishList/WishListPage"));
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <>
+      <TawkMessengerReact
+        propertyId='656e7c74ff45ca7d4786dfc0'
+        widgetId='1hgrpca5t'
+      />
+      <Layout />
+    </>,
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Homepage /> },
@@ -212,10 +218,6 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <RouterProvider router={router} />
-        <TawkMessengerReact
-          propertyId='656e7c74ff45ca7d4786dfc0'
-          widgetId='1hgrpca5t'
-        />
       </Provider>
     </QueryClientProvider>
   </ChakraProvider>
