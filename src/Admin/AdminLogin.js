@@ -30,7 +30,6 @@ function AdminLogin() {
   }, [])
 
   const onLogin = async (e) => {
-    // axios.post(`http://18.223.157.202/backend/api/login?email=${email}&password=${password}`).then((res) => {
     e.preventDefault()
     axios.post(`http://18.223.157.202/backend/api/admin/login?email=${email}&password=${password}`).then((res) => {
       if (!res.data.data) {
