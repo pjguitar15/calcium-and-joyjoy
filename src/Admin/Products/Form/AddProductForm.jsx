@@ -10,6 +10,8 @@ const AddProductForm = ({ handleBackToProducts }) => {
   const [productCategories, setProductCategories] = useState([])
   const [productTypes, setProductTypes] = useState([])
   const [productColors, setProductColors] = useState([])
+  const [imagePreviews, setImagePreviews] = useState([]);
+
 
   useEffect(() => {
     axios
@@ -30,6 +32,19 @@ const AddProductForm = ({ handleBackToProducts }) => {
         setProductColors(res.data)
       })
   }, [])
+
+  const handleImageChange = (event) => {
+    const files = Array.from(event.target.files);
+    const newImagePreviews = files.map(file => ({
+      file,
+      preview: URL.createObjectURL(file)
+    }));
+    setImagePreviews([...imagePreviews, ...newImagePreviews]);
+  };
+
+  const removeImagePreview = (index) => {
+    setImagePreviews(imagePreviews.filter((_, idx) => idx !== index));
+  };
 
   const handleMainImageChange = (event) => {
     const file = event.target.files[0]
@@ -52,18 +67,18 @@ const AddProductForm = ({ handleBackToProducts }) => {
     console.log(baseUrl)
   }
   return (
-    <div>
-      <div className="max-w-xl mx-auto bg-white p-6 rounded-md shadow-md">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Product Form</h2>
+    <div className="add-product-form">
+      <div className="form-container">
+        <div className="form-header flex justify-between items-center mb-4">
+          <h2 className="form-title text-2xl font-bold">Product Form</h2>
           <button
             onClick={handleBackToProducts}
-            className="text-gray-600 hover:text-gray-800 focus:outline-none"
+            className="close-button text-gray-600 hover:text-gray-800 focus:outline-none"
           >
             <IoClose className="text-2xl" />
           </button>
         </div>
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleFormSubmit} className="form">
           <div className="mb-4">
             <label
               htmlFor="productName"
@@ -240,11 +255,9 @@ const AddProductForm = ({ handleBackToProducts }) => {
             </select>
           </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="productImages"
-              className="block text-sm font-medium text-gray-600"
-            >
+        {/* Image Upload Section */}
+        <div className="mb-4">
+            <label htmlFor="productImages" className="block text-sm font-medium text-gray-600">
               Product Images
             </label>
             <input
@@ -253,20 +266,28 @@ const AddProductForm = ({ handleBackToProducts }) => {
               name="productImages"
               accept="image/jpeg, image/png"
               multiple
+              onChange={handleImageChange}
               className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             />
+            <div className="flex flex-wrap mt-4">
+              {imagePreviews.map((image, index) => (
+                <div key={index} className="relative m-2">
+                  <img src={image.preview} alt="Preview" className="w-24 h-24 object-cover rounded-md" />
+                  <button onClick={() => removeImagePreview(index)} className="absolute top-0 right-0 bg-white rounded-full p-1">
+                    <IoClose className="text-lg text-gray-800"/>
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-          >
+          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
             Submit
           </button>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddProductForm
+export default AddProductForm;
