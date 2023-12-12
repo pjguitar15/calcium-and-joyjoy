@@ -256,32 +256,32 @@ const AddProductForm = ({ handleBackToProducts }) => {
           </div>
 
           <div className="mb-4">
-        <label
-          htmlFor="productImages"
-          className="block text-sm font-medium text-gray-600"
-        >
-          Product Images
-        </label>
-        <input
-          type="file"
-          id="productImages"
-          name="productImages"
-          accept="image/jpeg, image/png"
-          multiple
-          onChange={handleImageChange}
-          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-        />
-        <div className="image-preview-container" style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {imagePreviews.map((image, index) => (
-            <div key={index} className="image-preview" style={{ margin: '10px', position: 'relative' }}>
-              <img src={image.preview} alt="Preview" style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '5px' }} />
-              <button onClick={() => removeImagePreview(index)} className="close-button" style={{ position: 'absolute', top: '0', right: '0', background: 'white', borderRadius: '50%', padding: '5px' }}>
-                <IoClose />
-              </button>
-            </div>
-          ))}
+          <label
+            htmlFor="productImages"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Product Images
+          </label>
+          <input
+            type="file"
+            id="productImages"
+            name="productImages"
+            accept="image/jpeg, image/png"
+            multiple
+            onChange={handleImageChange}
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+          />
+          <div className="flex flex-wrap mt-4">
+            {imagePreviews.map((image, index) => (
+              <div key={index} className="relative m-2">
+                <img src={image.preview} alt="Preview" className="w-24 h-24 object-cover rounded-md" />
+                <button onClick={() => removeImagePreview(index)} className="absolute top-0 right-0 bg-white rounded-full p-1">
+                  <IoClose className="text-lg text-gray-800"/>
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
           <button
             type="submit"
