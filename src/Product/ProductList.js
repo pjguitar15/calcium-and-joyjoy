@@ -30,7 +30,7 @@ function ProductList() {
         gridTemplateColumns='repeat(auto-fit,minmax(320px,1fr))'
         py='16px'
       >
-        {filteredData.map((item) => (
+        {filteredData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map((item) => (
           <ItemCard data={item} key={item.id} cardW='300px' />
         ))}
       </Grid>
