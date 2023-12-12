@@ -12,9 +12,11 @@ const Products = () => {
 
   return (
     <main className="grid lg:grid-cols-3 xl:grid-cols-4  p-4 gap-4">
-      {shoesData.map((item, index) => (
-        <ProductItem key={index} item={item} />
-      ))}
+      {shoesData
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .map((item, index) => (
+          <ProductItem key={index} item={item} />
+        ))}
     </main>
   )
 }
