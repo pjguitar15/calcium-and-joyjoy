@@ -21,7 +21,6 @@ import {
   BsCreditCard,
   BsGear,
   BsGlobe,
-  BsInfoCircle,
   BsPersonBadgeFill,
   BsCartFill,
   BsTruck,
