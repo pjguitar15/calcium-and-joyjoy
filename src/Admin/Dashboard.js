@@ -1,5 +1,3 @@
-import "./Dashboard.css"
-
 import {
   Accordion,
   AccordionButton,
@@ -13,7 +11,7 @@ import {
   Image,
   Text,
   VStack,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
 
 import {
   BsSpeedometer2,
@@ -21,12 +19,24 @@ import {
   BsBoxSeam,
   BsListUl,
   BsCreditCard,
-} from "react-icons/bs"
-import { BiLineChart } from "react-icons/bi"
-import { CgLogOut } from "react-icons/cg"
+  BsGear,
+  BsGlobe,
+  BsInfoCircle,
+  BsPersonBadgeFill,
+  BsCartFill,
+  BsTruck,
+  BsTagFill,
+  BsWalletFill,
+  BsFileEarmarkTextFill,
+  BsGraphUp,
+  BsPeopleFill,
+  BsHouseDoorFill,
+} from "react-icons/bs";
 
-import { NavLink, useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { CgLogOut } from "react-icons/cg";
+
+import { NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const menu = [
   {
@@ -36,11 +46,12 @@ const menu = [
       {
         text: "Roles & Permissions",
         link: "/roles",
-
+        icon: BsPersonBadgeFill,
       },
       {
         text: "Customers",
         link: "/customers",
+        icon: BsPeopleFill,
       },
     ],
   },
@@ -51,14 +62,17 @@ const menu = [
       {
         text: "Products",
         link: "/products",
+        icon: BsCartFill,
       },
       {
         text: "Courier Details",
         link: "/couriers",
+        icon: BsTruck,
       },
       {
         text: "Discounts & Offers",
         link: "/discounts",
+        icon: BsTagFill,
       },
     ],
   },
@@ -69,14 +83,13 @@ const menu = [
       {
         text: "Orders & Tracking",
         link: "/orders",
+        icon: BsWalletFill,
       },
-      {
-        text: "Refunds & Returns",
-        link: "/refunds",
-      },
+
       {
         text: "Shipping Management",
         link: "/shipping",
+        icon: BsTruck,
       },
     ],
   },
@@ -87,32 +100,53 @@ const menu = [
       {
         text: "Payment Methods",
         link: "/payment",
+        icon: BsWalletFill,
       },
       {
         text: "Transaction Records",
         link: "/records",
+        icon: BsFileEarmarkTextFill,
       },
     ],
   },
   {
     main: "Reports & Analytics",
-    icon: BiLineChart,
+    icon: BsGraphUp,
     submenu: [
       {
         text: "Sales Report",
         link: "/sales",
+        icon: BsGraphUp,
       },
       {
         text: "User Behavior",
         link: "/behavior",
+        icon: BsPeopleFill,
       },
       {
         text: "Product Performance",
         link: "/product-performance",
+        icon: BsCartFill,
       },
     ],
   },
-]
+  {
+    main: "General Settings",
+    icon: BsGear,
+    submenu: [
+      {
+        text: "Website Configuration",
+        link: "/website-configuration",
+        icon: BsGlobe,
+      },
+      {
+        text: "Basic Info",
+        link: "/basic-info",
+        icon: BsHouseDoorFill,
+      },
+    ],
+  },
+];
 
 function Dashboard() {
   const [expanded, setExpanded] = useState(null);
@@ -140,7 +174,6 @@ function Dashboard() {
           <Text>Dashboard Overview</Text>
         </HStack>
 
-        {/* Map through menu items */}
         {menu.map((item, index) => (
           <Accordion
             key={index}
@@ -171,7 +204,7 @@ function Dashboard() {
                         to={"/admin" + sub.link}
                         className="w-full py-4 pl-16 pr-6 flex justify-start items-center gap-4"
                       >
-                        <Icon className="text-lg" as={item.icon} />
+                        <Icon className="text-lg" as={sub.icon} />
                         {sub.text}
                       </Box>
                     ))}
@@ -181,7 +214,6 @@ function Dashboard() {
           </Accordion>
         ))}
 
-        {/* Logout Button */}
         <button
           onClick={() => {
             localStorage.removeItem("adminLoginToken");
