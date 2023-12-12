@@ -10,10 +10,12 @@ import {
 } from "@chakra-ui/react"
 import convertCurrency from "../Shared/utils/convertCurrency"
 import { useEffect, useState } from "react"
+import { Link, useNavigate } from 'react-router-dom'
 function CustomizeRes({ results }) {
   const [shoePrice, setShoePrice] = useState(0)
   const [sockPrice, setSockPrice] = useState(0)
   const [accessoryPrice, setAccessoryPrice] = useState(0)
+  const navigate = useNavigate()
 
   const { shoe, sock, accessory } = results
 
@@ -25,6 +27,7 @@ function CustomizeRes({ results }) {
     if (!shoe) setShoePrice(0)
     if (!sock) setSockPrice(0)
     if (!accessory) setAccessoryPrice(0)
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [shoe, sock, accessory])
   return (
     <Grid
@@ -54,8 +57,7 @@ function CustomizeRes({ results }) {
               >
                 {shoe?.name ? (
                   <Image
-                    // src={shoe?.image}
-                    src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1f3586ce-7b81-45c6-9405-c2116a5ec967/air-jordan-1-mid-shoes-86f1ZW.png"
+                    src={shoe?.image || "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1f3586ce-7b81-45c6-9405-c2116a5ec967/air-jordan-1-mid-shoes-86f1ZW.png"}
                     alt="shoe"
                     maxW="160px"
                   />
@@ -90,8 +92,8 @@ function CustomizeRes({ results }) {
               >
                 {sock?.name ? (
                   <Image
-                    // src={shoe?.image}
-                    src="https://assets.adidas.com/images/w_600,f_auto,q_auto/7c9bdfc622db4a7cbf91af1200b0264c_9366/Cushioned_Crew_Socks_3_Pairs_White_HT3446_03_standard.jpg"
+                    src={sock?.image || `https://assets.adidas.com/images/w_600,f_auto,q_auto/7c9bdfc622db4a7cbf91af1200b0264c_9366/Cushioned_Crew_Socks_3_Pairs_White_HT3446_03_standard.jpg`}
+
                     alt="shoe"
                     maxW="160px"
                   />
@@ -125,9 +127,8 @@ function CustomizeRes({ results }) {
               >
                 {accessory?.name ? (
                   <Image
-                    // src={shoe?.image}
-                    src="https://down-ph.img.susercontent.com/file/07629ce80a64a5b64589729a36995269"
-                    alt="shoe"
+                    src={accessory?.image || `https://down-ph.img.susercontent.com/file/07629ce80a64a5b64589729a36995269`}
+                    alt="sock"
                     maxW="160px"
                   />
                 ) : (
@@ -179,16 +180,14 @@ function CustomizeRes({ results }) {
             </Text>
           </HStack>
           <HStack mt="24px" justify="space-around">
-            <Button
-              borderRadius="20px"
-              bgColor="black"
-              color="white"
-              px="32px"
-              py="16px"
+            <button
+              disabled={!shoe || !accessory || !sock}
+              className='px-9 py-2 font-semibold rounded-full bg-black text-white hover:bg-gray-700 duration-300 cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed'
+              onClick={() => navigate("/checkout")}
             >
               Checkout
-            </Button>
-            <Button
+            </button>
+            {/* <Button
               borderRadius="20px"
               bgColor="black"
               color="white"
@@ -196,7 +195,7 @@ function CustomizeRes({ results }) {
               py="16px"
             >
               Add to cart
-            </Button>
+            </Button> */}
           </HStack>
         </VStack>
       </Box>
