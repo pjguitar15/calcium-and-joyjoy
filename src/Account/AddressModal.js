@@ -9,7 +9,9 @@ import {
   Button,
   VStack,
   Input,
-  Select,
+  FormLabel,
+  FormControl,
+  GridItem,
   Grid,
   useToast,
 } from "@chakra-ui/react";
@@ -18,6 +20,8 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useMutation } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
+
+
 function AddressModal({ onReload }) {
   const [region, setRegion] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,8 +31,8 @@ function AddressModal({ onReload }) {
   const userInfo = user?.user_info;
 
   const handleSave = async (data) => {
-    const { street, bldg, city, barangay, postCode } = data;
-    const finalAddress = `${bldg}, ${street}, ${barangay}, ${city}, ${region} ${postCode}`;
+    const { street, bldg, city, barangay, postCode, label } = data;
+    const finalAddress = `${label}: ${bldg}, ${street}, ${barangay}, ${city}, ${region}, ${postCode}`;
 
     const newUserInfo = { ...userInfo, address: finalAddress };
 
@@ -50,11 +54,23 @@ function AddressModal({ onReload }) {
           user_info: { ...newUserInfo },
         })
       );
+      toast({
+        status: "success",
+        position: "top",
+        title: "Address saved.",
+        description: "Your address has been successfully saved.",
+      });
+      onReload();
       setTimeout(() => {
         onReload();
       }, 700);
     } catch (e) {
-      throw new Error();
+      toast({
+        status: "error",
+        position: "top",
+        title: "Something went wrong.",
+        description: "Unable to save the address.",
+      });
     }
 
     onClose();
@@ -65,81 +81,75 @@ function AddressModal({ onReload }) {
   const { mutate } = useMutation({
     mutationKey: "address",
     mutationFn: handleSave,
-    onSuccess: () => {
-      toast({
-        status: "success",
-        position: "top",
-        title: "Address saved.",
-        description: "Reloading page",
-      });
-    },
-    onError: (e) => {
-      toast({
-        status: "error",
-        position: "top",
-        title: "Something went wrong.",
-      });
-    },
   });
 
   return (
     <>
-      <Button
-        color='white'
-        bgColor='black'
-        borderRadius='20px'
-        px='40px'
-        _hover={{
-          bgColor: "var(--accent)",
-        }}
-        onClick={onOpen}
-      >
+      <Button onClick={onOpen} colorScheme='blue'>
         Add Address
       </Button>
 
-      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent px='16px'>
-          <ModalHeader mb='24px'>Add Address</ModalHeader>
+        <ModalContent>
+          <ModalHeader>Add New Address</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack
-              as='form'
-              align='normal'
-              onSubmit={handleSubmit(mutate)}
-              gap='16px'
-            >
-              <Input placeholder='Street address' {...register("street")} />
-              <Input placeholder='Building name' {...register("bldg")} />
-              <Grid gridTemplateColumns='repeat(2,1fr)' gap='8px'>
-                <Select
-                  as={RegionDropdown}
-                  defaultOptionLabel='Select region'
-                  value={region}
-                  onChange={(e) => setRegion(e)}
-                  country='Philippines'
-                />
-                <Input placeholder='City/Municipality' {...register("city")} />
-                <Input placeholder='Barangay' {...register("barangay")} />
-                <Input placeholder='Postal Code' {...register("postCode")} />
+            <form onSubmit={handleSubmit(mutate)}>
+              <Grid templateColumns='repeat(2, 1fr)' gap={4}>
+                <GridItem colSpan={2}>
+                  <FormControl>
+                    <FormLabel>Label</FormLabel>
+                    <Input placeholder='Home, Office, etc.' {...register("label")} />
+                  </FormControl>
+                </GridItem>
+                <GridItem>
+                  <FormControl>
+                    <FormLabel>Street Address</FormLabel>
+                    <Input placeholder='123 Main St' {...register("street")} />
+                  </FormControl>
+                </GridItem>
+                <GridItem>
+                  <FormControl>
+                    <FormLabel>Building Name</FormLabel>
+                    <Input placeholder='Building Name' {...register("bldg")} />
+                  </FormControl>
+                </GridItem>
+                <GridItem>
+                  <FormControl>
+                    <FormLabel>City/Municipality</FormLabel>
+                    <Input placeholder='City' {...register("city")} />
+                  </FormControl>
+                </GridItem>
+                <GridItem>
+                  <FormControl>
+                    <FormLabel>Barangay</FormLabel>
+                    <Input placeholder='Barangay' {...register("barangay")} />
+                  </FormControl>
+                </GridItem>
+                <GridItem>
+                  <FormControl>
+                    <FormLabel>Postal Code</FormLabel>
+                    <Input placeholder='Postal Code' {...register("postCode")} />
+                  </FormControl>
+                </GridItem>
+                <GridItem>
+                  <FormControl>
+                    <FormLabel>Region</FormLabel>
+                    <RegionDropdown
+                      country='Philippines'
+                      value={region}
+                      onChange={(val) => setRegion(val)}
+                    />
+                  </FormControl>
+                </GridItem>
+                <GridItem colSpan={2}>
+                  <Button type='submit' colorScheme='blue' mt={4} w="full">
+                    Save Address
+                  </Button>
+                </GridItem>
               </Grid>
-              <Input placeholder='Add label' {...register("label")} />
-              <Button
-                color='white'
-                bgColor='black'
-                borderRadius='20px'
-                px='40px'
-                _hover={{
-                  bgColor: "var(--accent)",
-                }}
-                type='submit'
-                w='fit-content'
-                ml='auto'
-                mt='16px'
-              >
-                Save
-              </Button>
-            </VStack>
+            </form>
           </ModalBody>
         </ModalContent>
       </Modal>

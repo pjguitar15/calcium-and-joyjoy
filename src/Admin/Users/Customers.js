@@ -1,24 +1,55 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Box, Input, Button, Heading, VStack, Text, Flex, useToast, Select } from "@chakra-ui/react";
+import axiosInstance from '../../Shared/utils/axiosInstance'; 
 
 function Customers() {
-  const initialCustomers = [
-    { id: 1, name: 'Alice Johnson', email: 'alice@example.com', timestamp: '2021-01-01', suspended: false },
-    { id: 2, name: 'Bob Smith', email: 'bob@example.com', timestamp: '2022-05-15', suspended: false },
-    // ... more customers
-  ];
-
-  const [customers, setCustomers] = useState(initialCustomers);
+  const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortType, setSortType] = useState('name_asc');
   const toast = useToast();
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const token = localStorage.getItem("adminLoginToken");
+        if (!token) {
+          throw new Error("No admin token found");
+        }
+        const response = await axiosInstance.get('/customers', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setCustomers(response.data);
+      } catch (error) {
+        let errorMessage = "There was an issue fetching customer data.";
+        if (error.response) {
+          errorMessage += ` Error: ${error.response.status} - ${error.response.data.message}`;
+        } else if (error.request) {
+          errorMessage += " No response received from server.";
+        } else {
+          errorMessage += ` ${error.message}`;
+        }
+        toast({
+          title: "Error fetching customers.",
+          description: errorMessage,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          
+        });
+      }
+    };
+
+    fetchCustomers();
+  }, [toast]);
 
   const handleSortChange = (e) => {
     setSortType(e.target.value);
   };
 
   const handleSuspendToggle = (customerId) => {
-    setCustomers(customers.map(customer => {
+    setCustomers(prevCustomers => prevCustomers.map(customer => {
       if (customer.id === customerId) {
         return { ...customer, suspended: !customer.suspended };
       }
@@ -55,23 +86,22 @@ function Customers() {
   return (
     <Box p="4" className="container mx-auto">
       <Heading mb="6">Our Customers</Heading>
-<Flex mb="4" gap="4" alignItems="center">
-  <Box flex="2"> {/* Increased flex value */}
-    <Input
-      placeholder="Search by name"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      size="lg"
-    />
-  </Box>
-  <Select flex="1" onChange={handleSortChange} defaultValue="name_asc" size="lg">
-    <option value="name_asc">Name Ascending</option>
-    <option value="name_desc">Name Descending</option>
-    <option value="newest">Newest First</option>
-    <option value="oldest">Oldest First</option>
-  </Select>
-</Flex>
-
+      <Flex mb="4" gap="4" alignItems="center">
+        <Box flex="2">
+          <Input
+            placeholder="Search by name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            size="lg"
+          />
+        </Box>
+        <Select flex="1" onChange={handleSortChange} value={sortType} size="lg">
+          <option value="name_asc">Name Ascending</option>
+          <option value="name_desc">Name Descending</option>
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+        </Select>
+      </Flex>
       <VStack spacing="4" align="stretch">
         {sortedAndFilteredCustomers.map((customer) => (
           <Box

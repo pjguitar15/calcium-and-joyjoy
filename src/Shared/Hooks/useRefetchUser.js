@@ -1,14 +1,18 @@
 import { useQuery } from "react-query";
 import axiosInstance from "../utils/axiosInstance";
 
-export default async function useRefetchUser() {
-  const refetchFn = async () => {
-    axiosInstance.get("");
-  };
-  const { data, isLoading } = useQuery({
-    queryKey: "user",
-    queryFn: refetchFn,
-  });
+export default function useRefetchUser() {
+const refetchFn = async () => {
+  try {
+    const response = await axiosInstance.get("/user/me"); // Updated to the correct API endpoint
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
-  return { data, isLoading };
+
+  const { data, isLoading, error, refetch } = useQuery("user", refetchFn);
+
+  return { data, isLoading, error, refetch };
 }
