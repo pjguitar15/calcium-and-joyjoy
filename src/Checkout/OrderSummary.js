@@ -81,7 +81,7 @@ function OrderSummary() {
           >
             <Box overflow='hidden' borderRadius='10px' maxH='160px'>
               <Image
-                src={`${config.apiUrl}/storage/${item.image}`}
+                src={item.image || "https://htmlcolorcodes.com/assets/images/colors/gray-color-solid-background-1920x1080.png"}
                 alt={item.name}
                 loading='lazy'
               />

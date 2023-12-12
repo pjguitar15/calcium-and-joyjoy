@@ -11,15 +11,19 @@ import {
 import convertCurrency from "../Shared/utils/convertCurrency"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../Store/cart'
 function CustomizeRes({ results }) {
   const [shoePrice, setShoePrice] = useState(0)
   const [sockPrice, setSockPrice] = useState(0)
   const [accessoryPrice, setAccessoryPrice] = useState(0)
   const navigate = useNavigate()
+  const dispatch = useDispatch();
 
   const { shoe, sock, accessory } = results
 
   useEffect(() => {
+    console.log(shoe)
     if (shoe) setShoePrice(Number(shoe.price))
     if (sock) setSockPrice(Number(sock.price))
     if (accessory) setAccessoryPrice(Number(accessory.price))
@@ -183,7 +187,36 @@ function CustomizeRes({ results }) {
             <button
               disabled={!shoe || !accessory || !sock}
               className='px-9 py-2 font-semibold rounded-full bg-black text-white hover:bg-gray-700 duration-300 cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed'
-              onClick={() => navigate("/checkout")}
+              onClick={() => {
+                dispatch(
+                  addToCart({
+                    ...shoe,
+                    quantity: 1,
+                    price: shoePrice,
+                    size: shoe.sizes[0].size.name && shoe.sizes[0].size.name,
+                  })
+                );
+
+                dispatch(
+                  addToCart({
+                    ...sock,
+                    quantity: 1,
+                    price: sockPrice,
+                    size: sock.sizes[0].size.name && sock.sizes[0].size.name,
+                  })
+                );
+
+                dispatch(
+                  addToCart({
+                    ...accessory,
+                    quantity: 1,
+                    price: accessoryPrice,
+                    size: accessory.sizes[0].size.name && accessory.sizes[0].size.name,
+                  })
+                );
+
+                navigate("/checkout")
+              }}
             >
               Checkout
             </button>
