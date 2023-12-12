@@ -1,50 +1,45 @@
 import React, { useEffect, useState } from "react"
 import { IoClose } from "react-icons/io5"
-import { FaCaretDown } from "react-icons/fa"
-import config from "../../../Shared/utils/config"
 import axios from "axios"
+import useBrands from "../../../Shared/Hooks/useBrands"
+import useCategories from "../../../Shared/Hooks/useCategories"
+import useProductTypes from "../../../Shared/Hooks/useProductTypes"
+import useProductColors from "../../../Shared/Hooks/useProductColors"
+import useProductSizes from "../../../Shared/Hooks/useProductSizes"
+import { useToast } from "@chakra-ui/toast"
 
-const AddProductForm = ({ handleBackToProducts }) => {
-  const [selectedProductCategories, setSelectedProductCategories] = useState([])
+const AddProductForm = ({ handleBackToProducts, setIsAddingProducts }) => {
+  const [selectedProductCategory, setSelectedProductCategory] = useState("")
   const [selectedProductTypes, setSelectedProductTypes] = useState([])
   const [selectedProductColors, setSelectedProductColors] = useState([])
   const [selectedProductSizes, setSelectedProductSizes] = useState([])
-  const [mainImage, setMainImage] = useState(null)
-  const [productCategories, setProductCategories] = useState([])
-  const [productTypes, setProductTypes] = useState([])
-  const [productColors, setProductColors] = useState([])
-  const [productSizes, setProductSizes] = useState([])
+  const [selectedBrand, setSelectedBrand] = useState("")
+  const [images, setImages] = useState([])
+  const [uploading, setUploading] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   const [imagePreviews, setImagePreviews] = useState([])
+  const [nameInput, setNameInput] = useState("")
+  const [descriptionInput, setDescriptionInput] = useState("")
+  const [priceInput, setPriceInput] = useState(0)
+  const [gender, setGender] = useState("male")
+  const [status, setStatus] = useState("in stock")
+
+  const toast = useToast()
+  const { brands } = useBrands()
+  const { categories } = useCategories()
+  const { productTypes } = useProductTypes()
+  const { productColors } = useProductColors()
+  const { productSizes } = useProductSizes()
 
   useEffect(() => {
-    axios
-      .get("http://18.223.157.202/backend/api/admin/product/categories")
-      .then((res) => {
-        setProductCategories(res.data)
-        setSelectedProductCategories([res.data[0].name])
-      })
+    setSelectedProductCategory([categories[0]?.id])
+    setSelectedProductTypes([productTypes[0]?.name])
+    setSelectedProductColors([productColors[0]?.name])
+    setSelectedProductSizes([productSizes[0]?.name])
 
-    axios
-      .get("http://18.223.157.202/backend/api/admin/product/types")
-      .then((res) => {
-        setProductTypes(res.data)
-        setSelectedProductTypes([res.data[0].name])
-      })
-
-    axios
-      .get("http://18.223.157.202/backend/api/admin/product/colors")
-      .then((res) => {
-        setProductColors(res.data)
-        setSelectedProductColors([res.data[0].name])
-      })
-
-    axios
-      .get("http://18.223.157.202/backend/api/admin/product/sizes")
-      .then((res) => {
-        setProductSizes(res.data)
-        setSelectedProductSizes([res.data[0].name])
-      })
-  }, [])
+    setSelectedBrand(brands[0]?.id)
+  }, [brands, productTypes, categories, productColors, productSizes])
 
   const handleCheckboxChange = (event, setStateFunction) => {
     const { value } = event.target
@@ -60,6 +55,7 @@ const AddProductForm = ({ handleBackToProducts }) => {
 
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files)
+    setImages(files)
     const newImagePreviews = files.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
@@ -71,26 +67,74 @@ const AddProductForm = ({ handleBackToProducts }) => {
     setImagePreviews(imagePreviews.filter((_, idx) => idx !== index))
   }
 
-  const handleMainImageChange = (event) => {
-    const file = event.target.files[0]
-    // You can use the 'file' variable for further processing or display a preview
-    setMainImage(file)
+  const handleImageUpload = async () => {
+    setUploading(true)
+
+    const uploadPromises = images.map(async (file) => {
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("upload_preset", "zwzmglhl") // Replace with your Cloudinary upload preset
+
+      try {
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dbibwzs6c/image/upload",
+          formData
+        )
+
+        return response.data.secure_url
+      } catch (error) {
+        console.error("Error uploading image:", error)
+        return null
+      }
+    })
+
+    const uploadedImages = await Promise.all(uploadPromises)
+    const filteredImages = uploadedImages.filter((url) => url !== null)
+
+    setUploading(false)
+    return filteredImages
   }
 
-  // Handler for updating the selected product type
-  const handleProductTypeChange = (event) => {
-    setSelectedProductTypes(event.target.value)
-  }
-
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault()
-    const baseUrl = config.apiUrl
-    // http://18.223.157.202/backend/api/admin/products/store
-    /* 
-      Payload
+    const imageUrl = await handleImageUpload(images)
 
-    */
-    console.log(selectedProductCategories)
+    const payload = {
+      name: nameInput,
+      description: descriptionInput,
+      price: priceInput.toString(),
+      brand_id: selectedBrand.toString(),
+      status,
+      image: imageUrl[0],
+      images: imageUrl,
+      gender,
+      product_category_id: selectedProductCategory.toString(),
+      types: selectedProductTypes,
+      sizes: selectedProductSizes,
+      colors: selectedProductColors,
+      socks: "mid",
+    }
+    console.log(payload)
+    console.log("uploading to POST API...")
+    setLoading(true)
+
+    axios
+      .post(`http://18.223.157.202/backend/api/admin/products/store`, payload)
+      .then((res) => {
+        console.log(res)
+        setLoading(false)
+        setImages([])
+        setNameInput("")
+        setDescriptionInput("")
+        setIsAddingProducts(false)
+        toast({
+          title: "Congratulations!",
+          description: "Your product has been added successfully",
+          status: "success",
+          position: "top",
+        })
+      })
+      .catch((err) => console.log(err))
   }
   return (
     <div className="add-product-form">
@@ -113,6 +157,8 @@ const AddProductForm = ({ handleBackToProducts }) => {
               Product Name
             </label>
             <input
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
               placeholder="Enter product name"
               type="text"
               id="productName"
@@ -130,6 +176,8 @@ const AddProductForm = ({ handleBackToProducts }) => {
               Description
             </label>
             <textarea
+              value={descriptionInput}
+              onChange={(e) => setDescriptionInput(e.target.value)}
               placeholder="Enter product description"
               id="description"
               name="description"
@@ -138,87 +186,124 @@ const AddProductForm = ({ handleBackToProducts }) => {
             ></textarea>
           </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="price"
-              className="block text-sm font-medium text-gray-600"
-            >
-              Price
-            </label>
-            <input
-              placeholder="Enter product price"
-              type="number"
-              id="price"
-              name="price"
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            />
-          </div>
+          <div className="flex gap-4">
+            <div className="mb-4 flex-1">
+              <label
+                htmlFor="price"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Price
+              </label>
+              <input
+                value={priceInput}
+                onChange={(e) => setPriceInput(e.target.value)}
+                placeholder="Enter product price"
+                type="number"
+                id="price"
+                name="price"
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                required
+              />
+            </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">
-              Status
-            </label>
-            <div className="flex items-center space-x-4">
-              <label>
-                <input
-                  type="radio"
-                  name="status"
-                  value="inStock"
-                  className="mr-1"
-                  defaultChecked
-                />
-                In Stock
+            <div className="mb-4 flex-1">
+              <label
+                htmlFor="productCategory"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Brand
               </label>
-              <label>
-                <input
-                  type="radio"
-                  name="status"
-                  value="outOfStock"
-                  className="mr-1"
-                />
-                Out of Stock
-              </label>
+              <select
+                id="productCategory"
+                name="productCategory"
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                required
+                value={selectedBrand}
+                onChange={(event) => setSelectedBrand(event.target.value)}
+              >
+                {brands?.map((item, index) => (
+                  <option key={index} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">
-              Gender
-            </label>
-            <div className="flex items-center space-x-4">
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="men"
-                  className="mr-1"
-                />
-                Men
+          <div className="flex gap-4">
+            <div className="mb-4 flex-1">
+              <label className="block text-sm font-medium text-gray-600">
+                Status
               </label>
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="women"
-                  className="mr-1"
-                />
-                Women
+              <div className="flex items-center space-x-4">
+                <label>
+                  <input
+                    type="radio"
+                    name="status"
+                    value="in stock"
+                    className="mr-1"
+                    checked={status === "in stock"}
+                    onChange={(e) => setStatus(e.target.value)}
+                  />
+                  In Stock
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="status"
+                    value="out of stock"
+                    className="mr-1"
+                    checked={status === "out of stock"}
+                    onChange={(e) => setStatus(e.target.value)}
+                  />
+                  Out of Stock
+                </label>
+              </div>
+            </div>
+
+            <div className="mb-4 flex-1">
+              <label className="block text-sm font-medium text-gray-600">
+                Gender
               </label>
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="unisex"
-                  className="mr-1"
-                  defaultChecked
-                />
-                Unisex
-              </label>
+              <div className="flex items-center space-x-4">
+                <label>
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    className="mr-1"
+                    checked={gender === "male"}
+                    onChange={(e) => setGender(e.target.value)}
+                  />
+                  Male
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    className="mr-1"
+                    checked={gender === "female"}
+                    onChange={(e) => setGender(e.target.value)}
+                  />
+                  Female
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="unisex"
+                    className="mr-1"
+                    checked={gender === "unisex"}
+                    onChange={(e) => setGender(e.target.value)}
+                  />
+                  Unisex
+                </label>
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-4">
+          <div className="grid grid-cols-4 gap-6">
             <div className="mb-4">
               <label
                 htmlFor="productCategory"
@@ -226,29 +311,22 @@ const AddProductForm = ({ handleBackToProducts }) => {
               >
                 Product Category
               </label>
-              <div className="mt-1">
-                {productCategories.map((item, index) => (
-                  <div key={index} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id={`productCategory_${index}`}
-                      name="productCategory"
-                      value={item.name}
-                      checked={selectedProductCategories.includes(item.name)}
-                      onChange={(event) =>
-                        handleCheckboxChange(
-                          event,
-                          setSelectedProductCategories
-                        )
-                      }
-                      className="mr-2"
-                    />
-                    <label htmlFor={`productCategory_${index}`}>
-                      {item.name}
-                    </label>
-                  </div>
+              <select
+                id="productCategory"
+                name="productCategory"
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                required
+                value={selectedProductCategory}
+                onChange={(event) =>
+                  setSelectedProductCategory(event.target.value)
+                }
+              >
+                {categories.map((item, index) => (
+                  <option key={index} value={item.id}>
+                    {item.name}
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
 
             <div className="mb-4">
@@ -259,7 +337,7 @@ const AddProductForm = ({ handleBackToProducts }) => {
                 Types
               </label>
               <div className="mt-1">
-                {productTypes.map((item, index) => (
+                {productTypes?.map((item, index) => (
                   <div key={index} className="flex items-center">
                     <input
                       type="checkbox"
@@ -286,7 +364,7 @@ const AddProductForm = ({ handleBackToProducts }) => {
                 Colors
               </label>
               <div className="mt-1">
-                {productColors.map((item, index) => (
+                {productColors?.map((item, index) => (
                   <div key={index} className="flex items-center">
                     <input
                       type="checkbox"
@@ -313,7 +391,7 @@ const AddProductForm = ({ handleBackToProducts }) => {
                 Sizes
               </label>
               <div className="mt-1">
-                {productSizes.map((item, index) => (
+                {productSizes?.map((item, index) => (
                   <div key={index} className="flex items-center">
                     <input
                       type="checkbox"
@@ -339,17 +417,50 @@ const AddProductForm = ({ handleBackToProducts }) => {
               htmlFor="productImages"
               className="block text-sm font-medium text-gray-600"
             >
-              Product Images
+              Product Images{" "}
+              <span className="font-normal italic">
+                (First selected image will be the featured image)
+              </span>
             </label>
-            <input
-              type="file"
-              id="productImages"
-              name="productImages"
-              accept="image/jpeg, image/png"
-              multiple
-              onChange={handleImageChange}
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-            />
+            <div className="relative mt-1">
+              {imagePreviews.length <= 0 && (
+                <>
+                  <input
+                    type="file"
+                    id="productImages"
+                    name="productImages"
+                    accept="image/jpeg, image/png"
+                    multiple
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="productImages"
+                    className="cursor-pointer inline-block w-52 h-24 border-dashed border-2 border-gray-400 rounded-md flex flex-col justify-center items-center hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                  >
+                    <svg
+                      className="w-8 h-8 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    <span className="text-gray-400 text-xs">
+                      Drop images here
+                    </span>
+                  </label>
+                  <span className="ml-2" id="file-selected"></span>
+                </>
+              )}
+            </div>
+
             <div className="flex flex-wrap mt-4">
               {imagePreviews.map((image, index) => (
                 <div key={index} className="relative m-2">
@@ -371,9 +482,10 @@ const AddProductForm = ({ handleBackToProducts }) => {
 
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+            disabled={loading || uploading}
+            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit
+            {loading || uploading ? `Creating Product...` : `Submit`}
           </button>
         </form>
       </div>

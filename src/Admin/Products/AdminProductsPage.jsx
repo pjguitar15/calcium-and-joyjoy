@@ -14,7 +14,10 @@ const AdminProductsPage = () => {
   return (
     <main className="container mx-auto">
       {isAddingProducts ? (
-        <AddProductForm handleBackToProducts={handleBackToProducts} />
+        <AddProductForm
+          handleBackToProducts={handleBackToProducts}
+          setIsAddingProducts={setIsAddingProducts}
+        />
       ) : (
         <ProductsDisplay handleAddProductClick={handleAddProductClick} />
       )}
