@@ -42,10 +42,6 @@ const menu = [
         text: "Customers",
         link: "/customers",
       },
-      {
-        text: "Authentication Settings",
-        link: "/auth",
-      },
     ],
   },
   {
