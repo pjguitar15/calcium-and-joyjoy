@@ -10,6 +10,8 @@ const AddProductForm = ({ handleBackToProducts }) => {
   const [productCategories, setProductCategories] = useState([])
   const [productTypes, setProductTypes] = useState([])
   const [productColors, setProductColors] = useState([])
+  const [imagePreviews, setImagePreviews] = useState([]);
+
 
   useEffect(() => {
     axios
@@ -30,6 +32,19 @@ const AddProductForm = ({ handleBackToProducts }) => {
         setProductColors(res.data)
       })
   }, [])
+
+  const handleImageChange = (event) => {
+    const files = Array.from(event.target.files);
+    const newImagePreviews = files.map(file => ({
+      file,
+      preview: URL.createObjectURL(file)
+    }));
+    setImagePreviews([...imagePreviews, ...newImagePreviews]);
+  };
+
+  const removeImagePreview = (index) => {
+    setImagePreviews(imagePreviews.filter((_, idx) => idx !== index));
+  };
 
   const handleMainImageChange = (event) => {
     const file = event.target.files[0]
@@ -241,21 +256,32 @@ const AddProductForm = ({ handleBackToProducts }) => {
           </div>
 
           <div className="mb-4">
-            <label
-              htmlFor="productImages"
-              className="block text-sm font-medium text-gray-600"
-            >
-              Product Images
-            </label>
-            <input
-              type="file"
-              id="productImages"
-              name="productImages"
-              accept="image/jpeg, image/png"
-              multiple
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-            />
-          </div>
+        <label
+          htmlFor="productImages"
+          className="block text-sm font-medium text-gray-600"
+        >
+          Product Images
+        </label>
+        <input
+          type="file"
+          id="productImages"
+          name="productImages"
+          accept="image/jpeg, image/png"
+          multiple
+          onChange={handleImageChange}
+          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+        />
+        <div className="image-preview-container" style={{ display: 'flex', flexWrap: 'wrap' }}>
+          {imagePreviews.map((image, index) => (
+            <div key={index} className="image-preview" style={{ margin: '10px', position: 'relative' }}>
+              <img src={image.preview} alt="Preview" style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '5px' }} />
+              <button onClick={() => removeImagePreview(index)} className="close-button" style={{ position: 'absolute', top: '0', right: '0', background: 'white', borderRadius: '50%', padding: '5px' }}>
+                <IoClose />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
 
           <button
             type="submit"
