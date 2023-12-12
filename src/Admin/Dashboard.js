@@ -36,6 +36,7 @@ const menu = [
       {
         text: "Roles & Permissions",
         link: "/roles",
+
       },
       {
         text: "Customers",
@@ -118,106 +119,86 @@ const menu = [
 ]
 
 function Dashboard() {
-  const [expanded, setExpanded] = useState(null)
-  const navigate = useNavigate()
+  const [expanded, setExpanded] = useState(null);
+  const navigate = useNavigate();
 
   const handleExpand = (num, id) => {
-    if (num === 0) setExpanded(id)
-    else setExpanded(null)
-  }
+    if (num === 0) setExpanded(id);
+    else setExpanded(null);
+  };
 
   return (
-    <Box
-      pos="fixed"
-      left="0"
-      w="350px"
-      bgColor="#403F3F"
-      color="white"
-      h="100%"
-      overflowY="auto"
-    >
-      <VStack fontSize="18px" py="24px">
+    <Box className="fixed left-0 w-[350px] bg-gray-700 text-white h-full overflow-y-auto">
+      <VStack className="text-lg py-6">
         <Image src="/assets/logoheader.png" />
-        <Text fontSize="26px">Admin Dashboard</Text>
-        <Divider w="80%" />
+        <Text className="text-2xl">Admin Dashboard</Text>
+        <Divider className="w-full my-2" />
+
         <HStack
           as={NavLink}
           to="/admin"
           end
-          cursor="pointer"
-          w="100%"
-          py="16px"
-          justify="center"
-          gap="16px"
+          className="cursor-pointer w-full py-4 px-6 justify-start gap-4"
         >
-          <Icon fontSize="24px" as={BsSpeedometer2} />
+          <Icon className="text-xl" as={BsSpeedometer2} />
           <Text>Dashboard Overview</Text>
         </HStack>
 
-        {menu.map((item) => {
-          return (
-            <Accordion
-              id="users"
-              onChange={(e) => handleExpand(e, item.main)}
-              allowToggle
-              w="100%"
-            >
-              <AccordionItem border="none">
-                <AccordionButton
-                  _hover={{
-                    bgColor: "blackAlpha.300",
-                  }}
-                  bgColor={expanded === item.main ? "blackAlpha.300" : ""}
-                  p="0px"
-                >
-                  <HStack
-                    cursor="pointer"
-                    w="100%"
-                    py="16px"
-                    justify="center"
-                    gap="16px"
-                  >
-                    <Icon fontSize="24px" as={item.icon} />
-                    <Text>{item.main}</Text>
-                    {item.submenu && <AccordionIcon />}
-                  </HStack>
-                </AccordionButton>
+        {/* Map through menu items */}
+        {menu.map((item, index) => (
+          <Accordion
+            key={index}
+            onChange={() => handleExpand(expanded === item.main ? null : item.main)}
+            allowToggle
+            className="w-full"
+          >
+            <AccordionItem className="border-none">
+              <AccordionButton
+                _hover={{ bgColor: "blackAlpha.300" }}
+                bgColor={expanded === item.main ? "blackAlpha.300" : ""}
+                className="p-0"
+              >
+                <HStack className="cursor-pointer w-full py-4 px-6 justify-start gap-4">
+                  <Icon className="text-xl" as={item.icon} />
+                  <Text>{item.main}</Text>
+                  {item.submenu && <AccordionIcon />}
+                </HStack>
+              </AccordionButton>
 
-                <AccordionPanel p="0px" mt="8px">
-                  <VStack align="normal">
-                    {item.submenu &&
-                      item.submenu.map((sub) => (
-                        <Box
-                          w="100%"
-                          h="100%"
-                          py="16px"
-                          pl="64px"
-                          as={NavLink}
-                          to={"/admin" + sub.link}
-                          display="block"
-                        >
-                          {sub.text}
-                        </Box>
-                      ))}
-                  </VStack>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-          )
-        })}
+              <AccordionPanel className="p-0">
+                <VStack align="start">
+                  {item.submenu &&
+                    item.submenu.map((sub, subIndex) => (
+                      <Box
+                        key={subIndex}
+                        as={NavLink}
+                        to={"/admin" + sub.link}
+                        className="w-full py-4 pl-16 pr-6 flex justify-start items-center gap-4"
+                      >
+                        <Icon className="text-lg" as={item.icon} />
+                        {sub.text}
+                      </Box>
+                    ))}
+                </VStack>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        ))}
+
+        {/* Logout Button */}
         <button
           onClick={() => {
-            localStorage.removeItem("adminLoginToken")
-            navigate("/admin/login")
+            localStorage.removeItem("adminLoginToken");
+            navigate("/admin/login");
           }}
-          className="text-[16px] mt-3 flex items-center gap-2"
+          className="text-lg mt-3 flex items-center gap-2 px-6 w-full justify-start"
         >
-          <CgLogOut className="text-[20px]" />
+          <CgLogOut className="text-xl" />
           Logout
         </button>
       </VStack>
     </Box>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;
