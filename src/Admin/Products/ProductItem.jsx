@@ -6,32 +6,43 @@ import { useToast } from "@chakra-ui/react"
 
 const ProductItem = (props) => {
   const [showModal, setShowModal] = useState(false)
+  const [loading, setLoading] = useState(false)
   const toast = useToast()
   const id = props.item.id
   const onCancel = () => {
     setShowModal(false)
   }
 
-  console.log(id)
-
   const onConfirm = () => {
+    setLoading(true)
     axios
       .delete(`http://18.223.157.202/backend/api/admin/products/delete/${id}`)
       .then((res) => {
         console.log(res)
         setShowModal(false)
+        props.removeItemFromData(id)
         toast({
-          title: "Item successfully deleted",
-          description: "Going back to home page",
-          status: "danger",
+          title: "Item deleted",
+          description: "Deleted successfully",
+          status: "success", // Use "success" or another appropriate status
+          duration: 5000,
+          isClosable: true,
           position: "top",
         })
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }
   return (
     <div className="border shadow-lg rounded-lg">
       {showModal && (
-        <DeleteItemModal onCancel={onCancel} onConfirm={onConfirm} />
+        <DeleteItemModal
+          onCancel={onCancel}
+          onConfirm={onConfirm}
+          loading={loading}
+        />
       )}
       <div className="w-100 relative">
         <img

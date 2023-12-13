@@ -1,6 +1,6 @@
 import React, { useRef } from "react"
 
-const DeleteItemModal = ({ onCancel, onConfirm }) => {
+const DeleteItemModal = ({ onCancel, onConfirm, loading }) => {
   const modalRef = useRef()
 
   const handleOutsideClick = (event) => {
@@ -27,10 +27,11 @@ const DeleteItemModal = ({ onCancel, onConfirm }) => {
             Cancel
           </button>
           <button
+            disabled={loading}
             onClick={onConfirm}
-            className="px-4 py-2 bg-red-500 text-white rounded focus:outline-none"
+            className="px-4 py-2 bg-red-500 text-white rounded focus:outline-none disabled:opacity-25"
           >
-            Confirm
+            {loading ? `Deleting item...` : `Confirm`}
           </button>
         </div>
       </div>

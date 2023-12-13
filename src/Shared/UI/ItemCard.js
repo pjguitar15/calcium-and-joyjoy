@@ -73,7 +73,7 @@ function ItemCard(props) {
           <Image
             alt='product'
             mx='auto'
-            src={currCategory === "Shoes" ? props.data.image || `https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/63c77c04dc6448548ccbae880189e107_9366/Galaxy_6_Shoes_Black_GW3848_01_standard.jpg` : currCategory === "Socks" ? props.data.image || "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/09c97c11-0b67-4050-bbd1-e68fb4afaffa/everyday-lightweight-training-ankle-socks-ShtJfk.png" : "https://dynamic.zacdn.com/nLumc8muHbA7DQF8OHMK_53zMYo=/filters:quality(70):format(webp)/https://static-ph.zacdn.com/p/nike-0523-8134002-1.jpg"}
+            src={props.data.image}
 
             verticalAlign='bottom'
             mb='16px'
