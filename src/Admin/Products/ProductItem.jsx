@@ -1,6 +1,6 @@
 import { IoCloseCircleOutline } from "react-icons/io5"
 import DeleteItemModal from "./DeleteItemModal"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import axios from "axios"
 import { useToast } from "@chakra-ui/react"
 

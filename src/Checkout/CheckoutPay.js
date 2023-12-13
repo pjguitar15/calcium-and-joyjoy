@@ -9,11 +9,9 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Receipt from "./Receipt";
 import { useDispatch, useSelector } from "react-redux";
-import { useMutation } from "react-query";
-import axiosInstance from "../Shared/utils/axiosInstance";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { clearCart } from '../Store/cart';

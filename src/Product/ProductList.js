@@ -1,9 +1,9 @@
 import { Box, Grid } from "@chakra-ui/react";
 import ItemCard from "../Shared/UI/ItemCard";
-import { useGetShoes } from "../Shared/Hooks/useShoes";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import Scrollbars from "rc-scrollbars";
 import { useSearchParams } from "react-router-dom";
+import { useGetAllProducts } from '../Shared/Hooks/useGetAllProducts';
 
 function ProductList() {
   const [searchParams] = useSearchParams();
@@ -15,7 +15,7 @@ function ProductList() {
 
   const keyword = queryObj.keyword;
 
-  const { data, isLoading } = useGetShoes();
+  const { data, isLoading } = useGetAllProducts();
   if (isLoading) return <LoadingSpinner />;
 
   const filteredData = keyword

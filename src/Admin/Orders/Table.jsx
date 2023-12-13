@@ -2,29 +2,55 @@ import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { FaPenClip } from "react-icons/fa6"
 import { FaTrashAlt } from "react-icons/fa"
-export const ActionButtons = () => {
-  return (
-    <div>
-      <button className="bg-blue-700 text-white px-2 py-2 rounded mr-2">
-        <FaPenClip className="text-sm" />
-      </button>
-      <button className="bg-red-500 text-white px-2 py-2 rounded mr-2">
-        <FaTrashAlt className="text-sm" />
-      </button>
-    </div>
-  )
-}
 
 const Table = () => {
   const [allOrders, setAllOrders] = useState([])
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [ordersPerPage] = useState(5) // Adjust this value based on your pagination preference
+  const [ordersPerPage] = useState(10) // Adjust this value based on your pagination preference
   useEffect(() => {
     axios.get("http://18.223.157.202/backend/api/admin/orders").then((res) => {
       setAllOrders(res.data)
     })
   }, [])
+
+  const markShipHandler = (id) => {
+    console.log(id)
+    axios
+      .post(`http://18.223.157.202/backend/api/admin/orders/${id}/status`, {
+        status: "SHIPPED",
+      })
+      .then((res) => {
+        console.log(res)
+        const updatedOrders = allOrders.map((item) => {
+          if (item.id === id) {
+            return { ...item, status: "SHIPPED" }
+          }
+          return item
+        })
+        setAllOrders(updatedOrders)
+      })
+  }
+
+  const ActionButtons = ({ id, status }) => {
+    return (
+      <div className="flex">
+        {status !== "SHIPPED" && (
+          <button
+            onClick={() => markShipHandler(id)}
+            className="border border-blue-700 hover:bg-blue-700 hover:text-white duration-300 text-blue-700 px-2 py-1 rounded mr-2 flex gap-1 items-center"
+          >
+            <FaPenClip />
+            Mark as shipped
+          </button>
+        )}
+
+        <button className="border border-red-500 text-red-500 hover:bg-red-500 hover:text-white duration-300 px-2 py-2 rounded mr-2 flex-1 flex justify-center">
+          <FaTrashAlt className="text-sm" />
+        </button>
+      </div>
+    )
+  }
 
   const indexOfLastOrder = currentPage * ordersPerPage
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
@@ -77,7 +103,7 @@ const Table = () => {
                 {item.status}
               </td>
               <td className="px-4 border-b border-gray-400">
-                <ActionButtons />
+                <ActionButtons id={item.id} status={item.status} />
               </td>
             </tr>
           ))}

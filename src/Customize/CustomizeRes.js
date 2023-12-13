@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Center,
   Grid,
   HStack,
@@ -10,7 +9,7 @@ import {
 } from "@chakra-ui/react"
 import convertCurrency from "../Shared/utils/convertCurrency"
 import { useEffect, useState } from "react"
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../Store/cart'
 function CustomizeRes({ results }) {

@@ -9,20 +9,17 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
-import config from "../utils/config";
 import LoadingSpinner from "./LoadingSpinner";
 import convertCurrency from "../utils/convertCurrency";
 
 function ItemCard(props) {
-  const { cardW, data, variant, onSelect, isSelected, category } = props;
-  const currCategory = props.data.category?.name
-
+  const { cardW, data, onSelect, isSelected } = props;
 
   const { pathname } = useLocation();
 
   if (!data) return <LoadingSpinner />;
 
-  const { name, image, price, gender, discount, id } = data;
+  const { name, price, gender, discount, id } = data;
   const maxLength = 21;
   const formattedName =
     name.trim().length > maxLength ? name.slice(0, maxLength) + "..." : name;
@@ -86,7 +83,7 @@ function ItemCard(props) {
 
         <Text color='gray.500'>
           {gender === "male" ? "Men's" : "Women's"}{" "}
-          {variant === "shoe" ? "shoes" : "accessory"}
+          {props.data.category.name}
         </Text>
 
         {discount ? (
