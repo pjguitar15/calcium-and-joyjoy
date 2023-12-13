@@ -23,7 +23,7 @@ const AddProductForm = ({ handleBackToProducts, setIsAddingProducts }) => {
   const [descriptionInput, setDescriptionInput] = useState("")
   const [priceInput, setPriceInput] = useState(0)
   const [gender, setGender] = useState("male")
-  const [status, setStatus] = useState("in stock")
+  const [stocksInput, setStocksInput] = useState(1)
 
   const toast = useToast()
   const { brands } = useBrands()
@@ -104,7 +104,8 @@ const AddProductForm = ({ handleBackToProducts, setIsAddingProducts }) => {
       description: descriptionInput,
       price: priceInput.toString(),
       brand_id: selectedBrand.toString(),
-      status,
+      status: "in stock",
+      stocks: stocksInput.toString(),
       image: imageUrl[0],
       images: imageUrl,
       gender,
@@ -233,31 +234,16 @@ const AddProductForm = ({ handleBackToProducts, setIsAddingProducts }) => {
           <div className="flex gap-4">
             <div className="mb-4 flex-1">
               <label className="block text-sm font-medium text-gray-600">
-                Status
+                Stocks
               </label>
               <div className="flex items-center space-x-4">
-                <label>
-                  <input
-                    type="radio"
-                    name="status"
-                    value="in stock"
-                    className="mr-1"
-                    checked={status === "in stock"}
-                    onChange={(e) => setStatus(e.target.value)}
-                  />
-                  In Stock
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="status"
-                    value="out of stock"
-                    className="mr-1"
-                    checked={status === "out of stock"}
-                    onChange={(e) => setStatus(e.target.value)}
-                  />
-                  Out of Stock
-                </label>
+                <input
+                  type="number"
+                  name="stocks"
+                  value={stocksInput}
+                  className="appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  onChange={(e) => setStocksInput(e.target.value)}
+                />
               </div>
             </div>
 

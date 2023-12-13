@@ -185,35 +185,42 @@ function CustomizeRes({ results }) {
           </HStack>
           <HStack mt="24px" justify="space-around">
             <button
-              disabled={!shoe || !accessory || !sock}
+              disabled={!(shoe && accessory) && !(shoe && sock) && !(accessory && sock)}
               className='px-9 py-2 font-semibold rounded-full bg-black text-white hover:bg-gray-700 duration-300 cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed'
               onClick={() => {
-                dispatch(
-                  addToCart({
-                    ...shoe,
-                    quantity: 1,
-                    price: shoePrice,
-                    size: shoe.sizes[0].size.name && shoe.sizes[0].size.name,
-                  })
-                );
 
-                dispatch(
-                  addToCart({
-                    ...sock,
-                    quantity: 1,
-                    price: sockPrice,
-                    size: sock.sizes[0].size.name && sock.sizes[0].size.name,
-                  })
-                );
+                if (shoe) {
+                  dispatch(
+                    addToCart({
+                      ...shoe,
+                      quantity: 1,
+                      price: shoePrice,
+                      size: shoe.sizes[0].size.name && shoe.sizes[0].size.name,
+                    })
+                  );
+                }
 
-                dispatch(
-                  addToCart({
-                    ...accessory,
-                    quantity: 1,
-                    price: accessoryPrice,
-                    size: accessory.sizes[0].size.name && accessory.sizes[0].size.name,
-                  })
-                );
+                if (sock) {
+                  dispatch(
+                    addToCart({
+                      ...sock,
+                      quantity: 1,
+                      price: sockPrice,
+                      size: sock.sizes[0].size.name && sock.sizes[0].size.name,
+                    })
+                  );
+                }
+
+                if (accessory) {
+                  dispatch(
+                    addToCart({
+                      ...accessory,
+                      quantity: 1,
+                      price: accessoryPrice,
+                      size: accessory.sizes[0].size.name && accessory.sizes[0].size.name,
+                    })
+                  );
+                }
 
                 navigate("/checkout")
               }}

@@ -1,7 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import "../Home/HeroCarousel.css";
 import ItemCarousel, { Arrow } from "../Shared/UI/ItemCarousel";
-import { useState } from "react";
 
 function CarouselRow({ name, onItemSelect, data }) {
   const settings = {
