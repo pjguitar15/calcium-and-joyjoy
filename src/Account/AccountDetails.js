@@ -11,7 +11,7 @@ function AccountDetails() {
 
   if (!user) return navigate("/");
 
-  const { firstname, lastname, email } = user.user_info;
+  const { firstname, lastname, email, phone_number } = user.user_info;
 
   const fields = [
     {
@@ -42,7 +42,7 @@ function AccountDetails() {
     {
       label: "Phone Number",
       id: "phone_number",
-      defaultVal: "",
+      defaultVal: phone_number,
       type: "tel",
       tooltip: "Include country code if applicable",
       gridColumn: "1 / -1"
@@ -52,9 +52,24 @@ function AccountDetails() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-
+    
     try {
-      await axiosInstance.post('/update-user', formData);
+      const updateResponse = await axiosInstance.post('/user/update', formData, {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+      });
+
+      const updatedUser = {user_info: updateResponse.data.data};
+      console.log(updatedUser);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...updatedUser,
+          token: user?.token,
+        })
+      );
+
       toast({
         title: "Account updated.",
         description: "Your account details have been updated successfully.",
@@ -65,7 +80,7 @@ function AccountDetails() {
     } catch (error) {
       toast({
         title: "Error updating account.",
-        description: "There was an issue updating your account details.",
+        description: "There was an issue updating your account details. " + error.message,
         status: "error",
         duration: 5000,
         isClosable: true,

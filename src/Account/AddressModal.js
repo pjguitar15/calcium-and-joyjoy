@@ -32,14 +32,29 @@ function AddressModal({ onReload }) {
 
   const handleSave = async (data) => {
     const { street, bldg, city, barangay, postCode, label } = data;
-    const finalAddress = `${label}: ${bldg}, ${street}, ${barangay}, ${city}, ${region}, ${postCode}`;
+    const finalAddress2 = `${label}: ${bldg}, ${street}, ${barangay}, ${city}, ${region}, ${postCode}`;
 
+    const finalAddress = {
+      user_id: `${userInfo.id}`,
+      first_name: `${userInfo.firstname}`,
+      last_name: `${userInfo.lastname}`,
+      street_address: `${street}`,
+      building_address: `${bldg}`,
+      province: ``,
+      city_municipality: `${city}`,
+      barangay: `${barangay}`,
+      postal_code: `${postCode}`,
+      email: `${userInfo.email}`,
+      phone_number: `${userInfo.phone_number}`,
+      label: `${label}`
+    };
+    
     const newUserInfo = { ...userInfo, address: finalAddress };
 
     try {
       await axiosInstance.post(
-        "/user/update",
-        { address: finalAddress },
+        "/user/address/store",
+        { finalAddress },
         {
           headers: {
             Authorization: "Bearer " + user?.token,
