@@ -33,7 +33,7 @@ function Footer() {
       >
         <VStack h='100%' alignItems='start'>
           <Text mb='16px' fontWeight='semibold' fontSize='20px'>
-            About us
+            History
           </Text>
           <Text mb='56px'>
             Calcium JoyJoy Online Shop PH is a successful e-commerce venture on

@@ -12,7 +12,7 @@ function FilterBar() {
     },
     {
       main: "Brand",
-      items: ["Nike", "Addidas", "Jordan", "Converse"],
+      items: ["Nike", "Adidas", "Jordan", "Converse"],
     },
     {
       main: "Gender",

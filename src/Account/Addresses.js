@@ -1,63 +1,90 @@
-import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Text, Badge, Alert, AlertIcon } from "@chakra-ui/react";
 import AddressModal from "./AddressModal";
 import axiosInstance from "../Shared/utils/axiosInstance";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
+
 function Addresses() {
   const [refresh, setRefresh] = useState(false);
+  const [error, setError] = useState(null);
   const user = JSON.parse(localStorage.getItem("user"));
+  const maxAddresses = 3;
 
-  const { data: address, isLoading } = useQuery({
-    queryKey: "user",
-    queryFn: async () => {
+  const { data: addresses, isLoading } = useQuery(['addresses', ], async () => {
+    try {
       const res = await axiosInstance.get("/user/address", {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
       return res.data.data;
-    },
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+      setError("Failed to load addresses. Please try again later.");
+      return [];
+    }
   });
-  // const address = user?.user_info.address;
-  if (isLoading) return <LoadingSpinner />;
-  const handleRemove = async () => {
-    await axiosInstance.post(
-      "/user/update",
-      { address: null },
-      {
-        headers: {
-          Authorization: "Bearer " + user?.token,
-        },
-      }
-    );
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        token: user.token,
-        user_info: { ...user.user_info, address: null },
-      })
-    );
-    setTimeout(() => {
+  useEffect(() => {
+    console.log("Addresses:", addresses);
+  }, [addresses]);
+
+  if (isLoading) return <LoadingSpinner />;
+
+  const safeAddresses = addresses || [];
+
+  const handleRemove = async (addressId) => {
+    try {
+      await axiosInstance.post(
+        "/user/address/delete",
+        { id: addressId },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
       setRefresh((prev) => !prev);
-    }, 700);
+    } catch (error) {
+      console.error("Error removing address:", error);
+      setError("Failed to remove address. Please try again later.");
+    }
   };
+
+  const canAddMoreAddresses = safeAddresses.length < maxAddresses;
 
   return (
     <>
+      {error && (
+        <Alert status="error" mb={4}>
+          <AlertIcon />
+          {error}
+        </Alert>
+      )}
+
       <Box>
-        <Heading fontWeight='semibold'>Delivery Addresses</Heading>
-        {address.length < 1 ? (
+        <Heading fontWeight='semibold'>
+          Delivery Addresses 
+          <Badge ml='10px' colorScheme='green'>
+            {safeAddresses.length}/{maxAddresses}
+          </Badge>
+        </Heading>
+        {safeAddresses.length === 0 ? (
           <Text mt='8px'>You currently don't have any delivery addresses.</Text>
         ) : (
-          <Box>
-            <Text mt='24px'>{address[0]}</Text>
-            <Button onClick={handleRemove} variant='unstyled' color='red.500'>
-              Remove
-            </Button>
-          </Box>
+          safeAddresses.map((address, index) => {
+            console.log("Rendering address:", address);
+            return (
+              <Box key={index} mt='24px'>
+                <Text><strong>{address.label}:</strong> {address.street_address}, {address.building_address}, {address.city_municipality}, {address.barangay}, {address.postal_code}</Text>
+                <Button onClick={() => handleRemove(address.id)} variant='unstyled' color='red.500'>
+                  Remove
+                </Button>
+              </Box>
+            );
+          })
         )}
       </Box>
-      {address.length < 1 && (
+      {canAddMoreAddresses && (
         <Box mt='24px' display='flex' justifyContent='end'>
           <AddressModal onReload={() => setRefresh((prev) => !prev)} />
         </Box>
