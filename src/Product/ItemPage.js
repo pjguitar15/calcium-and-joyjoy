@@ -40,6 +40,7 @@ function ItemPage() {
   const dispatch = useDispatch();
 
   const getShoe = async () => {
+
     const res = await axiosInstance.get(`/shoes/${productID}`);
     return res.data;
   };
@@ -47,6 +48,8 @@ function ItemPage() {
     queryKey: "shoeItem",
     queryFn: getShoe,
   });
+
+  console.log(shoe)
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -64,13 +67,14 @@ function ItemPage() {
     const res = await axiosInstance.post(
       "/user/wishlist/store",
       { user_id: user.user_info.id, product_id: productID },
+      { user_id: user.user_info.id, product_id: productID },
       { headers: { Authorization: `Bearer ${user.token}` } }
     );
 
     console.log(res);
   };
 
-  const { name, gender, description, price, image } = shoe;
+  const { name, gender, description, price, image, colors } = shoe;
 
   const dummy = [
     "/dummyShoe.png",
@@ -163,7 +167,7 @@ function ItemPage() {
           <Image
             mt='40px'
             maxW='320px'
-            src={`${config.apiUrl}/storage/${image}`}
+            src={image}
           />
         </HStack>
         {/* DETAILS AND CTAs */}
@@ -175,7 +179,9 @@ function ItemPage() {
             <Text>{gender === "male" ? "Men's" : "Women's"} shoes</Text>
           </Box>
           <Text fontWeight='semibold'>{convertCurrency(price)}</Text>
-          <Text my='16px'>Color: Cloud White/ White</Text>
+          <Text my='16px'>Colors: {colors.map((color, index, array) => (
+            index === array.length - 1 ? color.color.name : color.color.name + ", "
+          ))}</Text>
           <Box mb='8px'>
             <HStack gap='24px'>
               <Text fontWeight='semibold' role='label'>
@@ -230,11 +236,11 @@ function ItemPage() {
                   fontWeight='normal'
                   px='16px'
                   onClick={() => setSelectedSize(size)}
-                  // filter={
-                  //   size === selectedSize
-                  //     ? "drop-shadow(0px 2px 4px #daa520)"
-                  //     : ""
-                  // }
+                // filter={
+                //   size === selectedSize
+                //     ? "drop-shadow(0px 2px 4px #daa520)"
+                //     : ""
+                // }
                 >
                   US {size}
                 </Button>

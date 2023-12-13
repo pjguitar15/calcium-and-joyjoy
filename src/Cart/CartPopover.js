@@ -79,7 +79,7 @@ const CartPopOver = () => {
                   <Center justifySelf='center' h='100px'>
                     <Image
                       borderRadius='10px'
-                      src={`${config.apiUrl}/storage/${image}`}
+                      src={item.image}
                       maxH='100px'
                     />
                   </Center>
@@ -91,7 +91,11 @@ const CartPopOver = () => {
                     <Text>{gender === "male" ? "Men's" : "Women's"} shoes</Text>
                     <HStack justifyContent='space-between'>
                       <Text fontSize='12px' fontWeight='bold'>
-                        Size: {size}
+                        {/* Size: {item.sizes[0]} */}
+                        Sizes: {item.sizes.map((size, index, array) => (
+                          index === array.length - 1 ? size.size.name : size.size.name + ", "
+                        ))}
+                        {console.log(item.sizes[0].size?.name)}
                       </Text>
                       <Text fontSize='12px'>Quantity: {quantity}</Text>
                     </HStack>
