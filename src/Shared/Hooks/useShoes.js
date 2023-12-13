@@ -11,8 +11,8 @@ export function useGetShoes() {
     const res = await axiosInstance.get("/shoes", {
       params: queryObj,
     });
-    console.log(res.data)
-    return res.data;
+    const shoesOnly = res.data.filter((item) => item.category?.name === "Shoes" || item.category?.product_category_id === "1")
+    return shoesOnly;
   };
   const { data, isLoading } = useQuery({
     queryKey: ["shoes", queryObj],

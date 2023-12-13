@@ -29,7 +29,7 @@ function Accessories({ data }) {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === data.length - 4 ? true : false}
+              onLast={activeIndex === data?.length - 4 ? true : false}
             />
           ),
         },
@@ -42,7 +42,7 @@ function Accessories({ data }) {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === data.length - 3 ? true : false}
+              onLast={activeIndex === data?.length - 3 ? true : false}
             />
           ),
         },
@@ -55,7 +55,7 @@ function Accessories({ data }) {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === data.length - 2 ? true : false}
+              onLast={activeIndex === data?.length - 2 ? true : false}
             />
           ),
         },
@@ -68,7 +68,7 @@ function Accessories({ data }) {
           nextArrow: (
             <Arrow
               variant='next'
-              onLast={activeIndex === data.length - 1 ? true : false}
+              onLast={activeIndex === data?.length - 1 ? true : false}
             />
           ),
         },
@@ -80,7 +80,7 @@ function Accessories({ data }) {
     <Box>
       <Heading mb='24px'>ACCESSORIES</Heading>
       <Box as={Slider} {...settings}>
-        {data.map((item, i) => {
+        {data?.map((item, i) => {
           return (
             <Box py='16px' key={item.id}>
               <ItemCard data={item} />

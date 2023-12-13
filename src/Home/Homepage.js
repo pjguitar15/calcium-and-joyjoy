@@ -2,27 +2,13 @@ import { Box, Heading, VStack } from "@chakra-ui/react";
 import ItemCarousel from "../Shared/UI/ItemCarousel";
 import Accessories from "./Accessories";
 import HeroCarousel from "./HeroCarousel";
-import { useGetShoes } from "../Shared/Hooks/useShoes";
-import { useEffect } from 'react';
-
-// const { name, image, price, gender, discount, id } = data;
+import { useGetAllProducts } from '../Shared/Hooks/useGetAllProducts';
+import { useGetAccessories } from '../Shared/Hooks/useGetAccessories';
 
 function Homepage() {
-  const dummyAccessories = Array.from(
-    {
-      length: 5,
-    },
-    (_, i) => ({
-      name: "sock",
-      price: 400,
-      image: "",
-      gender: "male",
-      id: i,
-      discount: 0.1,
-    })
-  );
+  const { data } = useGetAllProducts();
+  const { accessoriesData } = useGetAccessories();
 
-  const { data, isLoading } = useGetShoes();
 
   return (
     <VStack align='normal' justify='normal' gap='80px'>
@@ -31,7 +17,7 @@ function Homepage() {
         <Heading mb='24px'>WHAT'S HOT?</Heading>
         <ItemCarousel data={data} />
       </Box>
-      <Accessories data={dummyAccessories} />
+      <Accessories data={accessoriesData} />
     </VStack>
   );
 }
