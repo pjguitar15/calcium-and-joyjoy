@@ -11,11 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import Receipt from "./Receipt";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useMutation } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { clearCart } from '../Store/cart';
 
 function CheckoutPay({ onBack, onPay, checkoutData }) {
   const [payment, setPayment] = useState("Gcash");
@@ -27,6 +28,7 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
   const user = JSON.parse(localStorage.getItem("user"));
   const toast = useToast();
   const navigate = useNavigate()
+  const dispatch = useDispatch();
 
   const handlePay = () => {
 
@@ -75,6 +77,7 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
           status: "success",
           position: "top",
         });
+        dispatch(clearCart());
 
         navigate("/")
       }).catch((err) => {
