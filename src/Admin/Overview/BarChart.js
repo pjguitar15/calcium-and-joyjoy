@@ -75,10 +75,6 @@ const BarChart = () => {
         <span className="text-red-500 font-semibold">55% </span>Decrease in
         today sales.
       </p>
-      <hr className="mt-4" />
-      <div className="pt-1 px-5">
-        <span className="text-sm text-gray-500">Last 24 hours</span>
-      </div>
     </div>
   )
 }
