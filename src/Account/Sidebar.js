@@ -31,6 +31,7 @@ function Sidebar({ onSelect }) {
             pos='relative'
             role='group'
             cursor='pointer'
+            color={'white'}
             bgColor={selected === item ? "blackAlpha.600" : ""}
             onClick={() => handleSelect(item)}
             _hover={{
