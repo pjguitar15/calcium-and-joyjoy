@@ -7,7 +7,12 @@ import axiosInstance from "../Shared/utils/axiosInstance"
 import { useGetAccessories } from '../Shared/Hooks/useGetAccessories'
 
 function Carousels({ onSelectItems }) {
-  const { accessoriesData, accessoriesLoading } = useGetAccessories()
+  const { accessoriesData } = useGetAccessories()
+
+  useEffect(() => {
+    console.log(accessoriesData)
+  }, [accessoriesData])
+
   const { data: mix, isLoading } = useQuery("mix", async () => {
     // /api/admin/products
     const res = await axiosInstance.get("/mix-and-match")
@@ -21,6 +26,7 @@ function Carousels({ onSelectItems }) {
 
   useEffect(() => {
     onSelectItems({ shoe, sock, accessory })
+    // console.log(sock)
   }, [shoe?.id, sock?.id, accessory?.id])
 
   if (isLoading) return <LoadingSpinner />

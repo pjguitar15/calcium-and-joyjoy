@@ -22,7 +22,6 @@ function CustomizeRes({ results }) {
   const { shoe, sock, accessory } = results
 
   useEffect(() => {
-    console.log(shoe)
     if (shoe) setShoePrice(Number(shoe.price))
     if (sock) setSockPrice(Number(sock.price))
     if (accessory) setAccessoryPrice(Number(accessory.price))
@@ -195,7 +194,7 @@ function CustomizeRes({ results }) {
                       ...shoe,
                       quantity: 1,
                       price: shoePrice,
-                      size: shoe.sizes[0].size.name && shoe.sizes[0].size.name,
+                      size: shoe.sizes[0]?.size.name,
                     })
                   );
                 }
@@ -206,10 +205,11 @@ function CustomizeRes({ results }) {
                       ...sock,
                       quantity: 1,
                       price: sockPrice,
-                      size: sock.sizes[0].size.name && sock.sizes[0].size.name,
+                      size: sock.sizes[0]?.size.name,
                     })
                   );
                 }
+                console.log(shoe)
 
                 if (accessory) {
                   dispatch(
@@ -217,7 +217,7 @@ function CustomizeRes({ results }) {
                       ...accessory,
                       quantity: 1,
                       price: accessoryPrice,
-                      size: accessory.sizes[0].size.name && accessory.sizes[0].size.name,
+                      size: accessory.sizes[0]?.size.name,
                     })
                   );
                 }

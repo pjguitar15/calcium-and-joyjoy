@@ -103,7 +103,8 @@ function OrderSummary() {
             >
               <Text fontWeight='bold'>{item.name}</Text>
               <Text color='gray.500'>Men/Women's Shoes</Text>
-              <Text>Size: {item.size}</Text>
+              {item.size && <Text>Size: {item.size}</Text>}
+
               <Text>Quantity: {item.quantity}</Text>
               <Text>{convertCurrency(item.price)}</Text>
             </VStack>

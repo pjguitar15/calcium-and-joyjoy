@@ -28,6 +28,7 @@ import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
 import { addToCart, addToCheckout } from "../Store/cart";
+import useProductSizes from '../Shared/Hooks/useProductSizes';
 
 function ItemPage() {
   const { productID } = useParams();
@@ -39,7 +40,7 @@ function ItemPage() {
   const [qty, setQty] = useState(1);
   const navigate = useNavigate()
   const dispatch = useDispatch();
-
+  const { productSizes } = useProductSizes()
   const getShoe = async () => {
 
     const res = await axiosInstance.get(`/shoes/${productID}`);
@@ -82,7 +83,9 @@ function ItemPage() {
     "/heroSocks.png",
   ];
 
-  const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
+
+  const sizes = productSizes
+
 
   const handleQtyChange = (e) => {
     if (e.target.value < 0 || !e.target.value) return setQty(1);
@@ -219,7 +222,7 @@ function ItemPage() {
           <Box>
             <Text fontWeight='semibold'>Sizes</Text>
             <Grid mt='8px' gap='8px' gridTemplateColumns='repeat(4,1fr)'>
-              {sizes.map((size) => (
+              {sizes.name?.map((size) => (
                 <Button
                   key={size}
                   borderRadius='none'
@@ -228,18 +231,9 @@ function ItemPage() {
                   borderWidth={size === selectedSize ? "2px" : "1px"}
                   color={size === selectedSize ? "#daa520" : "black"}
                   variant='unstyled'
-                  // _hover={{
-                  //   filter: "brightness(1.1)",
-                  //   opacity: 1,
-                  // }}
                   fontWeight='normal'
                   px='16px'
                   onClick={() => setSelectedSize(size)}
-                // filter={
-                //   size === selectedSize
-                //     ? "drop-shadow(0px 2px 4px #daa520)"
-                //     : ""
-                // }
                 >
                   US {size}
                 </Button>
