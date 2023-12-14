@@ -28,7 +28,6 @@ function CheckoutConfirm({ onConfirm }) {
 
 
   useEffect(() => {
-    console.log(autoFilledData)
     if (autoFilledData) {
       setFirstName(autoFilledData?.first_name)
       setLastName(autoFilledData?.last_name)
@@ -50,13 +49,15 @@ function CheckoutConfirm({ onConfirm }) {
     }).then((res) => {
       setAutoFilledData(res.data.data[0])
       setAllAddresses(res.data.data)
-      // console.log(res.data.data)
     })
   }, []);
 
-  const handleConfirm = (data) => {
-    console.log(data)
-    // onConfirm({ ...data, region });
+  const handleConfirm = () => {
+    const data = {
+      barangay: barangay, first_name: firstName, last_name: lastName, postal_code: postalCode, street_bldg_name: streetAddress, city: city, email: email, phone_number: "null"
+    }
+    
+    onConfirm({ ...data, region });
   };
 
   const onCancel = () => {
@@ -84,41 +85,48 @@ function CheckoutConfirm({ onConfirm }) {
       <HStack>
         <Input
           placeholder="First Name"
-          {...register("first_name", { required: true })}
+          {...register("first_name",)}
+          required
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
         />
 
         <Input
           placeholder="Last Name"
-          {...register("last_name", { required: true })}
+          {...register("last_name",)}
+          required
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
         />
       </HStack>
-      <Input placeholder="Barangay" {...register("barangay", { required: true })}
+      <Input placeholder="Barangay" {...register("barangay")}
+        required
         value={barangay}
         onChange={(e) => setBarangay(e.target.value)}
       />
       <Input
         placeholder="Street/Building Name"
-        {...register("street_bldg_name", { required: true })}
+        {...register("street_bldg_name")}
+        required
         value={streetAddress}
         onChange={(e) => setStreetAddress(e.target.value)}
       />
       <HStack>
-        <Input placeholder="Postal Code" {...register("postal_code", { required: true })}
+        <Input placeholder="Postal Code" {...register("postal_code",)}
+          required
           value={postalCode}
           onChange={(e) => setPostalCode(e.target.value)}
         />
 
-        <Input placeholder="City" {...register("city", { required: true })}
+        <Input placeholder="City" {...register("city")}
+          required
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />
       </HStack>
       <Text>Contact information:</Text>
-      <Input placeholder="Email" {...register("email", { required: true })}
+      <Input placeholder="Email" {...register("email")}
+        required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />

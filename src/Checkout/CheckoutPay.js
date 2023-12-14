@@ -30,11 +30,10 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
 
   const handlePay = () => {
     const deliveryFee = 300;
-    console.log(checkoutData)
 
     const cartsData = cart.map((item) => ({
       product_id: item.id,
-      size: item.size.toString(),
+      size: item.size.toString() || [""],
       session_id: "session123",
       user_id: user?.user_info.id,
       quantity: item.quantity,
@@ -62,11 +61,9 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
     };
 
     if (postData) {
-      console.log(postData)
       setLoading(true)
       // const res = await axiosInstance.post("/checkout", JSON.stringify(postData));
       axios.post("http://18.223.157.202/backend/api/checkout", postData).then((res) => {
-        console.log(res)
         setLoading(false)
         toast({
           title: "Your order has been processed successfully!",
