@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import LoadingSpinner from "../Shared/UI/LoadingSpinner"
 import { useQuery } from "react-query"
 import axiosInstance from "../Shared/utils/axiosInstance"
-import { useLocation } from "react-router-dom"
 
 function Carousels({ onSelectItems }) {
   const { data: mix, isLoading } = useQuery("mix", async () => {
@@ -12,35 +11,9 @@ function Carousels({ onSelectItems }) {
     return res.data
   })
 
-  const location = useLocation()
-  const queryParameters = new URLSearchParams(location.search)
-
-  const [filteredShoes, setFilteredShoes] = useState([])
   const [shoe, setShoe] = useState(null)
   const [sock, setSock] = useState(null)
   const [accessory, setAccessory] = useState(null)
-  const [selectedFilterTypes, setSelectedFilterTypes] = useState(() =>
-    (queryParameters.get("Type") || "").split("-")
-  )
-
-  useEffect(() => {
-    if (selectedFilterTypes.length > 0) {
-      setFilteredShoes(
-        (mix?.shoes || []).filter((item) =>
-          item.types.some(({ type }) => selectedFilterTypes.includes(type.name))
-        )
-      )
-    } else {
-      setFilteredShoes(mix?.shoes || [])
-    }
-  }, [mix, selectedFilterTypes])
-
-  useEffect(() => {
-    const typeInString = queryParameters.get("Type")
-    if (typeInString) {
-      setSelectedFilterTypes(typeInString.split("-"))
-    }
-  }, [queryParameters])
 
   useEffect(() => {
     onSelectItems({ shoe, sock, accessory })
@@ -52,7 +25,7 @@ function Carousels({ onSelectItems }) {
     <VStack align="normal" gap="32px">
       <CarouselRow
         name="Shoes"
-        data={filteredShoes.length > 0 ? filteredShoes : mix.shoes}
+        data={mix.shoes}
         onItemSelect={(shoe) => setShoe(shoe)}
       />
       <CarouselRow

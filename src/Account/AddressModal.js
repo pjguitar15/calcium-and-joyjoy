@@ -43,9 +43,10 @@ function AddressModal({ onReload }) {
       postal_code: `${postCode}`,
       email: `${userInfo.email}`,
       phone_number: `${userInfo.phone_number}`,
-      label: `${label}`
+      label: `${label}`,
+      region: region
     };
-    
+
     const newUserInfo = { ...userInfo, address: finalAddress };
 
     try {
