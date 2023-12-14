@@ -50,7 +50,7 @@ const AdminSizes = () => {
     container mx-auto"
     >
       <h3 className="text-xl font-semibold">
-        Products Management | <span className="text-gray-500">Brands</span>
+        Products Management | <span className="text-gray-500">Sizes</span>
       </h3>
       <div className="my-4">
         <h6 className="font-semibold">Add a size</h6>
