@@ -4,6 +4,7 @@ import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import Scrollbars from "rc-scrollbars";
 import { useSearchParams } from "react-router-dom";
 import { useGetAllProducts } from '../Shared/Hooks/useGetAllProducts';
+import { useGetShoes } from '../Shared/Hooks/useShoes';
 
 function ProductList() {
   const [searchParams] = useSearchParams();
@@ -15,7 +16,7 @@ function ProductList() {
 
   const keyword = queryObj.keyword;
 
-  const { data, isLoading } = useGetAllProducts();
+  const { data, isLoading } = useGetShoes();
   if (isLoading) return <LoadingSpinner />;
 
   const filteredData = keyword
@@ -30,7 +31,7 @@ function ProductList() {
         gridTemplateColumns='repeat(auto-fit,minmax(320px,1fr))'
         py='16px'
       >
-        {filteredData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map((item) => (
+        {data.map((item) => (
           <ItemCard data={item} key={item.id} cardW='300px' />
         ))}
       </Grid>

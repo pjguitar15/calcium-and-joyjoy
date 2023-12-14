@@ -3,7 +3,7 @@ import { Container, Grid, Heading } from "@chakra-ui/react";
 import Sidebar from "./Sidebar";
 import AccountDetails from "./AccountDetails";
 import { useState } from "react";
-import OrderDetails from "./OrderDetails";
+import OrderDetails from "./OrderDetails/OrderDetails";
 import OrderHistory from "./OrderHistory";
 import Addresses from "./Addresses";
 function AccountPage() {

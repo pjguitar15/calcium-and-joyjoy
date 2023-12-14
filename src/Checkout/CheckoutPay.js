@@ -21,7 +21,7 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
   const [courier, setCourier] = useState("J&T");
   const [loading, setLoading] = useState(false)
 
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.checkout);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const toast = useToast();
@@ -29,7 +29,6 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
   const dispatch = useDispatch();
 
   const handlePay = () => {
-
     const deliveryFee = 300;
     console.log(checkoutData)
 
@@ -82,6 +81,8 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
         console.log(err)
         setLoading(false)
       })
+    } else {
+      console.log("something wrong with postData")
     }
   };
 

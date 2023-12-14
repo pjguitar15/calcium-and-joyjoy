@@ -17,7 +17,6 @@ const ProductsDisplay = ({ handleAddProductClick }) => {
     // Add filtering logic or dispatch an action if needed
   }
 
-
   return (
     <div>
       <h3 className="text-xl font-semibold">
