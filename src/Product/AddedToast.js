@@ -84,7 +84,7 @@ function AddedToast({ item, show, dismount }) {
         <Center h='100px'>
           <Image
             borderRadius='10px'
-            src={`${config.apiUrl}/storage/${image}`}
+            src={image}
             maxH='100px'
           />
         </Center>

@@ -20,14 +20,15 @@ import YouMightAlsoLike from "../Shared/UI/YouMightAlsoLike";
 
 import AddedToast from "./AddedToast";
 import { AnimatePresence } from "framer-motion";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
-import { addToCart } from "../Store/cart";
+import { addToCart, addToCheckout } from "../Store/cart";
+import useProductSizes from '../Shared/Hooks/useProductSizes';
 
 function ItemPage() {
   const { productID } = useParams();
@@ -37,8 +38,9 @@ function ItemPage() {
   const [display, setDisplay] = useState("/dummyShoe.png");
   const toast = useToast();
   const [qty, setQty] = useState(1);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
-
+  const { productSizes } = useProductSizes()
   const getShoe = async () => {
 
     const res = await axiosInstance.get(`/shoes/${productID}`);
@@ -81,7 +83,9 @@ function ItemPage() {
     "/heroSocks.png",
   ];
 
-  const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
+
+  const sizes = productSizes
+
 
   const handleQtyChange = (e) => {
     if (e.target.value < 0 || !e.target.value) return setQty(1);
@@ -217,7 +221,7 @@ function ItemPage() {
           <Box>
             <Text fontWeight='semibold'>Sizes</Text>
             <Grid mt='8px' gap='8px' gridTemplateColumns='repeat(4,1fr)'>
-              {sizes.map((size) => (
+              {sizes.name?.map((size) => (
                 <Button
                   key={size}
                   borderRadius='none'
@@ -258,8 +262,16 @@ function ItemPage() {
               </Button>
             </HStack>
             <Button
-              as={Link}
-              to='/checkout'
+              onClick={() => {
+                dispatch(addToCheckout({
+                  ...shoe,
+                  quantity: qty,
+                  price: price * qty,
+                  size: selectedSize,
+                }))
+
+                navigate('/checkout')
+              }}
               bgColor='gray'
               color='white'
               borderRadius='20px'
