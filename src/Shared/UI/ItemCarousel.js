@@ -1,24 +1,25 @@
-import { Box, Circle } from "@chakra-ui/react";
-import ItemCard from "./ItemCard";
-import Slider from "react-slick";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { Box, Circle } from "@chakra-ui/react"
+import ItemCard from "./ItemCard"
+import Slider from "react-slick"
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
+import { useEffect, useState } from "react"
 
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "./LoadingSpinner"
 
 function ItemCarousel({ propSettings, onItemSelect, data }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [selected, setSelected] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [selected, setSelected] = useState(null)
+
   const handleSelect = (item) => {
     if (item.id === selected) {
-      setSelected(null);
-      return onItemSelect(null);
+      setSelected(null)
+      return onItemSelect(null)
     }
-    setSelected(item.id);
-    onItemSelect(item);
-  };
+    setSelected(item.id)
+    onItemSelect(item)
+  }
 
-  if (!data) return <LoadingSpinner />;
+  if (!data) return <LoadingSpinner />
 
   const settings = {
     infinite: false,
@@ -27,12 +28,12 @@ function ItemCarousel({ propSettings, onItemSelect, data }) {
     slidesToScroll: 5,
     nextArrow: (
       <Arrow
-        variant='next'
+        variant="next"
         onLast={activeIndex === data.length - 5 ? true : false}
       />
     ),
     prevArrow: (
-      <Arrow variant='prev' onLast={activeIndex === 0 ? true : false} />
+      <Arrow variant="prev" onLast={activeIndex === 0 ? true : false} />
     ),
     beforeChange: (current, next) => setActiveIndex(next),
     responsive: [
@@ -43,7 +44,7 @@ function ItemCarousel({ propSettings, onItemSelect, data }) {
           slidesToScroll: 4,
           nextArrow: (
             <Arrow
-              variant='next'
+              variant="next"
               onLast={activeIndex === data.length - 4 ? true : false}
             />
           ),
@@ -56,7 +57,7 @@ function ItemCarousel({ propSettings, onItemSelect, data }) {
           slidesToScroll: 3,
           nextArrow: (
             <Arrow
-              variant='next'
+              variant="next"
               onLast={activeIndex === data.length - 3 ? true : false}
             />
           ),
@@ -69,7 +70,7 @@ function ItemCarousel({ propSettings, onItemSelect, data }) {
           slidesToScroll: 2,
           nextArrow: (
             <Arrow
-              variant='next'
+              variant="next"
               onLast={activeIndex === data.length - 2 ? true : false}
             />
           ),
@@ -82,53 +83,56 @@ function ItemCarousel({ propSettings, onItemSelect, data }) {
           slidesToScroll: 1,
           nextArrow: (
             <Arrow
-              variant='next'
+              variant="next"
               onLast={activeIndex === data.length - 1 ? true : false}
             />
           ),
         },
       },
     ],
-  };
+  }
 
   return (
     <Box as={Slider} {...settings} {...propSettings}>
-      {data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map((item, i) => {
-        return (
-          <Box py='16px' key={i}>
-            <ItemCard
-              onSelect={handleSelect}
-              variant='shoe'
-              data={item}
-              isSelected={item.id === selected}
-            />
-          </Box>
-        );
-      })}
+      {data
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .map((item, i) => {
+          return (
+            <Box py="16px" key={i}>
+              {/* <h1>Test</h1> */}
+              <ItemCard
+                onSelect={handleSelect}
+                variant="shoe"
+                data={item}
+                isSelected={item.id === selected}
+              />
+            </Box>
+          )
+        })}
     </Box>
-  );
+  )
 }
 
-export default ItemCarousel;
+export default ItemCarousel
 
 export const Arrow = ({ onClick, variant, onLast }) => {
   return (
     <Circle
       opacity={onLast ? 0 : 1}
       pointerEvents={onLast ? "none" : "auto"}
-      fontSize='40px'
-      pos='absolute'
+      fontSize="40px"
+      pos="absolute"
       left={variant === "prev" ? "-8px" : ""}
       right={variant === "next" ? "-8px" : ""}
-      top='50%'
-      transform='translateY(-60%)'
+      top="50%"
+      transform="translateY(-60%)"
       zIndex={90}
       onClick={onClick}
-      cursor='pointer'
-      bgColor='gray.500'
-      color='white'
+      cursor="pointer"
+      bgColor="gray.500"
+      color="white"
     >
       {variant === "next" ? <ChevronRightIcon /> : <ChevronLeftIcon />}
     </Circle>
-  );
-};
+  )
+}
