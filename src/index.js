@@ -20,6 +20,11 @@ import AdminLogin from './Admin/AdminLogin';
 import ProductsPage from './Product/ProductsPage'
 import AdminProductsPage from './Admin/Products/AdminProductsPage';
 import OrdersPage from './Admin/Orders/OrdersPage';
+import AdminCategories from './Admin/Products/AdminCategories';
+import AdminBrands from './Admin/Products/AdminBrands';
+import AdminSizes from './Admin/Products/AdminSizes';
+import AdminColors from './Admin/Products/AdminColors';
+import AdminTypes from './Admin/Products/AdminTypes';
 
 
 // LAZY PAGES
@@ -203,6 +208,46 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <AdminProductsPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "categories",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminCategories />
+          </Suspense>
+        ),
+      },
+      {
+        path: "brands",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminBrands />
+          </Suspense>
+        ),
+      },
+      {
+        path: "sizes",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminSizes />
+          </Suspense>
+        ),
+      },
+      {
+        path: "colors",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminColors />
+          </Suspense>
+        ),
+      },
+      {
+        path: "types",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminTypes />
           </Suspense>
         ),
       },

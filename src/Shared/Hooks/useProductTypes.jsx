@@ -10,7 +10,7 @@ const useProductTypes = () => {
         setProductTypes(res.data)
       })
   }, [])
-  return { productTypes }
+  return { productTypes, setProductTypes }
 }
 
 export default useProductTypes

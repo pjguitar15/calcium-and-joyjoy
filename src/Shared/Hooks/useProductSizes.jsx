@@ -10,7 +10,7 @@ const useProductSizes = () => {
         setProductSizes(res.data)
       })
   }, [])
-  return { productSizes }
+  return { productSizes, setProductSizes }
 }
 
 export default useProductSizes

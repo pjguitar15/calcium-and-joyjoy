@@ -10,7 +10,7 @@ const useBrands = () => {
         setBrands(res.data)
       })
   }, [])
-  return { brands }
+  return { brands, setBrands }
 }
 
 export default useBrands

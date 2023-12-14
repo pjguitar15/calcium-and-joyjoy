@@ -10,7 +10,7 @@ const useProductColors = () => {
         setProductColors(res.data)
       })
   }, [])
-  return { productColors }
+  return { productColors, setProductColors }
 }
 
 export default useProductColors

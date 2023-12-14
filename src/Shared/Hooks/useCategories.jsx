@@ -10,7 +10,7 @@ const useCategories = () => {
         setCategories(res.data)
       })
   }, [])
-  return { categories }
+  return { categories, setCategories }
 }
 
 export default useCategories
