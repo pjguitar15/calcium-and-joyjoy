@@ -18,10 +18,10 @@ const ProductItem = (props) => {
       return 'No Types';
     }
   
-    // Map over the types array and access the name of each nested type object
-    return props.item.types.map((typeObject) => typeObject.type.name).join(', ');
+    // Map over the types array and safely access the name of each nested type object
+    return props.item.types.map((typeObject) => typeObject.type?.name).join(', ');
   };
-
+  
   const renderStocks = () => {
     const stocksCount = props.item.stocks;
   

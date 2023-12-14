@@ -35,6 +35,7 @@ import {
   BsArrowsFullscreen,
   BsPalette,
   BsUiChecksGrid,
+  BsMegaphone,
 } from "react-icons/bs";
 
 import { CgLogOut } from "react-icons/cg";
@@ -106,19 +107,26 @@ const menu = [
         icon: BsWalletFill,
       },
       {
-        text: "Shipping Management",
+        text: "Discounts",
+        link: "/discounts",
+        icon: BsTagFill,
+      },
+    ],
+  },
+
+  {
+    main: "Shipping Management",
+    icon: BsTruck,
+    submenu: [
+      {
+        text: "Shipping",
         link: "/shipping",
         icon: BsTruck,
       },
-        {
+      {
         text: "Courier Details",
         link: "/couriers",
         icon: BsTruck,
-      },
-      {
-        text: "Discounts & Offers",
-        link: "/discounts",
-        icon: BsTagFill,
       },
     ],
   },
@@ -174,6 +182,12 @@ const menu = [
         link: "/info",
         icon: BsHouseDoorFill,
       },
+      {
+        text: "Announcement",
+        link: "/announcement",
+        icon: BsMegaphone,
+      },
+      
     ],
   },
 ];

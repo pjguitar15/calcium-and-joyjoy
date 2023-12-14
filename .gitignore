@@ -23,3 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 
 .vercel
+
+# dependencies
+node_modules
+package.json
+package-lock.json

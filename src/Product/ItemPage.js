@@ -110,7 +110,6 @@ function ItemPage() {
         size: selectedSize,
       })
     );
-    // dispatch(addToCart(shoe));
     if (showAdded === true) return;
     else {
       setShowAdded(true);
