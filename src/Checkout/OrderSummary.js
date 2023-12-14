@@ -10,20 +10,29 @@ import {
 } from "@chakra-ui/react";
 import useSubtotal from "../Shared/Hooks/useSubtotal";
 import convertCurrency from "../Shared/utils/convertCurrency";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import config from "../Shared/utils/config";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { clearCheckout } from '../Store/cart'
 function OrderSummary() {
   const subtotal = useSubtotal();
-  const cart = useSelector((state) => state.cart);
+  const checkout = useSelector((state) => state.checkout);
   const [voucher, setVoucher] = useState("");
   const [params, setParams] = useSearchParams();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     params.set("voucher", voucher);
     setParams(params);
   }, [voucher]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearCheckout());
+    };
+  }, [dispatch]);
 
   return (
     <Box>
@@ -72,7 +81,7 @@ function OrderSummary() {
         </HStack>
       </HStack>
       <VStack gap='8px' mt='24px' maxH='45vh' overflowY='auto'>
-        {cart.map((item, i) => (
+        {checkout.map((item, i) => (
           <Grid
             key={i}
             gap='16px'

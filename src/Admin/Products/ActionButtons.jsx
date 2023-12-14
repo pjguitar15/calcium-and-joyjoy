@@ -37,12 +37,12 @@ const ActionButtons = ({
 
       {/* Child 2: Add Brand and Add Product buttons */}
       <div className="flex space-x-4">
-        <button
+        {/* <button
           onClick={onAddBrandClick}
           className="bg-lime-500 text-white px-4 rounded"
         >
           Add Brand
-        </button>
+        </button> */}
 
         <button
           onClick={onAddProductClick}

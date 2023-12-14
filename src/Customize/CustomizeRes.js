@@ -11,7 +11,7 @@ import convertCurrency from "../Shared/utils/convertCurrency"
 import { useEffect, useState } from "react"
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { addToCart } from '../Store/cart'
+import { addToCheckout } from '../Store/cart'
 function CustomizeRes({ results }) {
   const [shoePrice, setShoePrice] = useState(0)
   const [sockPrice, setSockPrice] = useState(0)
@@ -32,6 +32,7 @@ function CustomizeRes({ results }) {
     if (!accessory) setAccessoryPrice(0)
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [shoe, sock, accessory])
+
   return (
     <Grid
       maxW="1200px"
@@ -190,7 +191,7 @@ function CustomizeRes({ results }) {
 
                 if (shoe) {
                   dispatch(
-                    addToCart({
+                    addToCheckout({
                       ...shoe,
                       quantity: 1,
                       price: shoePrice,
@@ -201,7 +202,7 @@ function CustomizeRes({ results }) {
 
                 if (sock) {
                   dispatch(
-                    addToCart({
+                    addToCheckout({
                       ...sock,
                       quantity: 1,
                       price: sockPrice,
@@ -212,7 +213,7 @@ function CustomizeRes({ results }) {
 
                 if (accessory) {
                   dispatch(
-                    addToCart({
+                    addToCheckout({
                       ...accessory,
                       quantity: 1,
                       price: accessoryPrice,

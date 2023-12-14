@@ -50,9 +50,28 @@ const cartSlice = createSlice({
 export const { addToCart, clearCart, addOneMore, subtractOne } =
   cartSlice.actions;
 
+const checkoutSlice = createSlice({
+  name: "checkout",
+  initialState: [],
+  reducers: {
+    // Add checkout-related actions here...
+    // For example:
+    addToCheckout(state, action) {
+      state.push(action.payload);
+    },
+    clearCheckout(state) {
+      return (state = []);
+    },
+    // ... add more actions as needed ...
+  },
+});
+
+export const { addToCheckout, clearCheckout } = checkoutSlice.actions;
+
 const store = configureStore({
   reducer: {
     cart: cartSlice.reducer,
+    checkout: checkoutSlice.reducer,
   },
 });
 
