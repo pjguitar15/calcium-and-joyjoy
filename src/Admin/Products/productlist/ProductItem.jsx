@@ -1,8 +1,10 @@
 import { IoCloseCircleOutline } from "react-icons/io5";
 import DeleteItemModal from "./DeleteItemModal";
 import { useState } from "react";
-import { useToast } from "@chakra-ui/react";
+import { useToast, Badge } from "@chakra-ui/react";
 import axiosInstance from "../../../Shared/utils/axiosInstance";
+
+
 
 const ProductItem = (props) => {
   console.log("Product Item Props:", props.item);
@@ -19,6 +21,20 @@ const ProductItem = (props) => {
     // Map over the types array and access the name of each nested type object
     return props.item.types.map((typeObject) => typeObject.type.name).join(', ');
   };
+
+  const renderStocks = () => {
+    const stocksCount = props.item.stocks;
+  
+    if (stocksCount <= 0) {
+      return <Badge colorScheme="red">Out of Stock</Badge>;
+    } else if (stocksCount < 10) {
+      return <Badge colorScheme="orange">{stocksCount} units left</Badge>;
+    } else {
+      return <Badge colorScheme="green">{stocksCount} units available</Badge>;
+    }
+  };
+  
+  
 
   const renderBrandName = () => {
     return props.item.brand ? props.item.brand.name : 'No Brand';
@@ -91,6 +107,7 @@ const ProductItem = (props) => {
           className="text-2xl absolute top-3 right-3 hover:text-red-500 cursor-pointer"
         />
       </div>
+      
       <div className="flex flex-col gap-2 p-4">
         <h3 className="text-xl font-semibold mb-2">{props.item.name}</h3>
         <h6 className="text-sm">Price: P{props.item.price}</h6>
@@ -98,6 +115,10 @@ const ProductItem = (props) => {
         <h6 className="text-sm">Type: {renderTypes()}</h6>
         <h6 className="text-sm">Category: {renderCategoryName()}</h6>
         <h6 className="text-sm capitalize">Gender: {props.item.gender}</h6>
+        <div className="stock-info">
+        <h6 className="text-sm">Stocks: {renderStocks()}</h6>
+        </div>
+
       </div>
       <div className="flex flex-col gap-2 p-4">
         <h6 className="text-sm font-semibold">Variants:</h6>
