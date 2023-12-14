@@ -29,7 +29,7 @@ import AdminTypes from './Admin/Products/AdminTypes';
 import CourierTable from './Admin/Courier/CourierTable';
 import AdminShipping from './Admin/Courier/AdminShipping';
 import AdminDiscounts from './Admin/Discounts/AdminDiscounts';
-import AdminPayments from "./Admin/Payment/AdminPayments";
+import AdminPayments from "./Admin/Payment/PaymentOptionsTable";
 import WebsiteConfig from "./Admin/Settings/WebsiteConfig";
 import BasicInfo from "./Admin/Settings/BasicInfo";
 import TransactRecords from "./Admin/Payment/TransactRecords";
