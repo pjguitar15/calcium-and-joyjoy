@@ -106,7 +106,6 @@ function ItemPage() {
         size: selectedSize,
       })
     );
-    // dispatch(addToCart(shoe));
     if (showAdded === true) return;
     else {
       setShowAdded(true);
@@ -227,18 +226,9 @@ function ItemPage() {
                   borderWidth={size === selectedSize ? "2px" : "1px"}
                   color={size === selectedSize ? "#daa520" : "black"}
                   variant='unstyled'
-                  // _hover={{
-                  //   filter: "brightness(1.1)",
-                  //   opacity: 1,
-                  // }}
                   fontWeight='normal'
                   px='16px'
                   onClick={() => setSelectedSize(size)}
-                // filter={
-                //   size === selectedSize
-                //     ? "drop-shadow(0px 2px 4px #daa520)"
-                //     : ""
-                // }
                 >
                   US {size}
                 </Button>

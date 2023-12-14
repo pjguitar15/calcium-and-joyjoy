@@ -1,6 +1,6 @@
 import { useState } from "react"
 import AddProductForm from "./Form/AddProductForm"
-import ProductsDisplay from "./productlist/ProductsDisplay"
+import ProductsDisplay from "./Productlist/ProductsDisplay"
 
 const AdminProductsPage = () => {
   const [isAddingProducts, setIsAddingProducts] = useState(false)

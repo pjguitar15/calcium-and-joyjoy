@@ -33,6 +33,7 @@ import AdminPayments from "./Admin/Payment/PaymentOptionsTable";
 import WebsiteConfig from "./Admin/Settings/WebsiteConfig";
 import BasicInfo from "./Admin/Settings/BasicInfo";
 import TransactRecords from "./Admin/Payment/TransactRecords";
+import Announcement from "./Admin/Settings/Announcement";
 
 
 
@@ -313,6 +314,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <BasicInfo />
+          </Suspense>
+        ),
+      },
+      {
+        path: "announcement",
+        element: (
+          <Suspense fallback={<div />}>
+            <Announcement />
           </Suspense>
         ),
       },
