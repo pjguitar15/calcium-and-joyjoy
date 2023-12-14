@@ -35,7 +35,7 @@ function Verify() {
         description: "Redirecting to login",
       });
       setTimeout(() => {
-        navigate('/auth/sign-in'); // Redirect to login without full page reload
+        window.location.href = '/auth/sign-in'; // Redirect and refresh the page
       }, 1500);
     },
     onError: () => {
