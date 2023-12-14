@@ -30,6 +30,11 @@ import {
   BsGraphUp,
   BsPeopleFill,
   BsHouseDoorFill,
+  BsGrid,
+  BsTags,
+  BsArrowsFullscreen,
+  BsPalette,
+  BsUiChecksGrid,
 } from "react-icons/bs";
 
 import { CgLogOut } from "react-icons/cg";
@@ -64,6 +69,48 @@ const menu = [
         icon: BsCartFill,
       },
       {
+        text: "Categories",
+        link: "/categories",
+        icon: BsGrid, 
+      },
+      {
+        text: "Brands",
+        link: "/brands",
+        icon: BsTags, 
+      },
+      {
+        text: "Sizes",
+        link: "/sizes",
+        icon: BsArrowsFullscreen, 
+      },
+      {
+        text: "Colors",
+        link: "/colors",
+        icon: BsPalette, 
+      },
+      {
+        text: "Types",
+        link: "/types",
+        icon: BsUiChecksGrid, 
+      },
+    ],
+  },
+  
+  {
+    main: "Order Management",
+    icon: BsListUl,
+    submenu: [
+      {
+        text: "Orders & Tracking",
+        link: "/orders",
+        icon: BsWalletFill,
+      },
+      {
+        text: "Shipping Management",
+        link: "/shipping",
+        icon: BsTruck,
+      },
+        {
         text: "Courier Details",
         link: "/couriers",
         icon: BsTruck,
@@ -75,23 +122,7 @@ const menu = [
       },
     ],
   },
-  {
-    main: "Order Management",
-    icon: BsListUl,
-    submenu: [
-      {
-        text: "Orders & Tracking",
-        link: "/orders",
-        icon: BsWalletFill,
-      },
 
-      {
-        text: "Shipping Management",
-        link: "/shipping",
-        icon: BsTruck,
-      },
-    ],
-  },
   {
     main: "Payment Management",
     icon: BsCreditCard,

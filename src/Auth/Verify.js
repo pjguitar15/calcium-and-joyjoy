@@ -13,12 +13,10 @@ import {
 
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
 import axiosInstance from "../Shared/utils/axiosInstance";
 
 function Verify() {
   const toast = useToast();
-  const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const onVerify = async (data) => {
     const res = await axiosInstance.post("/otp/verify", data);
