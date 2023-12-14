@@ -1,5 +1,5 @@
 import { Box, Button, Heading, Text, Badge, Alert, AlertIcon, Flex, Stack, Divider } from "@chakra-ui/react";
-import { AiOutlineDelete } from "react-icons/ai"; // Using only for the delete button
+import { AiOutlineDelete } from "react-icons/ai";
 import AddressModal from "./AddressModal";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import { useState, useEffect } from "react";
@@ -34,6 +34,7 @@ function Addresses() {
   if (isLoading) return <LoadingSpinner />;
 
   const safeAddresses = addresses || [];
+  const canAddMoreAddresses = safeAddresses.length < maxAddresses;
 
   const handleRemove = async (addressId) => {
     try {
@@ -53,8 +54,6 @@ function Addresses() {
     }
   };
 
-  const canAddMoreAddresses = safeAddresses.length < maxAddresses;
-
   return (
     <>
       {error && (
@@ -64,55 +63,56 @@ function Addresses() {
         </Alert>
       )}
 
-<Box maxW='lg' mx='auto' px='4'>
-        <Heading fontWeight='semibold' mb='6' fontSize='2xl' textAlign='center'>
-          Delivery Addresses 
-          <Badge ml='2' colorScheme='green' fontSize='lg'>
-            {safeAddresses.length}/{maxAddresses}
-          </Badge>
-        </Heading>
+<Box maxW='2xl' mx='auto' px={4} py={4}> 
+        <Flex direction="column" gap={6}>
+          <Heading fontWeight='semibold' fontSize='2xl' textAlign='center'>
+            Delivery Addresses
+            <Badge ml={2} colorScheme='green' fontSize='lg'>
+              {safeAddresses.length}/{maxAddresses}
+            </Badge>
+          </Heading>
 
-        {safeAddresses.length === 0 ? (
-          <Text fontSize='lg' textAlign='center'>You currently don't have any delivery addresses.</Text>
-        ) : (
-          safeAddresses.map((address, index) => (
-            <Box
+          {safeAddresses.length === 0 ? (
+            <Text fontSize='lg' textAlign='center'>You currently don't have any delivery addresses.</Text>
+          ) : (
+            safeAddresses.map((address, index) => (
+              <Box
               key={index}
-              mb='6'
-              p='6'
+              p={6}
               border='1px solid gray'
               rounded='xl'
               bg='white'
-              shadow='base'
-              className="transition-transform duration-200 hover:-translate-y-1"
+              shadow='md' 
+              className="transition-transform duration-200 hover:shadow-lg hover:border-gray-400" 
             >
-              <Stack spacing={4}>
-                <Text fontSize='xl' fontWeight='bold'>{address.label}</Text>
-                <Divider borderColor='gray.300'/>
-                <Text fontSize='lg'>{address.street_address}, {address.building_address}</Text>
-                <Text fontSize='lg'>{address.city_municipality}, {address.barangay}, {address.postal_code}</Text>
-              </Stack>
-              <Flex mt='4' justifyContent='flex-end'>
-                <Button
-                  onClick={() => handleRemove(address.id)}
-                  variant='solid'
-                  colorScheme='red'
-                  leftIcon={<AiOutlineDelete />}
-                  size='md'
-                >
-                  Remove
-                </Button>
-              </Flex>
-            </Box>
-          ))
-        )}
-      </Box>
+                <Stack spacing={4}>
+                  <Text fontSize='xl' fontWeight='bold'>{address.label}</Text>
+                  <Divider borderColor='gray.300'/>
+                  <Text fontSize='lg'>{address.street_address}, {address.building_address}</Text>
+                  <Text fontSize='lg'>{address.city_municipality}, {address.barangay}, {address.postal_code}</Text>
+                </Stack>
+                <Flex mt={4} justifyContent='flex-end'>
+                  <Button
+                    onClick={() => handleRemove(address.id)}
+                    variant='solid'
+                    colorScheme='red'
+                    leftIcon={<AiOutlineDelete />}
+                    size='md'
+                  >
+                    Remove
+                  </Button>
+                </Flex>
+              </Box>
+            ))
+          )}
 
-      {canAddMoreAddresses && (
-        <Box mt='24px' display='flex' justifyContent='end'>
-          <AddressModal onReload={() => setRefresh((prev) => !prev)} />
-        </Box>
-      )}
+          {canAddMoreAddresses && (
+            <Box display='flex' justifyContent='center'>
+              <AddressModal onReload={() => setRefresh((prev) => !prev)} />
+            </Box>
+          )}
+        </Flex>
+      </Box>
     </>
   );
 }
