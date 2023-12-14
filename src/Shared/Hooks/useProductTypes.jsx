@@ -8,6 +8,7 @@ const useProductTypes = () => {
       .get(`http://18.223.157.202/backend/api/admin/product/types`)
       .then((res) => {
         setProductTypes(res.data)
+        console.log(res.data)
       })
   }, [])
   return { productTypes, setProductTypes }

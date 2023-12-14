@@ -9,9 +9,12 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
+import useProductSizes from '../../Shared/Hooks/useProductSizes';
+
 function SizesFilter() {
   const [selected, setSelected] = useState([]);
+  const { productSizes } = useProductSizes()
+  const mapSizes = productSizes?.map((item) => item.name)
 
   const [searchParams, setSeachParams] = useSearchParams();
 
@@ -49,7 +52,7 @@ function SizesFilter() {
             gap='8px'
             pr='16px'
           >
-            {sizes.map((s) => (
+            {mapSizes.map((s) => (
               <Box
                 textAlign='center'
                 key={s}

@@ -11,6 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import useProductColors from '../../Shared/Hooks/useProductColors';
 
 const colors = [
   "black",
@@ -24,6 +25,9 @@ const colors = [
 ];
 function ColorFilter() {
   const [selected, setSelected] = useState([]);
+
+  const { productColors } = useProductColors()
+  const mapColors = productColors?.map((item) => item.name)
 
   const handleSelect = (color) => {
     if (selected.includes(color))
@@ -47,20 +51,7 @@ function ColorFilter() {
             columnGap='16px'
             rowGap='8px'
           >
-            <Center
-              onClick={() => handleSelect("white")}
-              cursor='pointer'
-              aspectRatio='1/1'
-              w='32px'
-              bgColor='white'
-              borderRadius='10px'
-              border='solid .5px black'
-            >
-              {selected.includes("white") && (
-                <CheckIcon stroke='black' color='white' />
-              )}
-            </Center>
-            {colors.map((color) => (
+            {mapColors.map((color) => (
               <Center
                 onClick={() => handleSelect(color)}
                 cursor='pointer'

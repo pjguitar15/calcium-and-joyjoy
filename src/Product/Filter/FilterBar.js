@@ -3,8 +3,25 @@ import FilterGroup from "./FilterGroup";
 import SizesFilter from "./SizesFilter";
 import ScrollBars from "rc-scrollbars";
 import ColorFilter from "./ColorFilter";
+import useProductTypes from '../../Shared/Hooks/useProductTypes';
+import useCategories from '../../Shared/Hooks/useCategories';
+import useBrands from '../../Shared/Hooks/useBrands';
 
 function FilterBar() {
+  const { productTypes } = useProductTypes()
+  const { categories } = useCategories()
+  const { brands } = useBrands()
+
+
+  const mapTypes = productTypes?.map((item) => {
+    return item.name
+  })
+  const mapCategories = categories?.map((item) => {
+    return item.name
+  })
+  const mapBrands = brands?.map((item) => {
+    return item.name
+  })
   const filters = [
     {
       main: "Type",
@@ -36,9 +53,17 @@ function FilterBar() {
   return (
     <Box h='80vh' pr='24px'>
       <ScrollBars>
-        {filters.map((f) => (
-          <FilterGroup key={f.main} main={f.main} items={f.items} />
-        ))}
+        <FilterGroup main={"Type"} items={mapTypes} />
+        <FilterGroup main={"Brands"} items={mapBrands} />
+        <FilterGroup main={"Categories"} items={mapCategories} />
+        <FilterGroup main={"Genders"} items={["Men", "Women", "Unisex"]} />
+        <FilterGroup main={"Price"} items={[
+          "Under ₱5,000",
+          "₱5,000-₱9,000",
+          "₱9,000-₱10,000",
+          "Over ₱10,000",
+        ]} />
+
         <SizesFilter />
         <ColorFilter />
       </ScrollBars>
