@@ -26,13 +26,13 @@ import AdminBrands from './Admin/Products/AdminBrands';
 import AdminSizes from './Admin/Products/AdminSizes';
 import AdminColors from './Admin/Products/AdminColors';
 import AdminTypes from './Admin/Products/AdminTypes';
-import AdminCouriers from './Admin/Courier/AdminCouriers';
+import CourierTable from './Admin/Courier/CourierTable';
 import AdminShipping from './Admin/Courier/AdminShipping';
 import AdminDiscounts from './Admin/Discounts/AdminDiscounts';
-import AdminRecords from "./Admin/Payment/AdminRecords";
 import AdminPayments from "./Admin/Payment/AdminPayments";
 import WebsiteConfig from "./Admin/Settings/WebsiteConfig";
 import BasicInfo from "./Admin/Settings/BasicInfo";
+import TransactRecords from "./Admin/Payment/TransactRecords";
 
 
 
@@ -264,7 +264,7 @@ const router = createBrowserRouter([
         path: "couriers",
         element: (
           <Suspense fallback={<div />}>
-            <AdminCouriers />
+            <CourierTable />
           </Suspense>
         ),
       },
@@ -296,15 +296,15 @@ const router = createBrowserRouter([
         path: "records",
         element: (
           <Suspense fallback={<div />}>
-            <AdminRecords />
+            <TransactRecords />
           </Suspense>
         ),
       },
       {
-        path: "records",
+        path: "config",
         element: (
           <Suspense fallback={<div />}>
-            <AdminRecords />
+            <WebsiteConfig />
           </Suspense>
         ),
       },
