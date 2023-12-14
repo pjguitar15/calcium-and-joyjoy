@@ -20,14 +20,14 @@ import YouMightAlsoLike from "../Shared/UI/YouMightAlsoLike";
 
 import AddedToast from "./AddedToast";
 import { AnimatePresence } from "framer-motion";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
-import { addToCart } from "../Store/cart";
+import { addToCart, addToCheckout } from "../Store/cart";
 
 function ItemPage() {
   const { productID } = useParams();
@@ -37,6 +37,7 @@ function ItemPage() {
   const [display, setDisplay] = useState("/dummyShoe.png");
   const toast = useToast();
   const [qty, setQty] = useState(1);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   const getShoe = async () => {
@@ -268,8 +269,16 @@ function ItemPage() {
               </Button>
             </HStack>
             <Button
-              as={Link}
-              to='/checkout'
+              onClick={() => {
+                dispatch(addToCheckout({
+                  ...shoe,
+                  quantity: qty,
+                  price: price * qty,
+                  size: selectedSize,
+                }))
+
+                navigate('/checkout')
+              }}
               bgColor='gray'
               color='white'
               borderRadius='20px'
