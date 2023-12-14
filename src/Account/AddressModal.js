@@ -32,8 +32,6 @@ function AddressModal({ onReload }) {
 
   const handleSave = async (data) => {
     const { street, bldg, city, barangay, postCode, label } = data;
-    const finalAddress2 = `${label}: ${bldg}, ${street}, ${barangay}, ${city}, ${region}, ${postCode}`;
-
     const finalAddress = {
       user_id: `${userInfo.id}`,
       first_name: `${userInfo.firstname}`,
