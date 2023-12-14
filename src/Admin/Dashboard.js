@@ -166,12 +166,12 @@ const menu = [
     submenu: [
       {
         text: "Website Configuration",
-        link: "/website-configuration",
+        link: "/config",
         icon: BsGlobe,
       },
       {
         text: "Basic Info",
-        link: "/basic-info",
+        link: "/info",
         icon: BsHouseDoorFill,
       },
     ],

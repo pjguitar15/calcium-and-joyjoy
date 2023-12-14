@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import "./App.css";
 import Homepage from "./Home/Homepage";
@@ -25,6 +26,14 @@ import AdminBrands from './Admin/Products/AdminBrands';
 import AdminSizes from './Admin/Products/AdminSizes';
 import AdminColors from './Admin/Products/AdminColors';
 import AdminTypes from './Admin/Products/AdminTypes';
+import CourierTable from './Admin/Courier/CourierTable';
+import AdminShipping from './Admin/Courier/AdminShipping';
+import AdminDiscounts from './Admin/Discounts/AdminDiscounts';
+import AdminPayments from "./Admin/Payment/AdminPayments";
+import WebsiteConfig from "./Admin/Settings/WebsiteConfig";
+import BasicInfo from "./Admin/Settings/BasicInfo";
+import TransactRecords from "./Admin/Payment/TransactRecords";
+
 
 
 // LAZY PAGES
@@ -248,6 +257,62 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <AdminTypes />
+          </Suspense>
+        ),
+      },
+      {
+        path: "couriers",
+        element: (
+          <Suspense fallback={<div />}>
+            <CourierTable />
+          </Suspense>
+        ),
+      },
+      {
+        path: "discounts",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminDiscounts />
+          </Suspense>
+        ),
+      },
+      {
+        path: "Shipping",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminShipping />
+          </Suspense>
+        ),
+      },
+      {
+        path: "payment",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminPayments />
+          </Suspense>
+        ),
+      },
+      {
+        path: "records",
+        element: (
+          <Suspense fallback={<div />}>
+            <TransactRecords />
+          </Suspense>
+        ),
+      },
+      {
+        path: "config",
+        element: (
+          <Suspense fallback={<div />}>
+            <WebsiteConfig />
+          </Suspense>
+        ),
+      },
+      {
+        path: "info",
+        element: (
+          <Suspense fallback={<div />}>
+            <BasicInfo />
           </Suspense>
         ),
       },

@@ -5,7 +5,6 @@ const ActionButtons = ({
   filterOption,
   onSortChange,
   onFilterChange,
-  onAddBrandClick,
   onAddProductClick,
 }) => {
   return (

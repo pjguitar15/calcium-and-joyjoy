@@ -1,5 +1,5 @@
 import { useState } from "react"
-import ProductsDisplay from "./ProductsDisplay"
+import ProductsDisplay from "./Productlist/ProductsDisplay"
 import AddProductForm from "./Form/AddProductForm"
 
 const AdminProductsPage = () => {
