@@ -35,13 +35,15 @@ function Verify() {
         description: "Redirecting to login",
       });
       setTimeout(() => {
-        navigate("/auth/sign-in");
+        window.location.href = '/auth/sign-in'; // Redirect and refresh the page
       }, 1500);
     },
     onError: () => {
       toast({ position: "top", status: "error", title: "Invalid OTP" });
     },
   });
+  
+  
   return (
     <Box maxW='400px' mx='auto'>
       <Box mb='40px'>
