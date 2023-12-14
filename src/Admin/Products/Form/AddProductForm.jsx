@@ -146,15 +146,15 @@ const AddProductForm = ({ handleBackToProducts, setIsAddingProducts }) => {
     <Box className="form-container">
     <Flex justify="space-between" align="center" mb="4">
     <Heading mb="6">Product Form</Heading>    <IconButton 
-icon={isHovered ? <IoCloseCircleOutline className="text-4xl" /> : <IoClose className="text-4xl" />} 
-onClick={handleBackToProducts} 
-variant="unstyled"
-aria-label="Close form"
-onMouseEnter={() => setIsHovered(true)}
-onMouseLeave={() => setIsHovered(false)}
-_hover={{ color: "red" }}
-/>
-</Flex>
+        icon={isHovered ? <IoCloseCircleOutline className="text-4xl" /> : <IoClose className="text-4xl" />} 
+        onClick={handleBackToProducts} 
+        variant="unstyled"
+        aria-label="Close form"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        _hover={{ color: "red" }}
+        />
+        </Flex>
 
       <form onSubmit={handleFormSubmit} className="form">
       <Box p="5" borderWidth="2px" borderColor="black" borderRadius="lg" boxShadow="md" bg="white" mb="6">
