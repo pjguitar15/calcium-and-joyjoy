@@ -1,4 +1,5 @@
 import { HStack, Input, Select, VStack, Text, Button } from "@chakra-ui/react";
+import axios from 'axios';
 import { useEffect, useState } from "react";
 import { RegionDropdown } from "react-country-region-selector";
 import { useForm } from "react-hook-form";
@@ -16,6 +17,12 @@ function CheckoutConfirm({ onConfirm }) {
 
   useEffect(() => {
     if (user) setUserInfo(user.user_info);
+
+    axios.get(`http://18.223.157.202/backend/api/user/address`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    })
   }, []);
 
   const handleConfirm = (data) => {

@@ -4,10 +4,14 @@ import { useState, useEffect } from "react"
 import LoadingSpinner from "../Shared/UI/LoadingSpinner"
 import { useQuery } from "react-query"
 import axiosInstance from "../Shared/utils/axiosInstance"
+import { useGetAccessories } from '../Shared/Hooks/useGetAccessories'
 
 function Carousels({ onSelectItems }) {
+  const { accessoriesData, accessoriesLoading } = useGetAccessories()
   const { data: mix, isLoading } = useQuery("mix", async () => {
+    // /api/admin/products
     const res = await axiosInstance.get("/mix-and-match")
+    console.log("Data", res.data)
     return res.data
   })
 
@@ -35,7 +39,7 @@ function Carousels({ onSelectItems }) {
       />
       <CarouselRow
         name="Accessories"
-        data={mix.accessories}
+        data={accessoriesData}
         onItemSelect={(acc) => setAccessory(acc)}
       />
     </VStack>
