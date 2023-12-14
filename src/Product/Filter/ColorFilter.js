@@ -13,16 +13,6 @@ import {
 import { useState } from "react";
 import useProductColors from '../../Shared/Hooks/useProductColors';
 
-const colors = [
-  "black",
-  "red",
-  "blue",
-  "pink",
-  "purple",
-  "brown",
-  "yellow",
-  "green",
-];
 function ColorFilter() {
   const [selected, setSelected] = useState([]);
 

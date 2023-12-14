@@ -30,16 +30,22 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
 
   const handlePay = () => {
     const deliveryFee = 300;
+    // console.log(item.size)
 
-    const cartsData = cart.map((item) => ({
-      product_id: item.id,
-      size: item.size.toString() || [""],
-      session_id: "session123",
-      user_id: user?.user_info.id,
-      quantity: item.quantity,
-      price: item.price,
-      total: item.quantity * item.price,
-    }));
+    const cartsData = cart.map((item) => {
+      console.log(item.size)
+      const data = {
+        product_id: item.id,
+        size: item.size || [""],
+        session_id: "session123",
+        user_id: user?.user_info.id,
+        quantity: item.quantity,
+        price: item.price,
+        total: item.quantity * item.price,
+      }
+
+      return data
+    });
 
     // Calculate the total price of items in the cart
     const totalCartPrice = cartsData.reduce((total, item) => total + item.total, 0);
@@ -61,6 +67,7 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
     };
 
     if (postData) {
+      console.log(postData)
       setLoading(true)
       // const res = await axiosInstance.post("/checkout", JSON.stringify(postData));
       axios.post("http://18.223.157.202/backend/api/checkout", postData).then((res) => {

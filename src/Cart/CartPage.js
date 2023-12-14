@@ -15,10 +15,15 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import config from "../Shared/utils/config";
 import convertCurrency from "../Shared/utils/convertCurrency";
+import { useEffect } from 'react';
 function CartPage() {
   // const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
 
   const cart = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    console.log(cart)
+  }, [cart])
 
   return (
     <Box maxW='1100px' mx='auto'>
@@ -38,7 +43,7 @@ function CartPage() {
                   <Image
                     borderRadius='20px'
                     w='100%'
-                    src={`${config.apiUrl}/storage/${item.image}`}
+                    src={item.image}
                   />
                 </Box>
 
@@ -51,7 +56,7 @@ function CartPage() {
                   >
                     {item.name}
                   </Text>
-                  <Text>Men/Women's Shoes</Text>
+                  <Text>{item.gender === "male" && "Men"}{item.gender === "female" && "Women"}{item.gender === "unisex" && "Unisex"}'s Shoes</Text>
                   <Text>Cloud White/ White</Text>
                   <HStack gap='12px'>
                     <Text fontWeight='bold'>Size: {item.size}</Text>
