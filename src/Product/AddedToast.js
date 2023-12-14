@@ -10,12 +10,13 @@ import {
   shouldForwardProp,
   Center,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, isValidMotionProp } from "framer-motion";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
 import { useDispatch, useSelector } from "react-redux";
-import { subtractOne } from "../Store/cart";
+import { addToCheckout, subtractOne } from "../Store/cart";
+import { useEffect } from 'react';
 
 const ChakraBox = chakra(motion.div, {
   shouldForwardProp: (prop) =>
@@ -25,6 +26,7 @@ const ChakraBox = chakra(motion.div, {
 function AddedToast({ item, show, dismount }) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const navigate = useNavigate()
 
   if (!item || cart.length < 1) return <div />;
 
@@ -127,21 +129,32 @@ function AddedToast({ item, show, dismount }) {
             View Cart
           </Button>
         </Link>
-        <Link to='/checkout'>
-          <Button
-            bgColor='var(--primary)'
-            _hover={{
-              bgColor: "var(--accent)",
-            }}
-            color='white'
-            fontSize='15px'
-            px='32px'
-            borderRadius='20px'
-            w='100%'
-          >
-            Checkout
-          </Button>
-        </Link>
+
+        <Button
+          onClick={() => {
+            navigate("/checkout")
+            dispatch(
+              addToCheckout({
+                ...item,
+                quantity: 1,
+                price: item.price,
+                size: item.sizes[0]?.size.name,
+              })
+            );
+          }}
+          bgColor='var(--primary)'
+          _hover={{
+            bgColor: "var(--accent)",
+          }}
+          color='white'
+          fontSize='15px'
+          px='32px'
+          borderRadius='20px'
+          w='100%'
+        >
+          Checkout
+        </Button>
+
       </HStack>
     </ChakraBox>
   );
