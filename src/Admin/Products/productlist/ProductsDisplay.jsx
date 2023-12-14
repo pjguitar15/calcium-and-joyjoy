@@ -17,9 +17,7 @@ const ProductsDisplay = ({ handleAddProductClick }) => {
     // Add filtering logic or dispatch an action if needed
   }
 
-  const handleAddBrandClick = () => {
-    // Add logic for the "Add Brand" button click
-  }
+
   return (
     <div>
       <h3 className="text-xl font-semibold">
@@ -45,7 +43,6 @@ const ProductsDisplay = ({ handleAddProductClick }) => {
           filterOption={filterOption}
           onSortChange={handleSortChange}
           onFilterChange={handleFilterChange}
-          onAddBrandClick={handleAddBrandClick}
           onAddProductClick={handleAddProductClick}
         />
 

@@ -26,6 +26,14 @@ import AdminBrands from './Admin/Products/AdminBrands';
 import AdminSizes from './Admin/Products/AdminSizes';
 import AdminColors from './Admin/Products/AdminColors';
 import AdminTypes from './Admin/Products/AdminTypes';
+import AdminCouriers from './Admin/Courier/AdminCouriers';
+import AdminShipping from './Admin/Courier/AdminShipping';
+import AdminDiscounts from './Admin/Discounts/AdminDiscounts';
+import AdminRecords from "./Admin/Payment/AdminRecords";
+import AdminPayments from "./Admin/Payment/AdminPayments";
+import WebsiteConfig from "./Admin/Settings/WebsiteConfig";
+import BasicInfo from "./Admin/Settings/BasicInfo";
+
 
 
 // LAZY PAGES
@@ -249,6 +257,62 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <AdminTypes />
+          </Suspense>
+        ),
+      },
+      {
+        path: "couriers",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminCouriers />
+          </Suspense>
+        ),
+      },
+      {
+        path: "discounts",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminDiscounts />
+          </Suspense>
+        ),
+      },
+      {
+        path: "Shipping",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminShipping />
+          </Suspense>
+        ),
+      },
+      {
+        path: "payment",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminPayments />
+          </Suspense>
+        ),
+      },
+      {
+        path: "records",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminRecords />
+          </Suspense>
+        ),
+      },
+      {
+        path: "records",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminRecords />
+          </Suspense>
+        ),
+      },
+      {
+        path: "info",
+        element: (
+          <Suspense fallback={<div />}>
+            <BasicInfo />
           </Suspense>
         ),
       },
