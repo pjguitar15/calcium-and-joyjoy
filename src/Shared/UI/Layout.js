@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import { useEffect } from "react";
 import DrawerNav from "./DrawerNav";
 import Footer from "./Footer";
-// import Joypop from "../../Joybot/Joypop";
+import Joypop from "../../Joybot/Joypop";
 function Layout() {
   const [isLg] = useMediaQuery("(min-width: 992px)");
   const { pathname } = useLocation();
@@ -23,8 +23,8 @@ function Layout() {
       {isLg && <Navbar />}
       {!isLg && <DrawerNav />}
 
-      {/* <Box display='flex' flexDir='column' minH='100vh'> */}
-      {/* <Joypop /> */}
+      <Box display='flex' flexDir='column' minH='100vh'> 
+       <Joypop />
       <Box
         flexGrow='1'
         maxW='var(--maxW)'
@@ -36,7 +36,7 @@ function Layout() {
         <Outlet />
       </Box>
       <Footer />
-      {/* </Box> */}
+       </Box>
     </Box>
   );
 }
