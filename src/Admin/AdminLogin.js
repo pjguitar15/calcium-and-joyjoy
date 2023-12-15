@@ -40,8 +40,11 @@ function AdminLogin() {
         console.log(res.data)
         console.log("navigating to admin..")
         const token = res.data.data.token
+        const adminInfo = res.data.data.user_info
+        console.log(adminInfo)
         console.log(token)
         localStorage.setItem('adminLoginToken', token);
+        localStorage.setItem('adminInfo', JSON.stringify(adminInfo));
         navigate("/admin")
       }
 

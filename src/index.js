@@ -40,6 +40,7 @@ import ProductPerf from "./Admin/Reports/ProductPerf";
 import ChatbotPage from "./Joybot/Chatbotpage";
 import AdminChatSupport from './Admin/ChatSupport/AdminChatSupport';
 import Chatbox from './Joybot/Chatbox';
+import ChatWithUser from './Admin/ChatSupport/ChatWithUser';
 
 
 
@@ -229,6 +230,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <AdminChatSupport />
+          </Suspense>
+        ),
+      },
+      {
+        path: "chat-support/chat/:id",
+        element: (
+          <Suspense fallback={<div />}>
+            <ChatWithUser />
           </Suspense>
         ),
       },

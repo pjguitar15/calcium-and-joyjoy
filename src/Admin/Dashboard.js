@@ -72,31 +72,31 @@ const menu = [
       {
         text: "Categories",
         link: "/categories",
-        icon: BsGrid, 
+        icon: BsGrid,
       },
       {
         text: "Brands",
         link: "/brands",
-        icon: BsTags, 
+        icon: BsTags,
       },
       {
         text: "Sizes",
         link: "/sizes",
-        icon: BsArrowsFullscreen, 
+        icon: BsArrowsFullscreen,
       },
       {
         text: "Colors",
         link: "/colors",
-        icon: BsPalette, 
+        icon: BsPalette,
       },
       {
         text: "Types",
         link: "/types",
-        icon: BsUiChecksGrid, 
+        icon: BsUiChecksGrid,
       },
     ],
   },
-  
+
   {
     main: "Order Management",
     icon: BsListUl,
@@ -187,7 +187,7 @@ const menu = [
         link: "/announcement",
         icon: BsMegaphone,
       },
-      
+
     ],
   },
 ];
@@ -261,6 +261,8 @@ function Dashboard() {
         <button
           onClick={() => {
             localStorage.removeItem("adminLoginToken");
+            localStorage.removeItem("adminId");
+            localStorage.removeItem("adminInfo");
             navigate("/admin/login");
           }}
           className="text-lg mt-3 flex items-center gap-2 px-6 w-full justify-start"
