@@ -113,6 +113,17 @@ const menu = [
       },
     ],
   },
+  {
+    main: "Chat Support",
+    icon: BsFillPeopleFill,
+    submenu: [
+      {
+        text: "View Chats",
+        link: "/chat-support",
+        icon: BsFillPeopleFill,
+      },
+    ],
+  },
 
   {
     main: "Shipping Management",
