@@ -15,7 +15,6 @@ import ErrorPage from "./Shared/UI/ErrorPage";
 import theme from "./Shared/UI/chakraTheme";
 import { Provider } from "react-redux";
 import store from "./Store/cart";
-import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 import Login from './Auth/Login';
 import AdminLogin from './Admin/AdminLogin';
 import ProductsPage from './Product/ProductsPage'
@@ -34,6 +33,10 @@ import WebsiteConfig from "./Admin/Settings/WebsiteConfig";
 import BasicInfo from "./Admin/Settings/BasicInfo";
 import TransactRecords from "./Admin/Payment/TransactRecords";
 import Announcement from "./Admin/Settings/Announcement";
+import SalesRep from "./Admin/Reports/SalesRep";
+import UserBehavior from "./Admin/Reports/UserBehavior";
+import ProductPerformance from "./Admin/Reports/ProductPerf";
+import ProductPerf from "./Admin/Reports/ProductPerf";
 
 
 
@@ -58,10 +61,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <>
-      <TawkMessengerReact
-        propertyId='656e7c74ff45ca7d4786dfc0'
-        widgetId='1hgrpca5t'
-      />
+     
       <Layout />
     </>,
     errorElement: <ErrorPage />,
@@ -322,6 +322,30 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <Announcement />
+          </Suspense>
+        ),
+      },
+      {
+        path: "sales",
+        element: (
+          <Suspense fallback={<div />}>
+            <SalesRep />
+          </Suspense>
+        ),
+      },
+      {
+        path: "behavior",
+        element: (
+          <Suspense fallback={<div />}>
+            <UserBehavior />
+          </Suspense>
+        ),
+      },
+      {
+        path: "product-performance",
+        element: (
+          <Suspense fallback={<div />}>
+            <ProductPerf />
           </Suspense>
         ),
       },

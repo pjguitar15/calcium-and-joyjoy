@@ -1,32 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import axios from "axios";
+import { Button, Input, Box } from "@chakra-ui/react";
 
-const Announcement = () => {
-    const [announcement, setAnnouncement] = useState('');
+function MultipleImageUpload() {
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [imageUrls, setImageUrls] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
-    const handleInputChange = (e) => {
-        setAnnouncement(e.target.value);
-    };
+  const handleFileSelect = (event) => {
+    setSelectedFiles([...event.target.files]);
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add logic here to save the announcement to the backend or perform any other actions
-        console.log('Announcement:', announcement);
-        setAnnouncement('');
-    };
+  const uploadImages = async () => {
+    setUploading(true);
+    const uploadPromises = selectedFiles.map(async (file) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "zwzmglhl"); // Replace with your Cloudinary upload preset
 
-    return (
-        <div>
-            <h2>Add Announcement</h2>
-            <form onSubmit={handleSubmit}>
-                <textarea
-                    value={announcement}
-                    onChange={handleInputChange}
-                    placeholder="Enter announcement"
-                ></textarea>
-                <button type="submit">Add</button>
-            </form>
-        </div>
-    );
-};
+      try {
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dbibwzs6c/image/upload",
+          formData
+        );
+        return response.data.secure_url;
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        return null;
+      }
+    });
 
-export default Announcement;
+    const urls = await Promise.all(uploadPromises);
+    setImageUrls(urls.filter(url => url != null));
+    setUploading(false);
+  };
+
+  return (
+    <Box>
+      <Input type="file" multiple onChange={handleFileSelect} />
+      <Button onClick={uploadImages} isLoading={uploading}>
+        Upload Images
+      </Button>
+      {imageUrls.map((url, index) => (
+        <Box key={index} as="img" src={url} alt={`Uploaded Image ${index}`} />
+      ))}
+    </Box>
+  );
+}
+
+export default MultipleImageUpload;
