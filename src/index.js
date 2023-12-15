@@ -38,6 +38,8 @@ import UserBehavior from "./Admin/Reports/UserBehavior";
 import ProductPerformance from "./Admin/Reports/ProductPerf";
 import ProductPerf from "./Admin/Reports/ProductPerf";
 import ChatbotPage from "./Joybot/Chatbotpage";
+import AdminChatSupport from './Admin/ChatSupport/AdminChatSupport';
+import Chatbox from './Joybot/Chatbox';
 
 
 
@@ -62,7 +64,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <>
-     
+
       <Layout />
     </>,
     errorElement: <ErrorPage />,
@@ -156,6 +158,14 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "/chat/chatbox",
+        element: (
+          <Suspense fallback={<div />}>
+            <Chatbox />
+          </Suspense>
+        ),
+      },
     ],
   },
   {
@@ -211,6 +221,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <Customers />
+          </Suspense>
+        ),
+      },
+      {
+        path: "chat-support",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminChatSupport />
           </Suspense>
         ),
       },

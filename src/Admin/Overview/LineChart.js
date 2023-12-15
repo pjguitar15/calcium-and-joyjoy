@@ -56,11 +56,13 @@ const LineChart = () => {
   const [dataFromDataSets, setDataFromDataSets] = useState([])
 
   const data = {
+    // x axis (array)
     labels,
     datasets: [
       {
         label: "Dataset 1",
-        data: dataFromDataSets,
+        // y axis
+        data: dataFromDataSets, // (array)
         borderColor: "white",
         backgroundColor: "white",
       },
@@ -69,16 +71,19 @@ const LineChart = () => {
 
   useEffect(() => {
     axios.get(`http://18.223.157.202/backend/api/admin/sales`).then((res) => {
+      console.log(res.data.data.labels)
       setLabels(res.data.data.labels)
+
       const modifyDataSetsData = res.data.data.datasets[0].data.map((item) => {
         return parseFloat(item.replace(/,/g, '')).toFixed(2)
       })
+
       setDataFromDataSets(modifyDataSetsData)
     })
   }, [])
 
   useEffect(() => {
-    console.log(dataFromDataSets)
+    // console.log(dataFromDataSets)
   }, [dataFromDataSets])
 
   return (
