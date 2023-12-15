@@ -43,7 +43,7 @@ const AdminChatSupport = () => {
         <h1 className="text-2xl font-semibold">Ongoing Chats</h1>
       </div>
       <div className="flex-1 overflow-y-auto p-4">
-        {chatList.map((chat) => (
+        {chatList.reverse().map((chat) => (
           <div
             onClick={() => {
               navigate(`/admin/chat-support/chat/${chat.id}`)
