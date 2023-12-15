@@ -18,13 +18,12 @@ const ChatWithUser = () => {
       axios
         .get(`http://18.223.157.202/backend/api/admin/chat/open/${id}`)
         .then((res) => {
-          // console.log(res.data.messages)
           const messages = res.data.messages
           const mappedMessages = messages.map((item) => {
             return {
               id: item.id,
               message: item.message,
-              sender: item.author.id === userId ? "user" : "admin",
+              sender: item.author.name === "Super Admin" ? "user" : "admin",
             }
           })
           setMessages(mappedMessages)

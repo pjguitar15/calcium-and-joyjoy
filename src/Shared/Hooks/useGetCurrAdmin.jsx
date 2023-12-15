@@ -4,9 +4,8 @@ const useGetCurrAdmin = () => {
   const [userInfo, setUserInfo] = useState({})
   const [token, setToken] = useState("")
   const [userId, setUserId] = useState("")
-
+  const fromLocalStorage = localStorage.getItem("adminInfo")
   useEffect(() => {
-    const fromLocalStorage = localStorage.getItem("adminInfo")
     const stringified = JSON.parse(fromLocalStorage)
     setToken(stringified.token)
     setUserInfo(stringified.user_info)
