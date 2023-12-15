@@ -3,31 +3,92 @@ import React, { useEffect, useState } from "react"
 import useGetCurrLoggedIn from "../Shared/Hooks/useGetCurrLoggedIn"
 
 const Chatbox = () => {
+  const [messageInput, setMessageInput] = useState("")
   const { userId } = useGetCurrLoggedIn()
+  const [messages, setMessages] = useState([])
+  let intervalId // Declare intervalId outside of the useEffect
+  const duration = 15 * 60 * 1000 // 15 minutes in milliseconds
+  const interval = 200 // 1 second
+
+  const fetchData = () => {
+    if (userId) {
+      axios
+        .get(`http://18.223.157.202/backend/api/chat/open_chat/${userId}`)
+        .then((res) => {
+          const messages = res.data.messages
+          const mappedMessages = messages.map((item) => {
+            return {
+              id: item.id,
+              message: item.message,
+              sender: item.author.id === userId ? "user" : "admin",
+            }
+          })
+          setMessages(mappedMessages)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }
+
+  const fetchDataLoop = () => {
+    // Fetch data initially
+    fetchData()
+
+    // Set up interval to fetch data every 1 second
+    intervalId = setInterval(() => {
+      fetchData()
+    }, interval)
+
+    // Clear the interval after the specified duration
+    setTimeout(() => {
+      clearInterval(intervalId)
+    }, duration)
+  }
+
   useEffect(() => {
-    axios.get(`http://18.223.157.202/backend/api/chat/open_chat/${userId}`).then((res) => {
-      
-    })
+    // Start the data fetching loop
+    fetchDataLoop()
+
+    // Cleanup function to clear the interval when the component unmounts or when userId changes
+    return () => {
+      // Clear the interval immediately when the user navigates away from the page
+      clearInterval(intervalId)
+
+      // No need to clear the interval here since it will be cleared after the specified duration
+    }
+  }, [userId])
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      // If the page is not visible, clear the interval
+      if (document.hidden) {
+        clearInterval(intervalId)
+      } else {
+        // If the page becomes visible again, restart the interval
+        fetchDataLoop()
+      }
+    }
+
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
+    }
   }, [])
 
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Hello!", sender: "user" },
-    { id: 2, text: "Hi there!", sender: "bot" },
-    // Add more messages as needed
-  ])
-
   const sendMessage = (text) => {
-    const newMessage = { id: messages.length + 1, text, sender: "user" }
-    setMessages([...messages, newMessage])
-    // Simulate a bot response (you can replace this with actual logic)
-    setTimeout(() => {
-      const botResponse = {
-        id: messages.length + 2,
-        text: "I am a bot!",
-        sender: "bot",
-      }
-      setMessages([...messages, botResponse])
-    }, 1000)
+    console.log(text)
+    if (userId) {
+      axios
+        .post(`http://18.223.157.202/backend/api/chat/send_chat/${userId}`, {
+          message: messageInput,
+        })
+        .then((res) => {
+          // console.log(res.data)
+          setMessageInput("")
+        })
+    }
   }
 
   return (
@@ -49,7 +110,7 @@ const Chatbox = () => {
                   : "bg-white text-gray-700 self-start"
               }`}
             >
-              {message.text}
+              {message.message}
             </div>
           </div>
         ))}
@@ -57,6 +118,8 @@ const Chatbox = () => {
       <div className="p-4 bg-white">
         <input
           type="text"
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
           className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
           placeholder="Type your message..."
           onKeyDown={(e) => {

@@ -16,12 +16,19 @@ const ChatbotPage = () => {
       axios
         .get(`http://18.223.157.202/backend/api/chat/check/${userId}`)
         .then((res) => {
-          console.log(res.data.data)
+          console.log(res)
+          if (res) {
+            setIsNewChat(false)
+            console.log("should go to chat box")
+          }
         })
         .catch((err) => {
           const responseData = err.response.data[0]
+          console.log("Response Data", responseData)
           if (responseData === "Chat not found") {
             setIsNewChat(true)
+          } else {
+            setIsNewChat(false)
           }
         })
     }
