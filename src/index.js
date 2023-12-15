@@ -37,6 +37,7 @@ import SalesRep from "./Admin/Reports/SalesRep";
 import UserBehavior from "./Admin/Reports/UserBehavior";
 import ProductPerformance from "./Admin/Reports/ProductPerf";
 import ProductPerf from "./Admin/Reports/ProductPerf";
+import ChatbotPage from "./Joybot/Chatbotpage";
 
 
 
@@ -144,6 +145,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <AboutPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/chat",
+        element: (
+          <Suspense fallback={<div />}>
+            <ChatbotPage />
           </Suspense>
         ),
       },
