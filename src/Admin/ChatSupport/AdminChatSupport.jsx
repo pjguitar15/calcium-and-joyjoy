@@ -10,15 +10,6 @@ const AdminChatSupport = () => {
     axios
       .get(`http://18.223.157.202/backend/api/admin/chat/list`)
       .then((res) => {
-        // {
-        //   id: 1,
-        //   customer: "Customer 1",
-        //   lastMessage: "Hello there!",
-        //   unreadCount: 2,
-        // }
-
-        // console.log(res.data);
-
         const getLastMessage = (arr) => {
           let lastMessage = ""
 
@@ -40,15 +31,9 @@ const AdminChatSupport = () => {
             customer: item.author.name,
             lastMessage: getLastMessage(item.messages),
           }
-
-          // console.log(item.messages[item.messages.length - 1].message)
-
           return resObject
         })
-
-        // console.log(res.data);
         setChatList(mappedRes)
-        // console.log(mappedRes);
       })
   }, [])
 
