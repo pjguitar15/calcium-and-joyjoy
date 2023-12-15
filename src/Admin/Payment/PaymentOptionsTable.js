@@ -3,6 +3,7 @@ import { Flex, Heading, Box, Table, Thead, Tbody, Tr, Th, Td, Button, Switch, us
 import axiosInstance from '../../Shared/utils/axiosInstance';
 import AddPaymentMethodForm from './forms/AddPaymentMethodForm';
 import PaymentStatusChangeModal from './modals/PaymentStatusChangeModal';
+import LoadingSpinner from '../../Shared/UI/LoadingSpinner';
 
 const PaymentOptionsTable = () => {
     const [paymentMethods, setPaymentMethods] = useState([]);

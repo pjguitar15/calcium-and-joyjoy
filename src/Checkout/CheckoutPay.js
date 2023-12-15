@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -8,29 +9,86 @@ import {
   Text,
   VStack,
   useToast,
+  Heading,
+  Badge
 } from "@chakra-ui/react";
-import { useState } from "react";
 import Receipt from "./Receipt";
 import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { clearCart } from '../Store/cart';
+import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 
 function CheckoutPay({ onBack, onPay, checkoutData }) {
-  const [payment, setPayment] = useState("Gcash");
-  const [courier, setCourier] = useState("J&T");
-  const [loading, setLoading] = useState(false)
-
+  const [payment, setPayment] = useState("");
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const [courier, setCourier] = useState("");
+  const [couriers, setCouriers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [receiptImage, setReceiptImage] = useState(null);
+  const [selectedPaymentMethodDetails, setSelectedPaymentMethodDetails] = useState({});
+  const deliveryFee = 300;
   const cart = useSelector((state) => state.checkout);
-
   const user = JSON.parse(localStorage.getItem("user"));
   const toast = useToast();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handlePay = () => {
-    const deliveryFee = 300;
-    // console.log(item.size)
+  useEffect(() => {
+    const fetchCouriersAndPaymentMethods = async () => {
+      setLoading(true);
+      try {
+        const [couriersResponse, paymentMethodsResponse] = await Promise.all([
+          axios.get("http://18.223.157.202/backend/api/admin/couriers"),
+          axios.get("http://18.223.157.202/backend/api/admin/payment-options")
+        ]);
+
+        const activeCouriers = couriersResponse.data.filter(courier => courier.active === 'true');
+        const activePaymentMethods = paymentMethodsResponse.data.filter(method => method.active === 'true' || method.active === 1);
+
+        setCouriers(activeCouriers);
+        setPaymentMethods(activePaymentMethods);
+
+        if (activeCouriers.length > 0) {
+          setCourier(activeCouriers[0].courier_name);
+        }
+        if (activePaymentMethods.length > 0) {
+          setPayment(activePaymentMethods[0].name);
+        }
+      } catch (error) {
+        toast({
+          title: "Error loading data",
+          description: error.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+      setLoading(false);
+    };
+
+    fetchCouriersAndPaymentMethods();
+  }, [toast]);
+  
+  
+
+  // Function to handle payment method change
+  const handlePaymentChange = (paymentMethodName) => {
+    setPayment(paymentMethodName);
+    const selectedMethod = paymentMethods.find(method => method.name === paymentMethodName);
+    setSelectedPaymentMethodDetails(selectedMethod || {});
+  };
+  
+    const handlePay = () => {
+      if (!receiptImage) {
+        toast({
+          title: "Please upload a receipt image",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
 
     const cartsData = cart.map((item) => {
       console.log(item.size)
@@ -47,12 +105,8 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
       return data
     });
 
-    // Calculate the total price of items in the cart
-    const totalCartPrice = cartsData.reduce((total, item) => total + item.total, 0);
-
-    if (!totalCartPrice) {
-      return
-    }
+    // Calculate total cart price
+    const totalCartPrice = cart.reduce((total, item) => total + item.quantity * item.price, 0);
 
     const postData = {
       checkoutData: {
@@ -60,7 +114,7 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
         user_id: user?.user_info.id,
         payment_method: payment,
         courier,
-        receipt_img: "proof_1231231.jpg",
+        receipt_img: receiptImage, // Use the uploaded image
         grand_total: totalCartPrice + deliveryFee,
       },
       cartsData,
@@ -90,56 +144,67 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
     }
   };
 
+
   return (
-    <Box>
-      <Text fontSize='24px' fontWeight='semibold' mb='24px' mt='48px'>
+    <Box m='32px'> {/* Outermost container with margin */}
+      {/* Couriers RadioGroup */}
+      <Text fontSize='24px' fontWeight='semibold' mb='24px'>
         Courier
       </Text>
-      <RadioGroup
-        borderRadius='10px'
-        p='16px 32px'
-        border='solid 1px #d1d1d1'
-        defaultValue='J&T'
-        value={courier}
-        onChange={(e) => setCourier(e)}
-      >
-        <VStack align='normal'>
-          <Radio value='J&T'>J&T Express</Radio>
-          <Divider />
-          <Radio value='LBC'>LBC</Radio>
-        </VStack>
-      </RadioGroup>
-
-      <Text fontSize='24px' fontWeight='semibold' mb='24px' mt='48px'>
+      <Box borderRadius='10px' p='16px 32px' border='solid 1px #d1d1d1' mb='32px'> {/* Margin bottom for spacing */}
+        <RadioGroup
+          value={courier}
+          onChange={(value) => setCourier(value)}
+        >
+          {loading && <LoadingSpinner />}
+          <VStack align='normal'>
+            {couriers.map((courier, index) => (
+              <React.Fragment key={index}>
+                <Radio value={courier.courier_name}>{courier.courier_name}</Radio>
+                {index < couriers.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </VStack>
+        </RadioGroup>
+      </Box>
+  
+      {/* Payment Methods RadioGroup */}
+      <Text fontSize='24px' fontWeight='semibold' mb='24px'>
         Payment Method
       </Text>
-      <RadioGroup
-        borderRadius='10px'
-        p='16px 32px'
-        border='solid 1px #d1d1d1'
-        value={payment}
-        onChange={setPayment}
-      >
-        <VStack align='normal'>
-          <Radio value='Gcash'>Gcash</Radio>
-          {payment === "Gcash" && (
-            <VStack alignItems='normal' fontWeight='semibold'>
-              <Text>Number: 09999999999</Text>
-              <Text>Name: MJ MUIT</Text>
-            </VStack>
-          )}
-          <Divider />
-          <Radio value='Bank transfer'>Bank Transfer</Radio>
-          {payment === "Bank transfer" && (
-            <VStack alignItems='normal' fontWeight='semibold'>
-              <Text>Name: MJ MUIT</Text>
-              <Text>Account Number: 123-4567-8901 (BDO) </Text>
-            </VStack>
-          )}
-          <Receipt onUpload={(file) => console.log(file)} />
-        </VStack>
-      </RadioGroup>
-
+      <Box borderRadius='10px' p='16px 32px' border='solid 1px #d1d1d1' mb='32px'> {/* Margin bottom for spacing */}
+        <RadioGroup
+          value={payment}
+          onChange={handlePaymentChange}
+        >
+          {loading && <LoadingSpinner />}
+          <VStack align='normal'>
+            {paymentMethods.map((method, index) => (
+              <React.Fragment key={index}>
+                <Radio value={method.name}>{method.name}</Radio>
+                {index < paymentMethods.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </VStack>
+        </RadioGroup>
+  
+        {/* Display selected payment method details */}
+        {selectedPaymentMethodDetails.name && (
+          <Box mt="4" p="4" bg="gray.50" borderRadius="lg"> {/* Added padding and background */}
+          <Text fontSize="md" color="black.700">Account Name: <strong>{selectedPaymentMethodDetails.account_name}</strong></Text>
+          <Text fontSize="md" color="black.700">Account Number: <strong>{selectedPaymentMethodDetails.account_number}</strong></Text>
+          <Text fontSize="md" color="black.700">Instructions: <strong>{selectedPaymentMethodDetails.payment_instructions}</strong></Text>
+        </Box>
+        )}
+      </Box>
+  
+      {/* Image Upload Section */}
+      <Text fontSize='24px' fontWeight='semibold' mb='24px'>
+        Upload Receipt
+      </Text>
+      <Receipt onUpload={(file) => setReceiptImage(file)} mb='32px' /> {/* Margin bottom for spacing, Image upload component */}
+  
+      {/* Action Buttons */}
       <Grid mt='24px' gap='40px' gridTemplateColumns='1fr 1fr'>
         <Button borderRadius='20px' p='16px 40px' onClick={onBack}>
           Back
@@ -155,6 +220,6 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
       </Grid>
     </Box>
   );
-}
-
-export default CheckoutPay;
+  }
+  export default CheckoutPay;
+  
