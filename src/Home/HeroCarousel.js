@@ -1,8 +1,23 @@
+import React, { useEffect, useState } from 'react';
 import { Box, Image } from "@chakra-ui/react";
 import Slider from "react-slick";
+import axiosInstance from '../Shared/utils/axiosInstance'; // Import custom axios instance
 import "./HeroCarousel.css";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+
 function HeroCarousel() {
+  const [slides, setSlides] = useState([]);
+
+  useEffect(() => {
+    axiosInstance.get('/admin/home_slider')
+      .then(response => {
+        setSlides(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching slider images:", error);
+      });
+  }, []);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -12,11 +27,12 @@ function HeroCarousel() {
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
   };
+
   return (
     <Box as={Slider} {...settings}>
-      <Image src='/sample-hero.png' />
-      <Image src='/sample-hero-2.png' />
-      <Image src='/sample-hero-3.png' />
+      {slides.map(slide => (
+        <Image key={slide.id} src={slide.image_url} className="carousel-image" />
+      ))}
     </Box>
   );
 }
@@ -31,7 +47,7 @@ const NextArrow = ({ onClick }) => {
       transform='translateY(-50%)'
       right={{ base: "16px", md: "40px" }}
       py={{ md: "40px", base: "24px" }}
-      bgColor='rgba(255,255,255,.4)'
+      bgColor='transparent'
       cursor='pointer'
       transition='all .3s'
       _hover={{ bgColor: "rgba(255,255,255,.8)" }}
@@ -51,7 +67,7 @@ const PrevArrow = ({ onClick }) => {
       transform='translateY(-50%)'
       left={{ md: "40px", base: "16px" }}
       py={{ md: "40px", base: "24px" }}
-      bgColor='rgba(255,255,255,.4)'
+      bgColor='transparent'
       cursor='pointer'
       transition='all .3s'
       _hover={{ bgColor: "rgba(255,255,255,.8)" }}
