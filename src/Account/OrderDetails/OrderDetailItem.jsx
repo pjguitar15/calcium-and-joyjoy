@@ -4,9 +4,9 @@ import { FaCheck } from "react-icons/fa6";
 
 const OrderDetailItem = (props) => {
   const { orderItems } = props;
-  const { status, id, tracking_url, tracking_number } = orderItems;
+  const { status, id, tracking_url, tracking_number, payment_status } = orderItems;
   console.log(orderItems);
-  console.log(status);
+  console.log(payment_status);
   return (
     <div className='rounded-lg border border-gray-700 p-6'>
       <div className='flex justify-center items-center'>
@@ -27,7 +27,7 @@ const OrderDetailItem = (props) => {
         {/* {props.orderItems.delivery_status ?} */}
         <div
           className={`flex flex-col justify-center items-center ${
-            status == "SHIPPED" || status == "paid" ? "" : "opacity-20"
+            payment_status == "verified" ? "" : "opacity-20"
           }`}
         >
           <div
@@ -61,14 +61,14 @@ const OrderDetailItem = (props) => {
             <div>
               <img
                 className='w-[180px] h-[180px] object-cover rounded-lg'
-                src='https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/b5ab0a6c-6393-4af6-abbc-4f1acaa6ed94/air-max-dawn-shoes-tx7TpB.png'
+                src={item.product.image}
                 alt=''
               />
             </div>
             <div className='flex flex-col gap-2'>
-              <p className='text-md'>Air Force 1 White</p>
+              <p className='text-md'>{item.product.name}</p>
               <div className='bg-gray-100 px-3 py-2 rounded-lg text-gray-500'>
-                Men/Women's Shoes, Cloud White/, Size {item.size}
+                Category {item.product.category.name}, Brand {item.product.brand.name}, Size {item.size}
               </div>
               <h6 className='font-semibold'>P{item.price}</h6>
             </div>
