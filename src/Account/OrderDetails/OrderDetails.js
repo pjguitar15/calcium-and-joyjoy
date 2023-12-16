@@ -1,14 +1,14 @@
-import OrderDetailItem from "./OrderDetailItem"
-import { useEffect, useState } from "react"
-import axios from "axios"
+import OrderDetailItem from "./OrderDetailItem";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function OrderDetails() {
-  const [currUserOrders, setCurrUserOrders] = useState([])
-  const user = localStorage.getItem("user")
-  const parsedUser = JSON.parse(user)
+  const [currUserOrders, setCurrUserOrders] = useState([]);
+  const user = localStorage.getItem("user");
+  const parsedUser = JSON.parse(user);
   useEffect(() => {
-    console.log(currUserOrders)
-  }, [currUserOrders])
+    console.log(currUserOrders);
+  }, [currUserOrders]);
 
   useEffect(() => {
     axios
@@ -20,18 +20,18 @@ function OrderDetails() {
       .then((res) => {
         const filteredData = res.data.data?.filter(
           (item) => item.items.length > 0
-        )
-        setCurrUserOrders(filteredData)
-      })
-  }, [])
+        );
+        setCurrUserOrders(filteredData);
+      });
+  }, []);
 
   return (
-    <main className="pt-8 pe-8 overflow-y-scroll max-h-[800px] flex flex-col gap-3">
+    <main className='py-8 pe-8 overflow-y-scroll max-h-[800px] flex flex-col gap-3'>
       {currUserOrders?.map((item, index) => (
         <OrderDetailItem key={index} orderItems={item} />
       ))}
     </main>
-  )
+  );
 }
 
-export default OrderDetails
+export default OrderDetails;

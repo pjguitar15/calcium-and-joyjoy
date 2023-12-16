@@ -33,7 +33,7 @@ function FilterBar() {
     },
     {
       main: "Gender",
-      items: ["Men", "Women", "Unisex"],
+      items: ["Male", "Female", "Unisex"],
     },
     {
       main: "Socks",
@@ -56,7 +56,7 @@ function FilterBar() {
         <FilterGroup main={"Type"} items={mapTypes} />
         <FilterGroup main={"Brands"} items={mapBrands} />
         <FilterGroup main={"Categories"} items={mapCategories} />
-        <FilterGroup main={"Genders"} items={["Men", "Women", "Unisex"]} />
+        <FilterGroup main={"Genders"} items={["Male", "Female", "Unisex"]} />
         <FilterGroup main={"Price"} items={[
           "Under ₱5,000",
           "₱5,000-₱9,000",

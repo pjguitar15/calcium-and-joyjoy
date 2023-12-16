@@ -15,9 +15,9 @@ const Table = () => {
 
   useEffect(() => {
     axios.get("http://18.223.157.202/backend/api/admin/orders").then((res) => {
-      setAllOrders(res.data)
-    })
-  }, [])
+      setAllOrders(res.data);
+    });
+  }, []);
 
   const openModal = (item = {  selected_id:'',name: '', role: '', permissions: '' , track_number:'', url:'',estd:''}) => {
     setCurrentItem({ selected_id:'', name: '', role: '', permissions: '', track_number:'', url:'' ,estd:'' });
@@ -58,10 +58,10 @@ const Table = () => {
         status: "SHIPPED",
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         const updatedOrders = allOrders.map((item) => {
           if (item.id === id) {
-            return { ...item, status: "SHIPPED" }
+            return { ...item, status: "SHIPPED" };
           }
           return item
         })
@@ -103,7 +103,7 @@ const Table = () => {
     };
   
     return (
-      <div className="flex">
+      <div className='flex'>
         {status !== "SHIPPED" && (
           <button
             onClick={openModalAndSetCurrentItem}
@@ -119,13 +119,13 @@ const Table = () => {
     );
   };
 
-  const indexOfLastOrder = currentPage * ordersPerPage
-  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
-  const currentOrders = allOrders.slice(indexOfFirstOrder, indexOfLastOrder)
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = allOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
   const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber)
-  }
+    setCurrentPage(pageNumber);
+  };
 
 
 
@@ -172,22 +172,22 @@ const Table = () => {
       <table className="rounded-lg min-w-full border border-separate  border-gray-400 bg-[#F3F3F3]">
         <thead>
           <tr>
-            <th className="py-3 px-4 border-b border-gray-400 text-start">
+            <th className='py-3 px-4 border-b border-gray-400 text-start'>
               Order number
             </th>
-            <th className="px-4 border-b border-gray-400 text-start">
+            <th className='px-4 border-b border-gray-400 text-start'>
               Customer
             </th>
-            <th className="px-4 border-b border-gray-400 text-start">
+            <th className='px-4 border-b border-gray-400 text-start'>
               Total Amount
             </th>
-            <th className="px-4 border-b border-gray-400 text-start">
+            <th className='px-4 border-b border-gray-400 text-start'>
               Order Date
             </th>
-            <th className="px-4 border-b border-gray-400 text-start">
+            <th className='px-4 border-b border-gray-400 text-start'>
               Order Status
             </th>
-            <th className="px-4 border-b border-gray-400 text-start">
+            <th className='px-4 border-b border-gray-400 text-start'>
               Actions
             </th>
           </tr>
@@ -196,20 +196,20 @@ const Table = () => {
           {/* reference_number, user_id, grand_total, created_at, status */}
           {currentOrders.map((item, index) => (
             <tr>
-              <td className="py-3 px-4 last:border-b-0 border-b border-gray-400">
+              <td className='py-3 px-4 last:border-b-0 border-b border-gray-400'>
                 {item.reference_number}
               </td>
-              <td className="px-4 border-b border-gray-400">{item.user_id}</td>
-              <td className="px-4 border-b border-gray-400">
+              <td className='px-4 border-b border-gray-400'>{item.user_id}</td>
+              <td className='px-4 border-b border-gray-400'>
                 P{item.grand_total}
               </td>
-              <td className="px-4 border-b border-gray-400">
+              <td className='px-4 border-b border-gray-400'>
                 {item.created_at.slice(0, 10)}
               </td>
-              <td className="uppercase px-4 border-b border-gray-400">
+              <td className='uppercase px-4 border-b border-gray-400'>
                 {item.status}
               </td>
-              <td className="px-4 border-b border-gray-400">
+              <td className='px-4 border-b border-gray-400'>
                 <ActionButtons id={item.id} status={item.status} />
               </td>
             </tr>
@@ -218,7 +218,7 @@ const Table = () => {
       </table>
 
       {/* Pagination */}
-      <div className="flex justify-center mt-4">
+      <div className='flex justify-center mt-4'>
         {Array.from({
           length: Math.ceil(allOrders.length / ordersPerPage),
         }).map((_, index) => (
@@ -236,7 +236,7 @@ const Table = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Table
+export default Table;
