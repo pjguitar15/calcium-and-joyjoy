@@ -4,9 +4,8 @@ import { Link } from "react-router-dom";
 
 function Thankyou() {
   return (
-    <VStack gap='16px' align='normal'>
+    <VStack gap='16px' align='normal' maxW='768px' mx='auto'>
       <Heading>THANK YOU!</Heading>
-
       <Text bgColor='gray.300' p='16px' borderRadius='10px'>
         <CheckCircleIcon
           fontSize='24px'
