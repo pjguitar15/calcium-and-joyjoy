@@ -1,5 +1,6 @@
-import { Box, Button, Heading, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Button, Heading, Table, Tbody, Td, Text, Th, Thead, Tr,  useToast, } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import axios from 'axios';
 function downloadFile(data, filename) {
     const element = document.createElement('a');
     const file = new Blob([data], { type: 'application/json' });
@@ -12,28 +13,69 @@ function downloadFile(data, filename) {
 
 function UserBehaviorReport() {
     const [userBehaviorData, setUserBehaviorData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const toast = useToast();
 
     useEffect(() => {
-        const dummyData = [
-            { id: 1, pageVisited: 'Home', timeSpent: 120 },
-            { id: 2, pageVisited: 'About', timeSpent: 60 },
-            { id: 3, pageVisited: 'Contact', timeSpent: 180 },
-        ];
+        const fetchCouriersAndPaymentMethods = async () => {
+          setLoading(true);
+          try {
+            const [couriersResponse] = await Promise.all([
+              axios.get("http://18.223.157.202/backend/api/admin/customer_behavior"),
+             
+            ]);
+            
+         
+            const activeCouriers = couriersResponse.data
+          
+            setUserBehaviorData(activeCouriers);
+           
+          } catch (error) {
+            toast({
+              title: "Error loading data",
+              description: error.message,
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
+          }
+          setLoading(false);
+        };
+    
+        fetchCouriersAndPaymentMethods();
+      }, [toast]);
 
-        setUserBehaviorData(dummyData);
-    }, []);
 
-    const generateReport = () => {
-        // Replace this with your actual report generation logic
-        const reportData = userBehaviorData.map(user => ({
-            userId: user.id,
-            pageVisited: user.pageVisited,
-            timeSpent: user.timeSpent
-        }));
 
-        const reportContent = JSON.stringify(reportData, null, 2);
-        downloadFile(reportContent, 'user_behavior_report.json');
+
+      const generateReport = () => {
+        // Flatten the nested structure and create a new array with the desired format
+        const flatData = userBehaviorData.map(user => {
+            return user.activity_logs.map(activity => {
+                return {
+                    username: user.user_name,
+                    page_name: `${activity.page_name}(${activity.count})`,
+                     
+                };
+            });
+        }).flat();
+    
+        // Convert flatData to CSV format
+        const csvData = flatData.map(entry => Object.values(entry).join(',')).join('\n');
+    
+        // Create a temporary anchor element
+        const anchor = document.createElement('a');
+        anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData);
+        anchor.download = 'activity_report.csv';
+        anchor.click();
     };
+    
+    // Example usage
+   
+    
+   
+    
+    
 
     return (
         <Box>
@@ -42,20 +84,25 @@ function UserBehaviorReport() {
             <Table variant="simple">
                 <Thead>
                     <Tr>
-                        <Th>User ID</Th>
+                        <Th>Username</Th>
                         <Th>Page Visited</Th>
-                        <Th>Time Spent (seconds)</Th>
+                       
                     </Tr>
                 </Thead>
                 <Tbody>
                     {userBehaviorData.map((user) => (
                         <Tr key={user.id}>
-                            <Td>{user.id}</Td>
-                            <Td>{user.pageVisited}</Td>
-                            <Td>{user.timeSpent}</Td>
+                        <Td>{user.user_name}</Td>
+                        <Td>
+                            {user.activity_logs.map((log, index) => (
+                            <span key={index}>{log.page_name}({log.count}) &nbsp;</span>
+                            ))}
+                        </Td>
+                     
                         </Tr>
                     ))}
-                </Tbody>
+                    </Tbody>
+
             </Table>
 
             <Button mt={4} colorScheme="blue" onClick={generateReport}>Generate Report</Button>

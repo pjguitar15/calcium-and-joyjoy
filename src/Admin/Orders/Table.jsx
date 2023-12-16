@@ -1,22 +1,59 @@
 import React, { useEffect, useState } from "react"
+import {  Button, Box, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input, FormControl, FormLabel } from "@chakra-ui/react";
 import axios from "axios"
 import { FaPenClip } from "react-icons/fa6"
 import { FaTrashAlt } from "react-icons/fa"
 
 const Table = () => {
   const [allOrders, setAllOrders] = useState([])
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentItem, setCurrentItem] = useState({selected_id:'', name: '', role: '', permissions: '', track_number:'' ,url:'', estd:'' }); // For adding/editing
   const [currentPage, setCurrentPage] = useState(1)
-  const [ordersPerPage] = useState(10) // Adjust this value based on your pagination preference
+  const [ordersPerPage] = useState(10) 
+
+  const toast = useToast();
+
   useEffect(() => {
     axios.get("http://18.223.157.202/backend/api/admin/orders").then((res) => {
       setAllOrders(res.data)
     })
   }, [])
 
+  const openModal = (item = {  selected_id:'',name: '', role: '', permissions: '' , track_number:'', url:'',estd:''}) => {
+    setCurrentItem({ selected_id:'', name: '', role: '', permissions: '', track_number:'', url:'' ,estd:'' });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentItem({selected_id:'', name: '', role: '', permissions: '', track_number:'', url:'' ,estd:'' });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCurrentItem({ ...currentItem, [name]: value });
+  };
+
   const markShipHandler = (id) => {
-    console.log(id)
-    axios
+    console.log('hadukeen~',currentItem)
+      if(currentItem.track_number  === '' && currentItem.url  === '' && currentItem.estd === '' ){
+        toast({
+          title: `Invalid!`,
+          description: `Please complete all fields`,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }else{
+        let payload = {
+          tracking_number:currentItem.track_number, 
+          tracking_url:currentItem.url, 
+          estimated_delivery_date: currentItem.estd
+        }
+        axios
+      .post(`http://18.223.157.202/backend/api/admin/orders/${id}/tracking`,payload)
+      .then((res) => {
+        axios
       .post(`http://18.223.157.202/backend/api/admin/orders/${id}/status`, {
         status: "SHIPPED",
       })
@@ -29,28 +66,58 @@ const Table = () => {
           return item
         })
         setAllOrders(updatedOrders)
+        toast({
+          title: `Success!`,
+          description: `Order successfully updated`,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        closeModal()
       })
+      })
+      }
+
+
+    // axios
+    //   .post(`http://18.223.157.202/backend/api/admin/orders/${id}/status`, {
+    //     status: "SHIPPED",
+    //   })
+    //   .then((res) => {
+    //     console.log(res)
+    //     const updatedOrders = allOrders.map((item) => {
+    //       if (item.id === id) {
+    //         return { ...item, status: "SHIPPED" }
+    //       }
+    //       return item
+    //     })
+    //     setAllOrders(updatedOrders)
+    //   })
   }
 
   const ActionButtons = ({ id, status }) => {
+    const openModalAndSetCurrentItem = () => {
+      openModal();
+
+      setCurrentItem({ selected_id: id,  track_number:'', url:'' ,estd:'' });
+    };
+  
     return (
       <div className="flex">
         {status !== "SHIPPED" && (
           <button
-            onClick={() => markShipHandler(id)}
+            onClick={openModalAndSetCurrentItem}
             className="border border-blue-700 hover:bg-blue-700 hover:text-white duration-300 text-blue-700 px-2 py-1 rounded mr-2 flex gap-1 items-center"
           >
             <FaPenClip />
             Mark as shipped
           </button>
         )}
-
-        <button className="border border-red-500 text-red-500 hover:bg-red-500 hover:text-white duration-300 px-2 py-2 rounded mr-2 flex-1 flex justify-center">
-          <FaTrashAlt className="text-sm" />
-        </button>
+  
+       
       </div>
-    )
-  }
+    );
+  };
 
   const indexOfLastOrder = currentPage * ordersPerPage
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
@@ -60,8 +127,48 @@ const Table = () => {
     setCurrentPage(pageNumber)
   }
 
+
+
+
+
   return (
+
+
+    
     <div className="container mx-auto mt-2">
+       <div className="container mx-auto mt-2">
+      {/* ... your table code ... */}
+      
+
+
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Update Tracking Details</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+          <FormControl>
+              <FormLabel>Tracking URL</FormLabel>
+              <Input placeholder="Enter Tracking Number" name="track_number" value={currentItem.track_number} onChange={handleInputChange} />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Tracking URL</FormLabel>
+              <Input placeholder="Enter Tracking URL" name="url" value={currentItem.url} onChange={handleInputChange} />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Estimated Delivery Date</FormLabel>
+              <Input type="datetime-local" placeholder="Enter estimated delivery" name="estd" value={currentItem.estd} onChange={handleInputChange} />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+          <Button colorScheme="blue" mr={3} onClick={() => markShipHandler(currentItem.selected_id)}> 
+            Update Details
+          </Button>
+            <Button onClick={closeModal}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </div>
       <table className="rounded-lg min-w-full border border-separate  border-gray-400 bg-[#F3F3F3]">
         <thead>
           <tr>

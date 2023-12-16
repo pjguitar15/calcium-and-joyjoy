@@ -28,7 +28,7 @@ const TableComponent = () => {
 
   const addOrUpdatePermission = async () => {
     try {
-      const method = currentItem.id ? 'post' : 'put';
+      const method = 'post'
       const url = currentItem.id ? `/admin/role-permissions/update/${currentItem.id}` : '/admin/role-permissions/store';
       await axiosInstance[method](url, currentItem);
       fetchData();
@@ -83,10 +83,10 @@ const TableComponent = () => {
     </Box>
   );
 
-  if (loading) {
+  if (loading) { 
     return <p>Loading...</p>;
   }
-
+  
   return (
     <>
       <Button colorScheme="green" onClick={() => openModal()}>Add New Permission</Button>

@@ -14,8 +14,8 @@ function Customers() {
         const token = localStorage.getItem("adminLoginToken");
         if (!token) {
           throw new Error("No admin token found");
-        }
-        const response = await axiosInstance.get('/customers', {
+        } 
+        const response = await axiosInstance.get('http://18.223.157.202/backend/api/admin/customers', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

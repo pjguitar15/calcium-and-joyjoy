@@ -1,58 +1,169 @@
-import { Box, Button, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Button, Heading, Table, Tbody, Td, Text, Th, Thead, Tr,  useToast, } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import axios from 'axios';
 
 function SalesRep() {
+    const [loading, setLoading] = useState(false);
+    const toast = useToast();
+
     const [salesData, setSalesData] = useState([]);
 
-    // Function to generate the sales report
-    const generateReport = () => {
-        // Logic to fetch sales data from API or database
-        // Replace this with your actual implementation
-        const fetchedSalesData = [
-            { id: 1, product: "Product A", quantity: 10, price: 100 },
-            { id: 2, product: "Product B", quantity: 5, price: 200 },
-            { id: 3, product: "Product C", quantity: 8, price: 150 },
-        ];
 
-        setSalesData(fetchedSalesData);
-    };
 
-    // Function to download the generated report
-    const downloadReport = () => {
-        // Convert salesData to CSV format
-        const csvData = salesData.map(sale => Object.values(sale).join(',')).join('\n');
+    useEffect(() => {
+        const fetchCouriersAndPaymentMethods = async () => {
+          setLoading(true);
+          try {
+            const [couriersResponse] = await Promise.all([
+              axios.get("http://18.223.157.202/backend/api/admin/get_sales_report"),
+             
+            ]);
+            
+            
+            const activeCouriers = couriersResponse.data.current_year
+       
+            setSalesData(activeCouriers);
+
         
-        // Create a temporary anchor element
-        const anchor = document.createElement('a');
-        anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData);
-        anchor.download = 'sales_report.csv';
-        anchor.click();
+        
+           
+          } catch (error) {
+            toast({
+              title: "Error loading data",
+              description: error.message,
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
+          }
+          setLoading(false);
+        };
+    
+        fetchCouriersAndPaymentMethods();
+      }, [toast]);
+
+
+
+
+
+
+
+
+
+    // Function to generate the sales report
+  
+   
+    
+    
+    function downloadReport(columnNames, rows ) {
+        const getSalesData = (data) => {
+            const latestDate = Object.keys(data)
+            .sort((a, b) => new Date(b) - new Date(a))
+            [0];
+    
+        const formattedSalesData = data[latestDate];
+    
+        return formattedSalesData !== undefined ? String(formattedSalesData).replace(/,/g, '') : null;
     };
+    
+    const daily_sales = getSalesData(salesData.daily);
+    const monthly_sales = getSalesData(salesData.monthly);
+    const weekly_sales = getSalesData(salesData.weekly);
+    const yearly_sales = String(salesData.yearly).replace(/,/g, '');
+        const columns = ['Daily', 'Weekly', 'Monthly','Yearly'];
+        const dataRows = [
+          [daily_sales, monthly_sales,weekly_sales,yearly_sales],
+       
+          // Add more rows as needed
+        ];
+        // Combine column names and rows into a CSV string
+        const csvData = [columns.join(','), ...dataRows.map(row => row.join(','))].join('\n');
+      
+        // Create a link element
+        const anchor = document.createElement('a');
+      
+        // Set the data URL with CSV content
+        anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData);
+      
+        // Set the download attribute with the specified file name
+        anchor.download = 'test';
+      
+        // Trigger a click event to initiate the download
+        anchor.click();
+      }
+      
+      // Example usage
+     
+      
 
     return (
+        
         <Box>
-            <Button onClick={generateReport}>Generate Report</Button>
+
+<Heading size="lg" mb={4}>Sales Report</Heading>
+
+          
             <Button onClick={downloadReport}>Download Report</Button>
-            <Table variant="striped" colorScheme="teal">
-                <Thead>
-                    <Tr>
-                        <Th>ID</Th>
-                        <Th>Product</Th>
-                        <Th>Quantity</Th>
-                        <Th>Price</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {salesData.map((sale) => (
-                        <Tr key={sale.id}>
-                            <Td>{sale.id}</Td>
-                            <Td>{sale.product}</Td>
-                            <Td>{sale.quantity}</Td>
-                            <Td>{sale.price}</Td>
-                        </Tr>
+            
+           
+
+            <Table >
+               
+                
+            <Tbody>
+                <Tr>
+                    <Td>
+                        <strong>Daily</strong>
+                    </Td>
+                    {salesData.daily &&
+                    Object.keys(salesData.daily)
+                    .reverse() // Reverse the order of keys (dates)
+                    .slice(0, 1) // Select only the first date
+                    .map((date) => (
+                        
+                            <Td>{salesData.daily[date]}</Td>
+                       
                     ))}
-                </Tbody>
+                </Tr>
+                <Tr>
+                    <Td>
+                        <strong>Weekly</strong>
+                    </Td>
+                    {salesData.weekly &&
+                    Object.keys(salesData.weekly)
+                    .reverse() // Reverse the order of keys (dates)
+                    .slice(0, 1) // Select only the first date
+                    .map((date) => (
+                        
+                            <Td>{salesData.weekly[date]}</Td>
+                    ))}
+                </Tr>
+                <Tr>
+                    <Td>
+                        <strong>Monthly</strong>
+                    </Td>
+                    {salesData.monthly &&
+                    Object.keys(salesData.monthly)
+                    .reverse() // Reverse the order of keys (dates)
+                    .slice(0, 1) // Select only the first date
+                    .map((date) => (
+                        
+                            <Td>{salesData.monthly[date]}</Td>
+                    ))}
+                </Tr>
+                <Tr>
+                    <Td>
+                        <strong>Yearly</strong>
+                       
+                    </Td>
+                    <Td>{salesData.yearly}</Td>
+                </Tr>
+
+            </Tbody>
+
             </Table>
+
+
         </Box>
     );
 }
