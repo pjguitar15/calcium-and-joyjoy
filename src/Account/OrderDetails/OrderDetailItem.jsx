@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { FaCheck } from "react-icons/fa6";
 
@@ -5,7 +6,6 @@ const OrderDetailItem = (props) => {
   const { orderItems } = props;
   const { status, id } = orderItems;
 
-  console.log(id);
   console.log(orderItems);
 
   return (
@@ -94,6 +94,7 @@ const OrderDetailItem = (props) => {
           View Item
         </button>
       </div> */}
+      <Button>Received</Button>
     </div>
   );
 };
