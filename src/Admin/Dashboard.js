@@ -36,6 +36,7 @@ import {
   BsPalette,
   BsUiChecksGrid,
   BsMegaphone,
+  BsInfoCircleFill
 } from "react-icons/bs";
 
 import { CgLogOut } from "react-icons/cg";
@@ -121,6 +122,11 @@ const menu = [
         text: "View Chats",
         link: "/chat-support",
         icon: BsFillPeopleFill,
+      },
+      {
+        text: "FAQs",
+        link: "/faqs",
+        icon: BsInfoCircleFill,
       },
     ],
   },
