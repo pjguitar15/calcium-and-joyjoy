@@ -28,7 +28,7 @@ import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import config from "../Shared/utils/config";
 import { addToCart, addToCheckout } from "../Store/cart";
-import useProductSizes from '../Shared/Hooks/useProductSizes';
+import useProductSizes from "../Shared/Hooks/useProductSizes";
 
 function ItemPage() {
   const { productID } = useParams();
@@ -38,11 +38,10 @@ function ItemPage() {
   const [display, setDisplay] = useState("/dummyShoe.png");
   const toast = useToast();
   const [qty, setQty] = useState(1);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { productSizes } = useProductSizes()
+  const { productSizes } = useProductSizes();
   const getShoe = async () => {
-
     const res = await axiosInstance.get(`/shoes/${productID}`);
     return res.data;
   };
@@ -51,7 +50,7 @@ function ItemPage() {
     queryFn: getShoe,
   });
 
-  console.log(shoe)
+  console.log(shoe);
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -71,7 +70,6 @@ function ItemPage() {
       { user_id: user.user_info.id, product_id: productID },
       { headers: { Authorization: `Bearer ${user.token}` } }
     );
-
   };
 
   const { name, gender, description, price, image, colors } = shoe;
@@ -83,9 +81,7 @@ function ItemPage() {
     "/heroSocks.png",
   ];
 
-
-  const sizes = productSizes
-
+  const sizes = productSizes.map((s) => s.name);
 
   const handleQtyChange = (e) => {
     if (e.target.value < 0 || !e.target.value) return setQty(1);
@@ -165,11 +161,7 @@ function ItemPage() {
             ))}
           </VStack>
 
-          <Image
-            mt='40px'
-            maxW='320px'
-            src={image}
-          />
+          <Image mt='40px' maxW='320px' src={image} />
         </HStack>
         {/* DETAILS AND CTAs */}
         <Box>
@@ -180,9 +172,14 @@ function ItemPage() {
             <Text>{gender === "male" ? "Men's" : "Women's"} shoes</Text>
           </Box>
           <Text fontWeight='semibold'>{convertCurrency(price)}</Text>
-          <Text my='16px'>Colors: {colors.map((color, index, array) => (
-            index === array.length - 1 ? color.color.name : color.color.name + ", "
-          ))}</Text>
+          <Text my='16px'>
+            Colors:{" "}
+            {colors.map((color, index, array) =>
+              index === array.length - 1
+                ? color.color.name
+                : color.color.name + ", "
+            )}
+          </Text>
           <Box mb='8px'>
             <HStack gap='24px'>
               <Text fontWeight='semibold' role='label'>
@@ -221,7 +218,7 @@ function ItemPage() {
           <Box>
             <Text fontWeight='semibold'>Sizes</Text>
             <Grid mt='8px' gap='8px' gridTemplateColumns='repeat(4,1fr)'>
-              {sizes.name?.map((size) => (
+              {sizes.map((size) => (
                 <Button
                   key={size}
                   borderRadius='none'
@@ -263,14 +260,16 @@ function ItemPage() {
             </HStack>
             <Button
               onClick={() => {
-                dispatch(addToCheckout({
-                  ...shoe,
-                  quantity: qty,
-                  price: price * qty,
-                  size: selectedSize,
-                }))
+                dispatch(
+                  addToCheckout({
+                    ...shoe,
+                    quantity: qty,
+                    price: price * qty,
+                    size: selectedSize,
+                  })
+                );
 
-                navigate('/checkout')
+                navigate("/checkout");
               }}
               bgColor='gray'
               color='white'
