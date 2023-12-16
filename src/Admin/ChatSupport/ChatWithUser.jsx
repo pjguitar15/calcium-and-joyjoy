@@ -9,7 +9,7 @@ const ChatWithUser = () => {
   const { userId } = useGetCurrAdmin()
   let intervalId // Declare intervalId outside of the useEffect
   const duration = 15 * 60 * 1000 // 15 minutes in milliseconds
-  const interval = 200 // 1 second
+  const interval = 2500 // 1 second
   const { id } = useParams()
   const navigate = useNavigate()
 

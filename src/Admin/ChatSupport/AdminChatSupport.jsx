@@ -1,67 +1,95 @@
-import React, { useEffect, useState } from "react"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+  Box, Flex, Text, VStack, Heading, Badge, Input, Button, useColorModeValue, HStack,
+} from "@chakra-ui/react";
 
 const AdminChatSupport = () => {
-  const [chatList, setChatList] = useState([])
-  const navigate = useNavigate()
+  const [chatList, setChatList] = useState([]);
+  const [filteredChats, setFilteredChats] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [chatsPerPage] = useState(5); // Adjust the number of chats per page as needed
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`http://18.223.157.202/backend/api/admin/chat/list`)
+    axios.get(`http://18.223.157.202/backend/api/admin/chat/list`)
       .then((res) => {
-        const getLastMessage = (arr) => {
-          let lastMessage = ""
+        const mappedRes = res.data.map((item) => ({
+          id: item.id,
+          customer: item.author.name,
+          lastMessage: item.messages.length > 0 ? item.messages[item.messages.length - 1].message : "No messages yet",
+          unread: item.unread,
+        }));
+        setChatList(mappedRes.sort((a, b) => b.id - a.id));
+        setFilteredChats(mappedRes);
+      });
+  }, []);
 
-          if (arr.length === 1) {
-            lastMessage = arr[0].message
-          }
+  useEffect(() => {
+    const filtered = chatList.filter(chat =>
+      chat.customer.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredChats(filtered);
+    setCurrentPage(1); // Reset to the first page on search
+  }, [searchTerm, chatList]);
 
-          if (arr.length > 2) {
-            lastMessage = arr[arr.length - 1].message
-          }
+  // Pagination logic
+  const indexOfLastChat = currentPage * chatsPerPage;
+  const indexOfFirstChat = indexOfLastChat - chatsPerPage;
+  const currentChats = filteredChats.slice(indexOfFirstChat, indexOfLastChat);
 
-          return lastMessage
-        }
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-        const mappedRes = res.data.map((item) => {
-          console.log(item.data)
-          const resObject = {
-            id: item.id,
-            customer: item.author.name,
-            lastMessage: getLastMessage(item.messages),
-          }
-          return resObject
-        })
-        setChatList(mappedRes)
-      })
-  }, [])
+  const bgColor = useColorModeValue("gray.100", "gray.700");
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100 max-h-screen">
-      <div className="p-4 bg-white border-b">
-        <h1 className="text-2xl font-semibold">Ongoing Chats</h1>
-      </div>
-      <div className="flex-1 overflow-y-auto p-4">
-        {chatList.reverse().map((chat) => (
-          <div
-            onClick={() => {
-              navigate(`/admin/chat-support/chat/${chat.id}`)
-            }}
+    <Flex direction="column" h="100vh" bg={bgColor}>
+      <Box p="4" bg="white" borderBottomWidth="1px">
+        <Heading as="h1" size="lg">Ongoing Chats</Heading>
+      </Box>
+      <Box p="4">
+        <Input 
+          placeholder="Search Chats" 
+          value={searchTerm} 
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </Box>
+      <VStack flex="1" overflowY="auto" p="4" spacing="4">
+        {currentChats.map(chat => (
+          <Flex
             key={chat.id}
-            className="flex items-center justify-between p-4 mb-4 bg-white rounded-lg shadow-md hover:shadow-lg cursor-pointer transition"
+            p="4"
+            bg="white"
+            borderRadius="lg"
+            shadow="md"
+            w="full"
+            align="center"
+            justify="space-between"
+            cursor="pointer"
+            _hover={{ shadow: "lg" }}
+            onClick={() => navigate(`/admin/chat-support/chat/${chat.id}`)}
           >
-            <div>
-              <h2 className="text-lg font-semibold">{chat.customer}</h2>
-              <p className="text-gray-500">
-                {chat.lastMessage === "" ? "No messages yet" : chat.lastMessage}
-              </p>
-            </div>
-          </div>
+            <VStack align="start">
+              <Text fontWeight="bold">{chat.customer}</Text>
+              <Text color="gray.500" fontSize="sm">
+                {chat.lastMessage}
+              </Text>
+            </VStack>
+            {chat.unread && <Badge colorScheme="green">New</Badge>}
+          </Flex>
         ))}
-      </div>
-    </div>
-  )
-}
+      </VStack>
+      <HStack spacing={4} justifyContent="center" p={4}>
+        {Array.from({ length: Math.ceil(filteredChats.length / chatsPerPage) }, (_, i) => i + 1)
+          .map(number => (
+            <Button key={number} onClick={() => paginate(number)}>{number}</Button>
+        ))}
+      </HStack>
+    </Flex>
+  );
+};
 
-export default AdminChatSupport
+export default AdminChatSupport;

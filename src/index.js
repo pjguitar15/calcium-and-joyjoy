@@ -41,6 +41,8 @@ import ChatbotPage from "./Joybot/Chatbotpage";
 import AdminChatSupport from './Admin/ChatSupport/AdminChatSupport';
 import Chatbox from './Joybot/Chatbox';
 import ChatWithUser from './Admin/ChatSupport/ChatWithUser';
+import AdminChatFaqs from './Admin/ChatSupport/FAQs/FAQList';
+//import OtpLinkVerification from "./Auth/OtpLinkVerification";
 
 
 
@@ -238,6 +240,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <ChatWithUser />
+          </Suspense>
+        ),
+      },
+      {
+        path: "faqs",
+        element: (
+          <Suspense fallback={<div />}>
+            <AdminChatFaqs />
           </Suspense>
         ),
       },

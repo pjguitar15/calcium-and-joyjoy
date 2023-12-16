@@ -24,7 +24,6 @@ import ChatbotPage from './Chatbotpage';
 function Joypop() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  
   const handleClick = () => {
     onOpen();
   };
@@ -52,7 +51,7 @@ function Joypop() {
           border='solid 2px black'
           onClick={handleClick}
         >
-         J
+          J
         </Center>
       </PopoverTrigger>
       <Portal>
@@ -61,7 +60,6 @@ function Joypop() {
           <PopoverCloseButton />
           <PopoverBody>
             <Box>Welcome to Calcium and joyjoy store!</Box>
-            onClick={handleClick}
           </PopoverBody>
         </PopoverContent>
       </Portal>
