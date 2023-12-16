@@ -1,13 +1,12 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { FaCheck } from "react-icons/fa6";
 
 const OrderDetailItem = (props) => {
   const { orderItems } = props;
-  const { status, id } = orderItems;
-
+  const { status, id, tracking_url, tracking_number } = orderItems;
   console.log(orderItems);
-
+  console.log(status);
   return (
     <div className='rounded-lg border border-gray-700 p-6'>
       <div className='flex justify-center items-center'>
@@ -94,6 +93,20 @@ const OrderDetailItem = (props) => {
           View Item
         </button>
       </div> */}
+      {status === "SHIPPED" && (
+        <VStack align='normal' mb='16px'>
+          <HStack>
+            <Text>Tracking #: </Text>
+            <Text>123</Text>
+          </HStack>
+          <HStack>
+            <Text>Tracking url: </Text>
+            <a href=''>
+              <Text> something.com</Text>
+            </a>
+          </HStack>
+        </VStack>
+      )}
       {status == "received" ? (
         <Box>
           <Text>admin has marked this as received</Text>
