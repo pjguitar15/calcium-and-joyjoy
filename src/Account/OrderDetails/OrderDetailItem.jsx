@@ -69,7 +69,7 @@ const OrderDetailItem = (props) => {
             <div className='flex flex-col gap-2'>
               <p className='text-md'>Air Force 1 White</p>
               <div className='bg-gray-100 px-3 py-2 rounded-lg text-gray-500'>
-                Men/Women's Shoes, Cloud White/, Size 9
+                Men/Women's Shoes, Cloud White/, Size {item.size}
               </div>
               <h6 className='font-semibold'>P{item.price}</h6>
             </div>
