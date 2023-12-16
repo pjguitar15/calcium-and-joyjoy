@@ -11,16 +11,11 @@ import {
 import { Link, useLocation } from "react-router-dom"
 import LoadingSpinner from "./LoadingSpinner"
 import convertCurrency from "../utils/convertCurrency"
-import { useEffect } from "react"
 
 function ItemCard(props) {
   const { cardW, data, onSelect, isSelected } = props
 
   const { pathname } = useLocation()
-
-  useEffect(() => {
-    console.log(props.data.category)
-  }, [])
 
   if (!data) return <LoadingSpinner />
 

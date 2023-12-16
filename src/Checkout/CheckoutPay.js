@@ -144,6 +144,40 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
     }
   };
 
+  // Cloudinary Image Upload Function
+  const uploadImageToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "zwzmglhl"); // Replace with your Cloudinary upload preset
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dbibwzs6c/image/upload",
+        formData
+      );
+      return response.data.secure_url;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast({
+        title: "Image Upload Failed",
+        description: "Failed to upload image to Cloudinary.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return null;
+    }
+  };
+
+  // Handle Image Upload
+  const handleImageUpload = async (file) => {
+    setLoading(true);
+    const imageUrl = await uploadImageToCloudinary(file);
+    if (imageUrl) {
+      setReceiptImage(imageUrl);
+    }
+    setLoading(false);
+  };
 
   return (
     <Box m='32px'> {/* Outermost container with margin */}
@@ -198,11 +232,12 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
         )}
       </Box>
   
-      {/* Image Upload Section */}
-      <Text fontSize='24px' fontWeight='semibold' mb='24px'>
-        Upload Receipt
-      </Text>
-      <Receipt onUpload={(file) => setReceiptImage(file)} mb='32px' /> {/* Margin bottom for spacing, Image upload component */}
+    {/* Image Upload Section */}
+    <Text fontSize='24px' fontWeight='semibold' mb='24px'>
+      Upload Receipt
+    </Text>
+    <Receipt onUpload={handleImageUpload} mb='32px' /> {/* Updated Image upload component call */}
+
   
       {/* Action Buttons */}
       <Grid mt='24px' gap='40px' gridTemplateColumns='1fr 1fr'>

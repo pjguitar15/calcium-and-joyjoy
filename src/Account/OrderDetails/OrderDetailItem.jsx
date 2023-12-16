@@ -2,6 +2,9 @@ import React, { useEffect } from "react"
 import { FaCheck } from "react-icons/fa6"
 
 const OrderDetailItem = (props) => {
+const { orderItems } = props;
+const { status } = orderItems;
+
   return (
     <div className="rounded-lg border border-gray-700 p-6">
       <div className="flex justify-center items-center">
