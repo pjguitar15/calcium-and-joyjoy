@@ -128,6 +128,8 @@ const DiscountCouponsTable = () => {
                                 <Td>{coupon.name}</Td>
                                 <Td>{coupon.discount_code}</Td>
                                 <Td>{coupon.total_amount}</Td>
+                                <Td>{coupon.date_limit}</Td>
+
                                 <Td>
                                     <Switch isChecked={coupon.isActive} onChange={() => toggleStatusModal(coupon)} />
                                 </Td>
