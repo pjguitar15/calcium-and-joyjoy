@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { FaCheck } from "react-icons/fa6";
 
@@ -94,7 +94,14 @@ const OrderDetailItem = (props) => {
           View Item
         </button>
       </div> */}
-      <Button>Received</Button>
+      {status == "received" ? (
+        <Box>
+          <Text>admin has marked this as received</Text>
+          <Button>Confirm</Button>
+        </Box>
+      ) : (
+        <Button>Mark as received</Button>
+      )}
     </div>
   );
 };
