@@ -5,6 +5,9 @@ const OrderDetailItem = (props) => {
   const { orderItems } = props;
   const { status, id } = orderItems;
 
+  console.log(id);
+  console.log(orderItems);
+
   return (
     <div className='rounded-lg border border-gray-700 p-6'>
       <div className='flex justify-center items-center'>
