@@ -77,6 +77,7 @@ function CheckoutConfirm({ onConfirm }) {
       <Select
         as={RegionDropdown}
         value={autoFilledData ? autoFilledData?.region : region}
+       // value={region}
         onChange={(e) => setRegion(e)}
         showDefaultOption={false}
         country="Philippines"

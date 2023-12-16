@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Heading, Text, Button } from "@chakra-ui/react"
+import { Flex, Box, Heading, Text, Button } from "@chakra-ui/react"
 import useGetCurrLoggedIn from "../Shared/Hooks/useGetCurrLoggedIn"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
@@ -54,19 +54,26 @@ const ChatbotPage = () => {
       })
   }
 
+  const handleFaqClick = () => {
+    navigate("/faq")
+  }
   return (
     <Box>
-      <Heading as="h1" size="xl" mb={4}>
+      <Heading as="h1" size="xl" mb={6}>
         Welcome to Joybot
       </Heading>
-      <Text className="text-xl font-semibold" fontSize="lg" mb={2}>
-        Click Start a new chat
+      <Text fontSize="lg" mb={4}>
+        Click to start or get help
       </Text>
-      <Button onClick={handleNewChat} colorScheme="blue">
-        Start a new chat!
-      </Button>
+      <Flex direction="column" align="center" gap={4}>
+        <Button onClick={handleNewChat} colorScheme="blue" w="full">
+          Start a new chat!
+        </Button>
+        <Button onClick={handleFaqClick} colorScheme="green" w="full">
+          Need Help? / FAQ
+        </Button>
+      </Flex>
     </Box>
-  )
-}
-
+  );
+};
 export default ChatbotPage
