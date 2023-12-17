@@ -15,7 +15,7 @@ function Customers() {
         if (!token) {
           throw new Error("No admin token found");
         } 
-        const response = await axiosInstance.get('http://18.223.157.202/backend/api/admin/customers', {
+        const response = await axiosInstance.get('http://18.223.157.202/backend/api/admin/customer', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -80,7 +80,7 @@ function Customers() {
         } else { // oldest
           return new Date(a.timestamp) - new Date(b.timestamp);
         }
-      });
+      }); 
   }, [customers, searchTerm, sortType]);
 
   return (

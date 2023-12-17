@@ -7,7 +7,7 @@ const TableComponent = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentItem, setCurrentItem] = useState({ name: '', role: '', permissions: '' }); // For adding/editing
+  const [currentItem, setCurrentItem] = useState({ id:'', name: '', role: '', permissions: '' }); // For adding/editing
   const toast = useToast();
 
   useEffect(() => {
@@ -61,14 +61,15 @@ const TableComponent = () => {
     }
   };
 
-  const openModal = (item = { name: '', role: '', permissions: '' }) => {
+  const openModal = (item = { id: '', name: '', role: '', permissions: '' }) => {
+    console.log('hakddog',item)
     setCurrentItem(item);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setCurrentItem({ name: '', role: '', permissions: '' });
+    setCurrentItem({id: '', name: '', role: '', permissions: '' });
   };
 
   const handleInputChange = (e) => {
