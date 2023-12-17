@@ -97,7 +97,7 @@ const DiscountCouponsTable = () => {
     return (
         <Box className="container mx-auto px-4 py-2">
             <Heading as="h3" size="lg" className="font-semibold">
-                Order Management | <span className="text-gray-500">Discounts</span>
+                Product Management | <span className="text-gray-500">Discounts</span>
             </Heading>
 
             <Box my={6}>
