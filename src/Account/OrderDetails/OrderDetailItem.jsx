@@ -1,14 +1,27 @@
-import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import { Box, Button, VStack, HStack, Text, Link } from "@chakra-ui/react";
+import React from "react";
 import { FaCheck } from "react-icons/fa6";
 
 const OrderDetailItem = (props) => {
   const { orderItems } = props;
-  const { status, id, tracking_url, tracking_number, payment_status } = orderItems;
+  const { status, reference_number, tracking_url, tracking_number, payment_status, estimated_delivery_date } = orderItems;
+   // Function to ensure the URL is absolute
+   const formatUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return `http://${url}`;
+  };
+  
   console.log(orderItems);
   console.log(payment_status);
   return (
     <div className='rounded-lg border border-gray-700 p-6'>
+      {/* Display Reference Number */}
+      <div className='mb-4'>
+        <h6 className='text-lg font-semibold'>Reference Number: {reference_number}</h6>
+      </div>
       <div className='flex justify-center items-center'>
         <div className='flex flex-col justify-center items-center'>
           <div className='bg-yellow-500 rounded-full text-white w-14 h-14 flex items-center justify-center'>
@@ -93,27 +106,30 @@ const OrderDetailItem = (props) => {
           View Item
         </button>
       </div> */}
-      {status === "SHIPPED" && (
-        <VStack align='normal' mb='16px'>
+   {status === "SHIPPED" && (
+        <VStack align='normal' mb='16px' spacing='2'>
           <HStack>
-            <Text>Tracking #: </Text>
-            <Text>123</Text>
+            <Text fontWeight='semibold'>Tracking #: </Text>
+            <Text color='gray.600'>{tracking_number || 'Not Available'}</Text>
           </HStack>
           <HStack>
-            <Text>Tracking url: </Text>
-            <a href=''>
-              <Text> something.com</Text>
-            </a>
+            <Text fontWeight='semibold'>Tracking URL: </Text>
+            {tracking_url ? (
+              <Link href={formatUrl(tracking_url)} color='blue.500' isExternal>
+                View Tracking
+              </Link>
+            ) : (
+              <Text color='gray.600'>Not Available</Text>
+            )}
           </HStack>
+          <HStack>
+            <Text fontWeight='semibold'>Estimated Delivery Date: </Text>
+            <Text color='gray.600'>{estimated_delivery_date || 'Not Available'}</Text>
+          </HStack>
+          <Button colorScheme='blue' onClick={() => console.log("Mark as received")}>
+            Mark as Received
+          </Button>
         </VStack>
-      )}
-      {status == "received" ? (
-        <Box>
-          <Text>admin has marked this as received</Text>
-          <Button>Confirm</Button>
-        </Box>
-      ) : (
-        <Button>Mark as received</Button>
       )}
     </div>
   );

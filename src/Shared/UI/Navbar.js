@@ -11,6 +11,8 @@ import { AiOutlineHeart } from "react-icons/ai";
 import Searchbar from "../../Search/Searchbar";
 import { Link } from "react-router-dom";
 import CartPopOver from "../../Cart/CartPopover";
+import axiosInstance from "../utils/axiosInstance";
+import { useQuery } from "react-query";
 function Navbar() {
   const navItems = [
     {
@@ -27,6 +29,17 @@ function Navbar() {
     },
   ];
   const user = JSON.parse(localStorage.getItem("user"));
+  const getDynamics = async () => {
+    const res = await axiosInstance.get(`/admin/general-settings`);
+    return res.data;
+  };
+
+  const { data: dynamics } = useQuery({
+    queryKey: "dynamicItems",
+    queryFn: getDynamics,
+  });
+
+  console.log(dynamics);
   return (
     <Box
       pos='sticky'
@@ -48,6 +61,7 @@ function Navbar() {
             h='80px'
             w='256px'
             src='/assets/logoheader.png'
+            //src={dynamics.logo}
           />
         </Link>
         <Box justifySelf='center'>
