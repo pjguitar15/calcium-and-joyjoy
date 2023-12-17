@@ -1,8 +1,22 @@
-import React, { useEffect, useState } from "react"
-import {  Button, Box, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input, FormControl, FormLabel } from "@chakra-ui/react";
-import axios from "axios"
-import { FaPenClip } from "react-icons/fa6"
-import { FaTrashAlt } from "react-icons/fa"
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Box,
+  useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Input,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
+import axios from "axios";
+import { FaPenClip } from "react-icons/fa6";
+import { FaTrashAlt } from "react-icons/fa";
 
 const Table = () => {
   const [allOrders, setAllOrders] = useState([])
@@ -10,6 +24,8 @@ const Table = () => {
   const [currentItem, setCurrentItem] = useState({selected_id:'', name: '', role: '', permissions: '', track_number:'' ,url:'', estd:'' }); // For adding/editing
   const [currentPage, setCurrentPage] = useState(1)
   const [ordersPerPage] = useState(10) 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState('recent');
 
   const toast = useToast();
 
@@ -100,6 +116,7 @@ const Table = () => {
       openModal();
 
       setCurrentItem({ selected_id: id,  track_number:'', url:'' ,estd:'' });
+      
     };
   
     return (
@@ -148,7 +165,7 @@ const Table = () => {
           <ModalCloseButton />
           <ModalBody>
           <FormControl>
-              <FormLabel>Tracking URL</FormLabel>
+              <FormLabel>Tracking Number</FormLabel>
               <Input placeholder="Enter Tracking Number" name="track_number" value={currentItem.track_number} onChange={handleInputChange} />
             </FormControl>
             <FormControl>
