@@ -1,5 +1,7 @@
 import { Box, Button, Heading, Table, Tbody, Td, Text, Th, Thead, Tr,  useToast, } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import axios from 'axios';
 function downloadFile(data, filename) {
     const element = document.createElement('a');
@@ -48,31 +50,43 @@ function UserBehaviorReport() {
 
 
 
+    
+
       const generateReport = () => {
         // Flatten the nested structure and create a new array with the desired format
         const flatData = userBehaviorData.map(user => {
             return user.activity_logs.map(activity => {
                 return {
-                    username: user.user_name,
-                    page_name: `${activity.page_name}(${activity.count})`,
-                     
+                    Username: user.user_name,
+                    'Page name': `${activity.page_name}(${activity.count})`,
                 };
             });
         }).flat();
     
-        // Convert flatData to CSV format
-        const csvData = flatData.map(entry => Object.values(entry).join(',')).join('\n');
+        // Create a worksheet
+        const ws = XLSX.utils.json_to_sheet(flatData);
     
-        // Create a temporary anchor element
-        const anchor = document.createElement('a');
-        anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData);
-        anchor.download = 'activity_report.csv';
-        anchor.click();
+        // Create a workbook
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet 1');
+    
+        // Convert the workbook to a binary Excel file
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' });
+    
+        // Convert the binary string to a Blob
+        const blob = new Blob([s2ab(excelBuffer)], { type: 'application/octet-stream' });
+    
+        // Save the file using FileSaver.js
+        saveAs(blob, 'activity_report.xlsx');
     };
     
-    // Example usage
-   
-    
+    // Utility function to convert string to ArrayBuffer
+    const s2ab = s => {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    };
    
     
     

@@ -15,6 +15,7 @@
     "axios": "^1.5.1",
     "chart.js": "^4.4.0",
     "faker": "^5.5.3",
+    "file-saver": "^2.0.5",
     "framer-motion": "^10.16.16",
     "rc-scrollbars": "^1.1.6",
     "react": "^18.2.0",
@@ -32,7 +33,9 @@
     "react-slick": "^0.29.0",
     "react-table": "^7.8.0",
     "slick-carousel": "^1.8.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5",
+    "xlsx-style": "^0.8.13"
   },
   "scripts": {
     "start": "react-scripts start",
