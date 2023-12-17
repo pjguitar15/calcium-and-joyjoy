@@ -35,6 +35,43 @@ const Table = () => {
     });
   }, []);
 
+  const markReceivedHandler = (id) => {
+    // Implement the logic to mark the order as received
+    // Example: Make an API call to update the order status
+    axios.post(`http://18.223.157.202/backend/api/admin/orders/${id}/status`, {
+      status: "RECEIVED",
+    })
+    .then((res) => {
+      // Update your state and UI accordingly
+      const updatedOrders = allOrders.map((item) => {
+        if (item.id === id) {
+          return { ...item, status: "RECEIVED" };
+        }
+        return item;
+      });
+      setAllOrders(updatedOrders);
+      toast({
+        title: "Success",
+        description: "Order marked as received",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      setIsModalOpenForReceived(false);
+    })
+    .catch((error) => {
+      // Handle error
+      toast({
+        title: "Error",
+        description: "There was an issue updating the order",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    });
+  };
+  
+
   const openModal = (item = {  selected_id:'',name: '', role: '', permissions: '' , track_number:'', url:'',estd:''}) => {
     setCurrentItem({ selected_id:'', name: '', role: '', permissions: '', track_number:'', url:'' ,estd:'' });
     setIsModalOpen(true);
@@ -112,33 +149,74 @@ const Table = () => {
   }
 
   const ActionButtons = ({ id, status }) => {
-    const openModalAndSetCurrentItem = () => {
+    const normalizedStatus = status.toUpperCase();
+    const openModalAndSetCurrentItemForShipping = () => {
       openModal();
+      setCurrentItem({ selected_id: id, track_number:'', url:'', estd:'' });
+    };
+  
+    const openModalAndSetCurrentItemForReceived = () => {
+      openModalForReceived(id); // Implement this function
 
-      setCurrentItem({ selected_id: id,  track_number:'', url:'' ,estd:'' });
-      
     };
   
     return (
       <div className='flex'>
-        {status !== "SHIPPED" && (
+      {normalizedStatus === "PENDING" && (
+        <button
+          onClick={openModalAndSetCurrentItemForShipping}
+          className="border border-blue-700 hover:bg-blue-700 hover:text-white duration-300 text-blue-700 px-2 py-1 rounded mr-2 flex gap-1 items-center"
+        >
+          <FaPenClip />
+          Mark as shipped
+        </button>
+        )}
+        {status === "SHIPPED" && (
           <button
-            onClick={openModalAndSetCurrentItem}
-            className="border border-blue-700 hover:bg-blue-700 hover:text-white duration-300 text-blue-700 px-2 py-1 rounded mr-2 flex gap-1 items-center"
+            onClick={openModalAndSetCurrentItemForReceived}
+            className="border border-green-700 hover:bg-green-700 hover:text-white duration-300 text-green-700 px-2 py-1 rounded mr-2 flex gap-1 items-center"
           >
-            <FaPenClip />
-            Mark as shipped
+            Mark as received
           </button>
         )}
-  
-       
+        {status === "RECEIVED" && (
+          <span className="text-green-700">Received</span>
+        )}
       </div>
     );
   };
+  
+  const openModalForReceived = (id) => {
+    // Set the state for modal and the selected item ID
+    setIsModalOpenForReceived(true);
+    setCurrentItem({ selected_id: id });
+  };
+  
+  // Add state for this new modal
+  const [isModalOpenForReceived, setIsModalOpenForReceived] = useState(false);
+  
+
+  allOrders.sort((a, b) => {
+    if (sortOrder === 'recent') {
+      return new Date(b.created_at) - new Date(a.created_at);
+    } else {
+      return new Date(a.created_at) - new Date(b.created_at);
+    }
+  });
+  
 
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = allOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const currentOrders = allOrders
+  .filter((order) => {
+    const referenceNumber = order.reference_number ? order.reference_number.toString().toLowerCase() : '';
+    const userId = order.user_id ? order.user_id.toString().toLowerCase() : '';
+    return referenceNumber.includes(searchTerm.toLowerCase()) || 
+           userId.includes(searchTerm.toLowerCase());
+  })
+  .slice(indexOfFirstOrder, indexOfLastOrder);
+
+  
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -185,7 +263,40 @@ const Table = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+
+      <Modal isOpen={isModalOpenForReceived} onClose={() => setIsModalOpenForReceived(false)}>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Confirm Order Received</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+      Are you sure you want to mark this order as received?
+    </ModalBody>
+    <ModalFooter>
+      <Button colorScheme="blue" mr={3} onClick={() => markReceivedHandler(currentItem.selected_id)}> 
+        Confirm
+      </Button>
+      <Button onClick={() => setIsModalOpenForReceived(false)}>Cancel</Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+
     </div>
+
+  
+<Box mb={4} display="flex" justifyContent="space-between">
+  <Input
+    placeholder="Search orders..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+  <Button onClick={() => setSortOrder('recent')}>Sort by Recent</Button>
+  <Button onClick={() => setSortOrder('old')}>Sort by Oldest</Button>
+</Box>
+
+
+
       <table className="rounded-lg min-w-full border border-separate  border-gray-400 bg-[#F3F3F3]">
         <thead>
           <tr>
