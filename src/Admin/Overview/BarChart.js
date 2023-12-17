@@ -47,7 +47,7 @@ const BarChart = () => {
   const data = {
     datasets: [
       {
-        label: "Total Sales",
+        label: "Total Order",
         data: dataFromDataSets,
         borderColor: "white",
         backgroundColor: "white",
