@@ -22,21 +22,42 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = () => {
+const UserBehavior = () => {
   const [labels, setLabels] = useState([]);
   const [dataFromDataSets, setDataFromDataSets] = useState([]);
 
   useEffect(() => {
     axios
-      .get(
-        `http://18.223.157.202/backend/api/admin/get_most_sold_products_chart`
-      )
+      .get(`http://18.223.157.202/backend/api/admin/customer_behavior`)
       .then((res) => {
-        // console.log(res.data.chart_config.data.labels);
-        // console.log(res.data.chart_config.data.datasets);
-        setLabels(res.data.chart_config.data.labels);
-        const modifyDataSetsData = res.data.chart_config.data.datasets[0].data;
-        setDataFromDataSets(modifyDataSetsData);
+        
+        const flattenedActivityLogs = res.data.reduce((acc, user) => {
+          user.activity_logs.forEach((log) => {
+            const existingLog = acc.find((item) => item.page_name === log.page_name);
+            if (existingLog) {
+              existingLog.count += log.count;
+            } else {
+              acc.push({ page_name: log.page_name, count: log.count });
+            }
+          });
+          return acc;
+        }, []);
+  
+        
+        const uniquePageNames = [...new Set(flattenedActivityLogs.map((log) => log.page_name))];
+        const countsByPageName = uniquePageNames.map((page_name) => {
+          const totalCount = flattenedActivityLogs.reduce((sum, log) => {
+            return log.page_name === page_name ? sum + log.count : sum;
+          }, 0);
+          return { page_name, totalCount };
+        });
+  
+     
+        const chartLabels = countsByPageName.map((item) => item.page_name);
+        const chartData = countsByPageName.map((item) => item.totalCount);
+  
+        setLabels(chartLabels);
+        setDataFromDataSets(chartData);
       });
   }, []);
 
@@ -47,7 +68,7 @@ const BarChart = () => {
   const data = {
     datasets: [
       {
-        label: "Total Sales",
+        label: "Page Visits",
         data: dataFromDataSets,
         borderColor: "white",
         backgroundColor: "white",
@@ -80,7 +101,7 @@ const BarChart = () => {
       },
       title: {
         display: true,
-        text: "Product Performance", // Change title for the bar chart
+        text: "Sales by Category", // Change title for the bar chart
         color: "white", // Set the color of the chart title to white
       },
     },
@@ -88,7 +109,7 @@ const BarChart = () => {
 
   return (
     <div className="p-5 bg-gray-100 border border-gray-400 rounded-md">
-      <div className="bg-yellow-500 p-6">
+      <div className="bg-blue-500 p-6">
         {dataFromDataSets ? (
           data ? (
             <Bar options={options} data={data} />
@@ -97,10 +118,10 @@ const BarChart = () => {
           )
         ) : null}
       </div>
-      <h1 className="text-2xl mt-4 font-semibold">Product Performance</h1>
+      <h1 className="text-2xl mt-4 font-semibold">User Behavior</h1>
      
     </div>
   );
 };
 
-export default BarChart;
+export default UserBehavior;

@@ -5,6 +5,7 @@ import { PiWarningCircleBold } from "react-icons/pi"
 import { useState } from "react"
 import LineChart from "./LineChart"
 import BarChart from "./BarChart"
+import UserBehavior from "./UserBehavior"
 
 function Overview() {
   const [selectedOption, setSelectedOption] = useState("daily")
@@ -37,7 +38,7 @@ function Overview() {
     <div>
       <Heading fontSize="28px" fontWeight="semibold">
         Dashboard
-      </Heading>
+      </Heading> 
 
       {/* <div className="flex gap-4 mt-6">
         <label className="flex items-center">
@@ -107,6 +108,8 @@ function Overview() {
       <Grid mt="64px" gridTemplateColumns="1fr 1fr" gap="24px">
         <LineChart />
         <BarChart />
+        <UserBehavior/>
+       
       </Grid>
     </div>
   )
