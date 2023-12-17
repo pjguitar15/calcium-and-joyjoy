@@ -101,7 +101,7 @@ const UserBehavior = () => {
       },
       title: {
         display: true,
-        text: "Sales by Category", // Change title for the bar chart
+        text: "User Behavior", // Change title for the bar chart
         color: "white", // Set the color of the chart title to white
       },
     },
