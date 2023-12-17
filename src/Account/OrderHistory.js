@@ -1,22 +1,53 @@
 import React from "react";
-import { Box, VStack, HStack, Text, Image } from "@chakra-ui/react";
+import {
+  Box,
+  VStack,
+  HStack,
+  Text,
+  Image,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  Link
+} from "@chakra-ui/react";
+import { FaBox } from "react-icons/fa";
 import { useQuery } from "react-query";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import axiosInstance from "../Shared/utils/axiosInstance";
-import { FaBox } from "react-icons/fa";
-import ReviewModal from "./ReviewModal";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../Store/cart";
 
 function OrderHistory() {
   const user = JSON.parse(localStorage.getItem("user"));
+  const dispatch = useDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleBuyAgain = (order) => {
+    order.items.forEach(item => {
+      dispatch(addToCart({
+        ...item.product,
+        quantity: item.quantity,
+        price: item.price
+      }));
+    });
+  };
+
+  const handleReturnRefund = () => {
+    onOpen();
+  };
 
   const getOrders = async () => {
     try {
       const res = await axiosInstance.get("/user/orders", {
         headers: { Authorization: `Bearer ${user?.token}` },
       });
-  
-      console.log("API Response:", res.data);
-  
+
       const ordersArray = res.data.data || res.data;
       return ordersArray.filter(order => order.status === 'RECEIVED');
     } catch (error) {
@@ -33,7 +64,6 @@ function OrderHistory() {
   return (
     <main className='pt-8 pe-8'>
       {orders.map((order, index) => {
-        // Calculate the total quantity for each order
         const totalQuantity = order.items.reduce((total, item) => total + item.quantity, 0);
 
         return (
@@ -83,17 +113,56 @@ function OrderHistory() {
               </div>
 
               <div className='text-end'>
-                <button className='border border-red-700 text-red-700 px-4 py-1 rounded-lg'>
+                <button 
+                  className='border border-red-700 text-red-700 px-4 py-1 rounded-lg mr-2'
+                  onClick={() => handleBuyAgain(order)}
+                >
                   Buy again
                 </button>
-                <ReviewModal />
+                <button 
+                  className='border border-blue-700 text-blue-700 px-4 py-1 rounded-lg'
+                  onClick={handleReturnRefund}
+                >
+                  Return/Refund
+                </button>
               </div>
             </div>
           </React.Fragment>
         );
       })}
+      <ReturnRefundModal isOpen={isOpen} onClose={onClose} />
     </main>
   );
 }
+
+const ReturnRefundModal = ({ isOpen, onClose }) => (
+  <Modal isOpen={isOpen} onClose={onClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>Return and Refund Policy</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        <Text mb="4">
+          We are currently not accepting returns or refunds. If you have any questions or concerns about your order, please feel free to contact us.
+        </Text>
+        <Text>
+          Visit our Facebook page for more information:{" "}
+          <Link
+            href="https://www.facebook.com/calciumjoyjoyph27"
+            isExternal
+            color="blue.500"
+          >
+            calciumjoyjoyph27
+          </Link>
+        </Text>
+      </ModalBody>
+      <ModalFooter>
+        <Button colorScheme="blue" mr={3} onClick={onClose}>
+          Close
+        </Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+);
 
 export default OrderHistory;

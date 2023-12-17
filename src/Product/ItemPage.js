@@ -303,18 +303,14 @@ function ItemPage() {
                 <Text>Jon V.- 10 July 2023</Text>
               </HStack>
               <Text mt='8px'>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel,
-                cumque qui amet eos iste non est illo exercitationem sapiente
-                vero natus minima necessitatibus fugiat dolores beatae,
-                recusandae voluptates quis asperiores!
+                NICE PRODUCTS EXCELLENTS!
               </Text>
             </Box>
           </Box>
         </Box>
       </Grid>
 
-      {/* YOU MIGHT ALSO LIKE */}
-      {/* <YouMightAlsoLike /> */}
+
     </>
   );
 }

@@ -366,22 +366,6 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "config",
-        element: (
-          <Suspense fallback={<div />}>
-            <WebsiteConfig />
-          </Suspense>
-        ),
-      },
-      {
-        path: "info",
-        element: (
-          <Suspense fallback={<div />}>
-            <BasicInfo />
-          </Suspense>
-        ),
-      },
-      {
         path: "announcement",
         element: (
           <Suspense fallback={<div />}>

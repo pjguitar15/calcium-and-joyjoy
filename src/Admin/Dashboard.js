@@ -179,24 +179,6 @@ const menu = [
       },
     ],
   },
-  {
-    main: "General Settings",
-    icon: BsGear,
-    submenu: [
-      {
-        text: "Website Configuration",
-        link: "/config",
-        icon: BsGlobe,
-      },
-      {
-        text: "Basic Info",
-        link: "/info",
-        icon: BsHouseDoorFill,
-      },
-      
-
-    ],
-  },
 ];
 
 function Dashboard() {
