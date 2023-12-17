@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import axios from "axios";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,29 +11,50 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
-import axios from "axios";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
-  BarElement, // Use BarElement for bar charts
+  BarElement,
   Title,
   Tooltip,
   Legend
 );
 
+const options = {
+  responsive: true,
+  scales: {
+    x: {
+      type: "category",
+      ticks: { color: "white" },
+    },
+    y: {
+      ticks: { color: "white" },
+    },
+  },
+  plugins: {
+    legend: {
+      position: "top",
+      labels: { color: "white" },
+    },
+    title: {
+      display: true,
+      text: "User Behavior",
+      color: "white",
+    },
+  },
+};
+
 const UserBehavior = () => {
-  const [labels, setLabels] = useState([]);
-  const [dataFromDataSets, setDataFromDataSets] = useState([]);
+  const [chartData, setChartData] = useState({ labels: [], data: [] });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`http://18.223.157.202/backend/api/admin/customer_behavior`)
+    axios.get(`http://18.223.157.202/backend/api/admin/customer_behavior`)
       .then((res) => {
-        
-        const flattenedActivityLogs = res.data.reduce((acc, user) => {
+        const activityLogs = res.data.reduce((acc, user) => {
           user.activity_logs.forEach((log) => {
             const existingLog = acc.find((item) => item.page_name === log.page_name);
             if (existingLog) {
@@ -42,84 +65,46 @@ const UserBehavior = () => {
           });
           return acc;
         }, []);
-  
-        
-        const uniquePageNames = [...new Set(flattenedActivityLogs.map((log) => log.page_name))];
-        const countsByPageName = uniquePageNames.map((page_name) => {
-          const totalCount = flattenedActivityLogs.reduce((sum, log) => {
-            return log.page_name === page_name ? sum + log.count : sum;
-          }, 0);
-          return { page_name, totalCount };
-        });
-  
-     
-        const chartLabels = countsByPageName.map((item) => item.page_name);
-        const chartData = countsByPageName.map((item) => item.totalCount);
-  
-        setLabels(chartLabels);
-        setDataFromDataSets(chartData);
+
+        const labels = activityLogs.map((log) => log.page_name);
+        const data = activityLogs.map((log) => log.count);
+
+        setChartData({ labels, data });
+      })
+      .catch(error => {
+        setError(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
-  useEffect(() => {
-    // console.log(dataFromDataSets);
-  }, [dataFromDataSets]);
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading data</p>;
+  }
 
   const data = {
+    labels: chartData.labels,
     datasets: [
       {
         label: "Page Visits",
-        data: dataFromDataSets,
+        data: chartData.data,
         borderColor: "white",
         backgroundColor: "white",
       },
     ],
   };
 
-  const options = {
-    responsive: true,
-    scales: {
-      x: {
-        type: "category", // Set x-axis type to 'category' for custom labels
-        labels,
-        ticks: {
-          color: "white", // Set the color of x-axis labels to white
-        },
-      },
-      y: {
-        ticks: {
-          color: "white", // Set the color of y-axis labels to white
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        position: "top",
-        labels: {
-          color: "white", // Set the color of legend labels to white
-        },
-      },
-      title: {
-        display: true,
-        text: "User Behavior", // Change title for the bar chart
-        color: "white", // Set the color of the chart title to white
-      },
-    },
-  };
-
   return (
     <div className="p-5 bg-gray-100 border border-gray-400 rounded-md">
       <div className="bg-blue-500 p-6">
-        {dataFromDataSets ? (
-          data ? (
-            <Bar options={options} data={data} />
-          ) : (
-            <p>Loading...</p> // or any loading state or placeholder you prefer
-          )
-        ) : null}
+        <Bar options={options} data={data} />
       </div>
       <h1 className="text-2xl mt-4 font-semibold">User Behavior</h1>
-     
     </div>
   );
 };

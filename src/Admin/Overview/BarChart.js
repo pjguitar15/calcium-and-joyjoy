@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import axios from "axios";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,96 +11,104 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
-import axios from "axios";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
-  BarElement, // Use BarElement for bar charts
+  BarElement,
   Title,
   Tooltip,
   Legend
 );
 
+const chartOptions = {
+  responsive: true,
+  scales: {
+    x: {
+      type: "category",
+      ticks: { color: "white", autoSkip: true, maxRotation: 0, minRotation: 0 },
+    },
+    y: {
+      ticks: { color: "white" },
+    },
+  },
+  plugins: {
+    legend: {
+      position: "top",
+      labels: { color: "white" },
+    },
+    title: {
+      display: true,
+      text: "Top 10 Most Sold Products",
+      color: "white",
+    },
+  },
+};
+
+// Function to truncate label text
+const truncateLabel = (label, maxLength = 15) => {
+  return label.length > maxLength ? label.substring(0, maxLength) + '...' : label;
+};
+
 const BarChart = () => {
-  const [labels, setLabels] = useState([]);
-  const [dataFromDataSets, setDataFromDataSets] = useState([]);
+  const [chartData, setChartData] = useState({ labels: [], data: [] });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(
-        `http://18.223.157.202/backend/api/admin/get_most_sold_products_chart`
-      )
+    axios.get(`http://18.223.157.202/backend/api/admin/get_most_sold_products_chart`)
       .then((res) => {
-        // console.log(res.data.chart_config.data.labels);
-        // console.log(res.data.chart_config.data.datasets);
-        setLabels(res.data.chart_config.data.labels);
-        const modifyDataSetsData = res.data.chart_config.data.datasets[0].data;
-        setDataFromDataSets(modifyDataSetsData);
+        const { labels, datasets } = res.data.chart_config.data;
+
+        // Sort and slice top 10 products
+        const sortedData = [...datasets[0].data]
+          .map((value, index) => ({ label: labels[index], value }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 10);
+
+        // Apply label truncation
+        const truncatedLabels = sortedData.map(item => truncateLabel(item.label));
+
+        setChartData({
+          labels: truncatedLabels,
+          data: sortedData.map(item => item.value),
+        });
+      })
+      .catch(error => {
+        setError(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
-  useEffect(() => {
-    // console.log(dataFromDataSets);
-  }, [dataFromDataSets]);
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading data</p>;
+  }
 
   const data = {
+    labels: chartData.labels,
     datasets: [
       {
         label: "Total Order",
-        data: dataFromDataSets,
+        data: chartData.data,
         borderColor: "white",
         backgroundColor: "white",
       },
     ],
   };
 
-  const options = {
-    responsive: true,
-    scales: {
-      x: {
-        type: "category", // Set x-axis type to 'category' for custom labels
-        labels,
-        ticks: {
-          color: "white", // Set the color of x-axis labels to white
-        },
-      },
-      y: {
-        ticks: {
-          color: "white", // Set the color of y-axis labels to white
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        position: "top",
-        labels: {
-          color: "white", // Set the color of legend labels to white
-        },
-      },
-      title: {
-        display: true,
-        text: "Product Performance", // Change title for the bar chart
-        color: "white", // Set the color of the chart title to white
-      },
-    },
-  };
-
   return (
     <div className="p-5 bg-gray-100 border border-gray-400 rounded-md">
       <div className="bg-yellow-500 p-6">
-        {dataFromDataSets ? (
-          data ? (
-            <Bar options={options} data={data} />
-          ) : (
-            <p>Loading...</p> // or any loading state or placeholder you prefer
-          )
-        ) : null}
+        <Bar options={chartOptions} data={data} />
       </div>
-      <h1 className="text-2xl mt-4 font-semibold">Product Performance</h1>
-     
+      <h1 className="text-2xl mt-4 font-semibold">Top 10 Most Sold Products</h1>
     </div>
   );
 };
