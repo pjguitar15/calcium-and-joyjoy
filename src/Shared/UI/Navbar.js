@@ -24,7 +24,7 @@ function Navbar() {
       page: "about",
     },
     {
-      text: "Mix & Match",
+      text: "Recommended",
       page: "/customize",
     },
   ];
