@@ -24,7 +24,7 @@ function Navbar() {
       page: "about",
     },
     {
-      text: "Recommended",
+      text: "Make A Bundle",
       page: "/customize",
     },
   ];
