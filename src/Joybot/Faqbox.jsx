@@ -31,7 +31,7 @@ const FaqPage = () => {
     return (
         <Box p={5}>
             <Heading as="h1" size="md" mb={4}>
-                Interactive FAQ Chatbot
+               CALCIUM JOYJOY FAQs
             </Heading>
             <VStack spacing={4} align="flex-start">
                 {faqs.map(faq => (

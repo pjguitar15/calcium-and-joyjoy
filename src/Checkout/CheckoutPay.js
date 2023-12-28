@@ -9,8 +9,6 @@ import {
   Text,
   VStack,
   useToast,
-  Heading,
-  Badge,
 } from "@chakra-ui/react";
 import Receipt from "./Receipt";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { clearCart } from "../Store/cart";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 
-function CheckoutPay({ onBack, onPay, checkoutData }) {
+function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
   const [payment, setPayment] = useState("");
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [courier, setCourier] = useState("");
@@ -75,7 +73,6 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
     fetchCouriersAndPaymentMethods();
   }, [toast]);
 
-  // Function to handle payment method change
   const handlePaymentChange = (paymentMethodName) => {
     setPayment(paymentMethodName);
     const selectedMethod = paymentMethods.find(
@@ -110,11 +107,10 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
       return data;
     });
 
-    // Calculate total cart price
     const totalCartPrice = cart.reduce(
       (total, item) => total + item.quantity * item.price,
       0
-    );
+    ) - discount; // Adjust total price by subtracting discount
 
     const postData = {
       checkoutData: {
@@ -122,8 +118,8 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
         user_id: user?.user_info.id,
         payment_method: payment,
         courier,
-        receipt_img: receiptImage, // Use the uploaded image
-        grand_total: totalCartPrice + deliveryFee,
+        receipt_img: receiptImage,
+        grand_total: totalCartPrice + deliveryFee, // Updated grand total
       },
       cartsData,
     };
@@ -131,7 +127,6 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
     if (postData) {
       console.log(postData);
       setLoading(true);
-      // const res = await axiosInstance.post("/checkout", JSON.stringify(postData));
       axios
         .post("http://18.223.157.202/backend/api/checkout", postData)
         .then((res) => {

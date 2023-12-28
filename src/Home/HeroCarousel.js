@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Image } from "@chakra-ui/react";
 import Slider from "react-slick";
-import axiosInstance from '../Shared/utils/axiosInstance'; // Import custom axios instance
+import axiosInstance from '../Shared/utils/axiosInstance'; 
 import "./HeroCarousel.css";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
@@ -26,6 +26,8 @@ function HeroCarousel() {
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    autoplay: true, 
+    autoplaySpeed: 2000, 
   };
 
   return (

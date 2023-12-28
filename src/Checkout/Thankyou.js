@@ -1,38 +1,39 @@
 import { CheckCircleIcon } from "@chakra-ui/icons";
-import { Button, Heading, Text, VStack } from "@chakra-ui/react";
+import { Button, Heading, Text, VStack, Box } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 function Thankyou() {
   return (
-    <VStack gap='16px' align='normal' maxW='768px' mx='auto'>
-      <Heading>THANK YOU!</Heading>
-      <Text bgColor='gray.300' p='16px' borderRadius='10px'>
+    <VStack gap='24px' align='center' maxW='768px' mx='auto' mt='40px'>
+      <Heading fontSize='3xl' color='teal.500'>THANK YOU!</Heading>
+      <Box bgColor='gray.100' p='24px' borderRadius='lg' boxShadow='md'>
         <CheckCircleIcon
-          fontSize='24px'
+          boxSize='6'
           color='green.500'
-          mr='8px'
-          transform='translateY(-2px)'
+          mr='2'
         />
-        Your order is being processed
-      </Text>
+        <Text fontSize='lg' fontWeight='medium'>
+          Your order is being processed.
+        </Text>
+      </Box>
 
-      <Text>Order number: #######</Text>
-      <Text>
-        You'll receive a confirmation email shorty. The oder will appear in your
-        account as as you've received the email.
+      <Text fontSize='md'>
+        Thanks for your purchase! We hope you enjoy your items. Have a great day!
       </Text>
-      <Text>
-        While you wait on your delivery, you can always explore our website.
+      <Text fontSize='md'>
+        While you wait for your delivery, feel free to continue exploring our website.
       </Text>
       <Button
         as={Link}
         to='/'
-        w='fit-content'
+        colorScheme='teal'
         px='32px'
         py='16px'
-        borderRadius='20px'
+        borderRadius='full'
+        boxShadow='sm'
+        _hover={{ boxShadow: 'md' }}
       >
-        Return to home page
+        Return to Home Page
       </Button>
     </VStack>
   );

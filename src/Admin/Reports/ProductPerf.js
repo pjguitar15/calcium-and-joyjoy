@@ -1,21 +1,75 @@
-import React from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Box, Button, Heading, Table, Tbody, Td, Text, Th, Thead, Tr,  useToast, } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import axios from 'axios';
+
 
 const ProductPerf = () => {
-    // Sample data for the table
-    const reportData = [
-        { product: 'Product 1', sales: 100, revenue: 1000 },
-        { product: 'Product 2', sales: 200, revenue: 2000 },
-        { product: 'Product 3', sales: 300, revenue: 3000 },
-    ];
+    const [loading, setLoading] = useState(false);
+    const toast = useToast();
+
+
+    const [productPerfs, setproductPerfs] = useState([]);
+
+    useEffect(() => {
+        const fetchCouriersAndPaymentMethods = async () => {
+          setLoading(true);
+          try {
+            const [couriersResponse] = await Promise.all([
+              axios.get("http://18.223.157.202/backend/api/admin/product_performance_report"),
+             
+            ]);
+            
+            
+            
+            const activeCouriers = couriersResponse.data.report
+       
+            setproductPerfs(activeCouriers);
+
+        
+        
+           
+          } catch (error) {
+            toast({
+              title: "Error loading data",
+              description: error.message,
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
+          }
+          setLoading(false);
+        };
+    
+        fetchCouriersAndPaymentMethods();
+      }, [toast]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
 
     // Function to generate the report
     const generateReport = () => {
         // Generate the report data
-        const report = reportData.map((data) => ({
-            Product: data.product,
-            Sales: data.sales,
-            Revenue: data.revenue,
+        const report = productPerfs.map((data) => ({
+            Product: data.product_name,
+            Views: data.purchases,
+            Purchases: data.total_views,
         }));
 
         // Convert the report data to CSV format
@@ -33,25 +87,29 @@ const ProductPerf = () => {
 
     return (
         <>
-            <Table variant="simple">
+        <Heading size="lg" mb={4}>Product Performance</Heading>
+
+          
+<Button onClick={generateReport}  style={{ marginTop: '10px' }}>Download Report</Button>
+<Table variant="simple" style={{ marginTop: '20px' }}>
                 <Thead>
                     <Tr>
                         <Th>Product</Th>
-                        <Th>Sales</Th>
-                        <Th>Revenue</Th>
+                        <Th>Total Views</Th>
+                        <Th>Total Purchases</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {reportData.map((data, index) => (
+                    {productPerfs.map((data, index) => (
                         <Tr key={index}>
-                            <Td>{data.product}</Td>
-                            <Td>{data.sales}</Td>
-                            <Td>{data.revenue}</Td>
+                            <Td>{data.product_name}</Td>
+                            <Td>{data.purchases}</Td>
+                            <Td>{data.total_views}</Td>
                         </Tr>
                     ))}
                 </Tbody>
             </Table>
-            <button onClick={generateReport}>Generate Report</button>
+         
         </>
     );
 };

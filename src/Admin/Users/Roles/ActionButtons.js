@@ -6,9 +6,9 @@ const ActionButtons = () => {
     <div className="flex items-center justify-between py-4">
       <div className="flex gap-4">
         {/* Child 1: "ADD ROLES" */}
-        <div className="bg-blue-500 text-white rounded py-2 px-4 cursor-pointer text-xs font-semibold flex items-center">
+        {/* <div className="bg-blue-500 text-white rounded py-2 px-4 cursor-pointer text-xs font-semibold flex items-center">
           ADD ROLES
-        </div>
+        </div> */}
 
         {/* Child 2: "Sort" dropdown */}
         <div className="relative">

@@ -3,15 +3,31 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 
 import { useEffect } from "react";
+//import { useQuery } from "react-query";
+
 import DrawerNav from "./DrawerNav";
 import Footer from "./Footer";
 import Joypop from "../../Joybot/Joypop";
+//import axiosInstance from "../utils/axiosInstance";
+
 function Layout() {
   const [isLg] = useMediaQuery("(min-width: 992px)");
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [pathname]);
+
+  // const getDynamics = async () => {
+  //   const res = await axiosInstance.get(`/admin/general-settings`);
+  //   return res.data;
+  // };
+
+  // const { data: dynamics } = useQuery({
+  //   queryKey: "dynamicItems",
+  //   queryFn: getDynamics,
+  // });
+
+  // console.log(dynamics);
 
   return (
     <Box

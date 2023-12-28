@@ -1,74 +1,180 @@
-import { Box } from "@chakra-ui/react";
+import React from "react";
+import {
+  Box,
+  VStack,
+  HStack,
+  Text,
+  Image,
+  Button,
+  Divider,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Link,
+  Badge,
+  Icon,
+  Heading,
+  Center
+} from "@chakra-ui/react";
+import { FaBox, FaRedo, FaShoppingCart, FaSadTear, FaShoppingBag } from "react-icons/fa";
 import { useQuery } from "react-query";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import axiosInstance from "../Shared/utils/axiosInstance";
-import { FaBox } from "react-icons/fa";
-import ReviewModal from "./ReviewModal";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../Store/cart";
+import { Link as RouterLink } from 'react-router-dom';
+
+
 function OrderHistory() {
   const user = JSON.parse(localStorage.getItem("user"));
+  const dispatch = useDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleBuyAgain = (order) => {
+    order.items.forEach(item => {
+      dispatch(addToCart({
+        ...item.product,
+        quantity: item.quantity,
+        price: item.price
+      }));
+    });
+  };
+
+  const handleReturnRefund = () => {
+    onOpen();
+  };
 
   const getOrders = async () => {
-    const res = await axiosInstance.get("/user/orders", {
-      headers: { Authorization: `Bearer ${user?.token}` },
-    });
-    return res.data;
+    try {
+      const res = await axiosInstance.get("/user/orders", {
+        headers: { Authorization: `Bearer ${user?.token}` },
+      });
+
+      const ordersArray = res.data.data || res.data;
+      return ordersArray.filter(order => order.status === 'RECEIVED');
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      return [];
+    }
   };
-  const { data: orders, isLoading } = useQuery("orders", getOrders);
+
+
+  const { data: orders, isLoading, isError } = useQuery("orders", getOrders);
+
   if (isLoading) return <LoadingSpinner />;
-  if (!orders || orders.length < 1) return <Box>No order history.</Box>;
-
+  if (isError || !orders || orders.length < 1) {
+    return (
+      <Center flexDirection="column" height="80vh">
+        <Icon as={FaSadTear} w={10} h={10} color="gray.400" />
+        <Text fontSize="xl" mt={3}>You have no order history yet.</Text>
+        <Button as={RouterLink} to='/' colorScheme="blue" mt="32px">
+          <Icon as={FaShoppingBag} mr={2} />
+          Browse Products
+        </Button>
+      </Center>
+    );
+  }
   return (
-    <main className='pt-8 pe-8'>
-      <div className='rounded-lg border border-gray-700 p-6'>
-        <div className='flex gap-4 items-center'>
-          <FaBox className='text-4xl text-lime-600' />
-          <div>
-            <h5 className='font-semibold text-lg'>
-              Nov 15 - Item has been delivered
-            </h5>
-            <h5 className='font-normal text-lg'>
-              Orders have been received, please leave a review.
-            </h5>
-          </div>
-        </div>
-        <hr className='border-black my-4' />
-        <div className='flex justify-between items-end'>
-          <div className='flex items-center gap-5 mt-7'>
-            <div>
-              <img
-                className='w-[180px] h-[180px] object-cover rounded-lg'
-                src='https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/b5ab0a6c-6393-4af6-abbc-4f1acaa6ed94/air-max-dawn-shoes-tx7TpB.png'
-                alt=''
-              />
-            </div>
-            <div className='flex flex-col gap-2'>
-              <p className='text-md'>Air Force 1 White</p>
-              <div className='bg-gray-100 px-3 py-2 rounded-lg text-gray-500'>
-                Men/Women's Shoes, Cloud White/, Size 9
-              </div>
-              <h6 className='font-semibold'>P5,495.00</h6>
-            </div>
-          </div>
+    
+    <main className="py-8 pe-8 overflow-y-scroll max-h-[800px] flex flex-col gap-3">
+          <Heading as="h2" size="xl" mb={6}>Order History</Heading>
+      {orders.map((order, index) => {
+        const totalQuantity = order.items.reduce((total, item) => total + item.quantity, 0);
 
-          <h6 className='text-gray-600'>Quantity: 6</h6>
-        </div>
+        return (
+          <Box key={index} bg="white" rounded="lg" border="1px" borderColor="black" p={6} shadow="sm" mb={4}>
+            <HStack spacing={4} align="center" mb={4}>
+              <Icon as={FaBox} w={8} h={8} color="green.500" />
+              <VStack align="start">
+                <Text fontWeight="semibold" fontSize="lg">
+                  Order Received - {order.estimated_delivery_date || 'Date not available'}
+                </Text>
+                <Text fontSize="md">Reference: {order.reference_number}</Text>
+              </VStack>
+            </HStack>
 
-        <div className='text-end my-4'>
-          <h6 className='text-lg font-semibold'>Total: P5,495.00</h6>
-        </div>
+            <Divider my={4} />
 
-        <div className='text-end'>
-          <button className='border border-red-700 text-red-700 px-4 py-1 rounded-lg'>
-            Buy again
-          </button>
-          {/* <button className="border border-red-700 text-red-700 px-4 py-1 rounded-lg ms-2">
-            Review
-          </button> */}
-          <ReviewModal />
-        </div>
-      </div>
+            {order.items.map((item, itemIndex) => (
+              <VStack key={itemIndex} align="stretch" mb={4}>
+                <HStack spacing={4}>
+                  <Image boxSize="100px" objectFit="cover" rounded="md" src={item.product.image} alt={item.product.name} />
+                  <VStack align="start" flex="1">
+                    <Text fontWeight="semibold">{item.product.name}</Text>
+                    <Badge colorScheme="gray" p={1} rounded="md">
+                      {item.product.category.name} • {item.product.brand.name} • Size: {item.size}
+                    </Badge>
+                    <Text fontWeight="semibold" color="green.500">P{item.price}</Text>
+                  </VStack>
+                  <Text>Qty: {item.quantity}</Text>
+                </HStack>
+              </VStack>
+            ))}
+
+            <Divider my={4} />
+
+            <HStack justifyContent="space-between" mb={4}>
+              <Text>Total Quantity:</Text>
+              <Text fontWeight="semibold">{totalQuantity}</Text>
+            </HStack>
+
+            <HStack justifyContent="space-between" mb={4}>
+              <Text fontWeight="semibold" fontSize="lg">Total:</Text>
+              <Text fontWeight="semibold" fontSize="lg" color="green.500">
+                P{order.grand_total}
+              </Text>
+            </HStack>
+
+            <HStack justifyContent="flex-end">
+              <Button leftIcon={<FaShoppingCart />} colorScheme="blue" variant="solid" size="sm" onClick={() => handleBuyAgain(order)}>
+                Buy again
+              </Button>
+              <Button leftIcon={<FaRedo />} colorScheme="red" variant="solid" size="sm" ml={2} onClick={handleReturnRefund}>
+                Return/Refund
+              </Button>
+            </HStack>
+          </Box>
+        );
+      })}
+      <ReturnRefundModal isOpen={isOpen} onClose={onClose} />
     </main>
   );
 }
+
+
+const ReturnRefundModal = ({ isOpen, onClose }) => (
+  <Modal isOpen={isOpen} onClose={onClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>Return and Refund Policy</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        <Text mb="4">
+          We are currently not accepting returns or refunds. If you have any questions or concerns about your order, please feel free to contact us.
+        </Text>
+        <Text>
+          Visit our Facebook page for more information:{" "}
+          <Link
+            href="https://www.facebook.com/calciumjoyjoyph27"
+            isExternal
+            color="blue.500"
+          >
+            calciumjoyjoyph27
+          </Link>
+        </Text>
+      </ModalBody>
+      <ModalFooter>
+        <Button colorScheme="blue" mr={3} onClick={onClose}>
+          Close
+        </Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+);
 
 export default OrderHistory;
