@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../Store/cart";
-import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 
 function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
   const [payment, setPayment] = useState("");
@@ -201,7 +200,6 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
         {" "}
         {/* Margin bottom for spacing */}
         <RadioGroup value={courier} onChange={(value) => setCourier(value)}>
-          {loading && <LoadingSpinner />}
           <VStack align='normal'>
             {couriers.map((courier, index) => (
               <React.Fragment key={index}>
@@ -227,7 +225,6 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
         {" "}
         {/* Margin bottom for spacing */}
         <RadioGroup value={payment} onChange={handlePaymentChange}>
-          {loading && <LoadingSpinner />}
           <VStack align='normal'>
             {paymentMethods.map((method, index) => (
               <React.Fragment key={index}>
