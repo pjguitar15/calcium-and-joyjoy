@@ -97,7 +97,7 @@ const DiscountCouponsTable = () => {
     return (
         <Box className="container mx-auto px-4 py-2">
             <Heading as="h3" size="lg" className="font-semibold">
-                Order Management | <span className="text-gray-500">Discounts</span>
+                Product Management | <span className="text-gray-500">Discounts</span>
             </Heading>
 
             <Box my={6}>
@@ -128,6 +128,8 @@ const DiscountCouponsTable = () => {
                                 <Td>{coupon.name}</Td>
                                 <Td>{coupon.discount_code}</Td>
                                 <Td>{coupon.total_amount}</Td>
+                                <Td>{coupon.date_limit}</Td>
+
                                 <Td>
                                     <Switch isChecked={coupon.isActive} onChange={() => toggleStatusModal(coupon)} />
                                 </Td>

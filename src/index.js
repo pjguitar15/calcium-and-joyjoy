@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import "./App.css";
 import Homepage from "./Home/Homepage";
@@ -15,19 +15,19 @@ import ErrorPage from "./Shared/UI/ErrorPage";
 import theme from "./Shared/UI/chakraTheme";
 import { Provider } from "react-redux";
 import store from "./Store/cart";
-import Login from './Auth/Login';
-import AdminLogin from './Admin/AdminLogin';
-import ProductsPage from './Product/ProductsPage'
-import AdminProductsPage from './Admin/Products/AdminProductsPage';
-import OrdersPage from './Admin/Orders/OrdersPage';
-import AdminCategories from './Admin/Products/AdminCategories';
-import AdminBrands from './Admin/Products/AdminBrands';
-import AdminSizes from './Admin/Products/AdminSizes';
-import AdminColors from './Admin/Products/AdminColors';
-import AdminTypes from './Admin/Products/AdminTypes';
-import CourierTable from './Admin/Courier/CourierTable';
-import AdminShipping from './Admin/Courier/AdminShipping';
-import AdminDiscounts from './Admin/Discounts/AdminDiscounts';
+import Login from "./Auth/Login";
+import AdminLogin from "./Admin/AdminLogin";
+import ProductsPage from "./Product/ProductsPage";
+import AdminProductsPage from "./Admin/Products/AdminProductsPage";
+import OrdersPage from "./Admin/Orders/OrdersPage";
+import AdminCategories from "./Admin/Products/AdminCategories";
+import AdminBrands from "./Admin/Products/AdminBrands";
+import AdminSizes from "./Admin/Products/AdminSizes";
+import AdminColors from "./Admin/Products/AdminColors";
+import AdminTypes from "./Admin/Products/AdminTypes";
+import CourierTable from "./Admin/Courier/CourierTable";
+import AdminShipping from "./Admin/Courier/AdminShipping";
+import AdminDiscounts from "./Admin/Discounts/AdminDiscounts";
 import AdminPayments from "./Admin/Payment/PaymentOptionsTable";
 import WebsiteConfig from "./Admin/Settings/WebsiteConfig";
 import BasicInfo from "./Admin/Settings/BasicInfo";
@@ -38,15 +38,16 @@ import UserBehavior from "./Admin/Reports/UserBehavior";
 import ProductPerformance from "./Admin/Reports/ProductPerf";
 import ProductPerf from "./Admin/Reports/ProductPerf";
 import ChatbotPage from "./Joybot/Chatbotpage";
-import AdminChatSupport from './Admin/ChatSupport/AdminChatSupport';
-import Chatbox from './Joybot/Chatbox';
-import ChatWithUser from './Admin/ChatSupport/ChatWithUser';
-import AdminChatFaqs from './Admin/ChatSupport/FAQs/FAQList';
+import AdminChatSupport from "./Admin/ChatSupport/AdminChatSupport";
+import Chatbox from "./Joybot/Chatbox";
+import ChatWithUser from "./Admin/ChatSupport/ChatWithUser";
+import AdminChatFaqs from "./Admin/ChatSupport/FAQs/FAQList";
+import Faqbox from "./Joybot/Faqbox";
+// import Thankyou from "./Checkout/Thankyou";
 //import OtpLinkVerification from "./Auth/OtpLinkVerification";
 
-
-
 // LAZY PAGES
+const Thankyou = lazy(() => import("./Checkout/Thankyou"));
 const AuthPage = lazy(() => import("./Auth/AuthPage"));
 const CartPage = lazy(() => import("./Cart/CartPage"));
 const ItemPage = lazy(() => import("./Product/ItemPage"));
@@ -66,10 +67,11 @@ const WishListPage = lazy(() => import("./WishList/WishListPage"));
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <>
-
-      <Layout />
-    </>,
+    element: (
+      <>
+        <Layout />
+      </>
+    ),
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Homepage /> },
@@ -78,6 +80,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <AuthPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/thank-you",
+        element: (
+          <Suspense fallback={<div />}>
+            <Thankyou />
           </Suspense>
         ),
       },
@@ -166,6 +176,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <Chatbox />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/faq",
+        element: (
+          <Suspense fallback={<div />}>
+            <Faqbox />
           </Suspense>
         ),
       },
@@ -344,22 +362,6 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <TransactRecords />
-          </Suspense>
-        ),
-      },
-      {
-        path: "config",
-        element: (
-          <Suspense fallback={<div />}>
-            <WebsiteConfig />
-          </Suspense>
-        ),
-      },
-      {
-        path: "info",
-        element: (
-          <Suspense fallback={<div />}>
-            <BasicInfo />
           </Suspense>
         ),
       },

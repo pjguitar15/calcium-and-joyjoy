@@ -95,23 +95,29 @@ const menu = [
         link: "/types",
         icon: BsUiChecksGrid,
       },
-    ],
-  },
-
-  {
-    main: "Order Management",
-    icon: BsListUl,
-    submenu: [
-      {
-        text: "Orders & Tracking",
-        link: "/orders",
-        icon: BsWalletFill,
-      },
       {
         text: "Discounts",
         link: "/discounts",
         icon: BsTagFill,
       },
+    ],
+  },
+
+  {
+    main: "Order Process",
+    icon: BsListUl,
+    submenu: [
+      {
+        text: "Transaction Records",
+        link: "/records",
+        icon: BsFileEarmarkTextFill,
+      },
+      {
+        text: "Orders & Tracking",
+        link: "/orders",
+        icon: BsWalletFill,
+      },
+      
     ],
   },
   {
@@ -132,25 +138,8 @@ const menu = [
   },
 
   {
-    main: "Shipping Management",
+    main: "CMS",
     icon: BsTruck,
-    submenu: [
-      {
-        text: "Shipping",
-        link: "/shipping",
-        icon: BsTruck,
-      },
-      {
-        text: "Courier Details",
-        link: "/couriers",
-        icon: BsTruck,
-      },
-    ],
-  },
-
-  {
-    main: "Payment Management",
-    icon: BsCreditCard,
     submenu: [
       {
         text: "Payment Methods",
@@ -158,9 +147,14 @@ const menu = [
         icon: BsWalletFill,
       },
       {
-        text: "Transaction Records",
-        link: "/records",
-        icon: BsFileEarmarkTextFill,
+        text: "Courier Details",
+        link: "/couriers",
+        icon: BsTruck,
+      },
+      {
+        text: "Announcement",
+        link: "/announcement",
+        icon: BsMegaphone,
       },
     ],
   },
@@ -183,28 +177,6 @@ const menu = [
         link: "/product-performance",
         icon: BsCartFill,
       },
-    ],
-  },
-  {
-    main: "General Settings",
-    icon: BsGear,
-    submenu: [
-      {
-        text: "Website Configuration",
-        link: "/config",
-        icon: BsGlobe,
-      },
-      {
-        text: "Basic Info",
-        link: "/info",
-        icon: BsHouseDoorFill,
-      },
-      {
-        text: "Announcement",
-        link: "/announcement",
-        icon: BsMegaphone,
-      },
-
     ],
   },
 ];

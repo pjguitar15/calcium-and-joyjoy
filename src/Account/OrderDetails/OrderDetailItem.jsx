@@ -1,81 +1,126 @@
-import React, { useEffect } from "react"
-import { FaCheck } from "react-icons/fa6"
+import React from 'react';
+import { Box, Button, VStack, HStack, Text, Link, Image, Center, useColorModeValue, Divider } from "@chakra-ui/react";
+import { FaCheck, FaShoppingCart, FaClock, FaCreditCard, FaTruck } from "react-icons/fa";
 
-const OrderDetailItem = (props) => {
-const { orderItems } = props;
-const { status } = orderItems;
+const OrderDetailItem = ({ orderItems, onReceived }) => {
+  const { items, status, reference_number, tracking_url, tracking_number, payment_status, estimated_delivery_date } = orderItems;
+  const totalQuantity = items.reduce((total, item) => total + item.quantity, 0);
+  
+
+  const StatusLine = ({ isActive }) => (
+    <Center height="4px" width="160px">
+      <Box height="4px" bg={isActive ? "green.500" : "gray.300"} width="100%" mt="2" mb="10" />
+    </Center>
+  );
+
+  const statusColor = useColorModeValue({
+    checkout: "green.500",
+    pending: "yellow.500",
+    payment: "blue.500",
+    shipped: "red.500",
+  });
+
+  const statusIcon = {
+    checkout: <FaShoppingCart color="white" size="24px" />,
+    pending: <FaClock color="white" size="24px" />,
+    payment: <FaCheck color="white" size="24px" />,
+    shipped: <FaTruck color="white" size="24px" />,
+  };
 
   return (
-    <div className="rounded-lg border border-gray-700 p-6">
-      <div className="flex justify-center items-center">
-        <div className="flex flex-col justify-center items-center">
-          <div className="bg-yellow-500 rounded-full text-white w-14 h-14 flex items-center justify-center">
-            <FaCheck className="text-white text-2xl" />
-          </div>
-          <h6 className="font-semibold text-lg mt-1">Checkout</h6>
-        </div>
-        <div className="w-[160px] h-[3px] bg-yellow-500 mb-7 -ms-4 -me-4"></div>
-        <div className="flex flex-col justify-center items-center">
-          <div className="bg-yellow-500 rounded-full text-white w-14 h-14 flex items-center justify-center">
-            <FaCheck className="text-white text-2xl" />
-          </div>
-          <h6 className="font-semibold text-lg mt-1">Payment</h6>
-        </div>
-        <div className="w-[160px] h-[3px] bg-yellow-500 mb-7 -ms-4 -me-1"></div>
-        {/* {props.orderItems.delivery_status ?} */}
-        <div
-          className={`flex flex-col justify-center items-center ${
-            props.orderItems.delivery_status === "pending" ? "opacity-20" : ""
-          } `}
-        >
-          <div className="bg-yellow-500 rounded-full text-white w-14 h-14 flex items-center justify-center">
-            <FaCheck className="text-white text-2xl" />
-          </div>
-          <h6 className="font-semibold text-lg mt-1">Shipped</h6>
-        </div>
-      </div>
-      <hr className="border-black mt-6" />
-      {/* Order Items */}
-      <div className="flex flex-col justify-between">
-        {props.orderItems.items?.map((item, index) => (
-          <div key={index} className="flex items-center gap-5 mt-7">
-            <div>
-              <img
-                className="w-[180px] h-[180px] object-cover rounded-lg"
-                src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/b5ab0a6c-6393-4af6-abbc-4f1acaa6ed94/air-max-dawn-shoes-tx7TpB.png"
-                alt=""
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-md">Air Force 1 White</p>
-              <div className="bg-gray-100 px-3 py-2 rounded-lg text-gray-500">
-                Men/Women's Shoes, Cloud White/, Size 9
-              </div>
-              <h6 className="font-semibold">P{item.price}</h6>
-            </div>
-          </div>
+    <Box rounded="lg" border="1px" borderColor="gray.700" p={6}>
+      <Text fontSize="lg" fontWeight="semibold" mb={4}>Reference Number: <Text as="span" color={statusColor[status]}>{reference_number}</Text></Text>
+      
+      <HStack justify="center" align="center" mb={6}>
+        <VStack>
+          <Box bg={statusColor.checkout} rounded="full" p={3}>
+            {statusIcon.checkout}
+          </Box>
+          <Text fontSize="lg" fontWeight="semibold">Checkout</Text>
+        </VStack>
+        <StatusLine isActive />
+        <VStack>
+          <Box bg={statusColor.pending} rounded="full" p={3}>
+            {statusIcon.pending}
+          </Box>
+          <Text fontSize="lg" fontWeight="semibold">Pending</Text>
+        </VStack>
+        <StatusLine isActive={payment_status === "verified"} />
+        <VStack opacity={payment_status === "verified" ? 1 : 0.4}>
+          <Box bg={statusColor.payment} rounded="full" p={3}>
+            {statusIcon.payment}
+          </Box>
+          <Text fontSize="lg" fontWeight="semibold">Payment</Text>
+        </VStack>
+        <StatusLine isActive={status === "SHIPPED"} />
+        <VStack opacity={status === "SHIPPED" ? 1 : 0.4}>
+          <Box bg={statusColor.shipped} rounded="full" p={3}>
+            {statusIcon.shipped}
+          </Box>
+          <Text fontSize="lg" fontWeight="semibold">Shipped</Text>
+        </VStack>
+      </HStack>
+
+        {/* Order Items */}
+        {items.map((item, index) => (
+          <Box key={index} p={4} bg="gray.50" rounded="md" my={2} shadow="xs">
+            <HStack spacing={5}>
+              <Image boxSize="100px" objectFit="cover" rounded="md" src={item.product.image} alt={item.product.name} />
+              <VStack align="start" spacing={1} flex="1">
+                <Text fontSize="md" fontWeight="semibold">{item.product.name}</Text>
+                <Text fontSize="sm" color="gray.600">
+                  Category: {item.product.category.name} • Brand: {item.product.brand.name} • Size: {item.size}
+                </Text>
+                <Text fontWeight="semibold" color="green.500">P{item.price}</Text>
+              </VStack>
+            </HStack>
+          </Box>
         ))}
 
-        <h6 className="text-gray-600">
-          Quantity: {props.orderItems.items.length}
-        </h6>
-      </div>
-      <div className="text-end my-4">
-        <h6 className="text-lg font-semibold">
-          Total: P
-          {props.orderItems.grand_total.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-        </h6>
-      </div>
-      {/* <div className="text-end">
-        <button className="border border-red-700 text-red-700 px-4 py-1 rounded-lg">
-          Cancel
-        </button>
-        <button className="border border-black text-black px-4 py-1 rounded-lg ms-2">
-          View Item
-        </button>
-      </div> */}
-    </div>
-  )
-}
+        <Divider borderColor="gray.300" my={4} />
+        
+        {/* Summary and Tracking Information */}
+        <VStack spacing={2} align="stretch">
+          <HStack justifyContent="space-between">
+            <Text color="gray.600">Quantity:</Text>
+            <Text fontWeight="semibold">{totalQuantity}</Text>
+          </HStack>
+          <HStack justifyContent="space-between">
+            <Text fontSize="lg" fontWeight="semibold">Total:</Text>
+            <Text fontSize="lg" color="green.500" fontWeight="semibold">
+              P{orderItems.grand_total.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </Text>
+          </HStack>
 
-export default OrderDetailItem
+      {status === "SHIPPED" && (
+        <VStack align='start' spacing={2}>
+          <HStack>
+            <Text fontWeight='semibold'>Tracking #: </Text>
+            <Text color='gray.600'>{tracking_number || 'Not Available'}</Text>
+          </HStack>
+          <HStack>
+            <Text fontWeight='semibold'>Tracking URL: </Text>
+            {tracking_url ? (
+              <Link href={tracking_url.startsWith('http') ? tracking_url : `http://${tracking_url}`} isExternal textDecoration="underline" color='blue.500'>
+                View Tracking
+              </Link>
+            ) : (
+              <Text color='gray.600'>Not Available</Text>
+            )}
+          </HStack>
+          <HStack>
+            <Text fontWeight='semibold'>Estimated Delivery Date: </Text>
+            <Text color='gray.600'>{estimated_delivery_date || 'Not Available'}</Text>
+          </HStack>
+          <Button colorScheme='blue' onClick={() => onReceived(reference_number)}>
+            Mark as Received
+          </Button>
+        </VStack>
+      )}
+            </VStack>
+
+    </Box>
+  );
+};
+
+export default OrderDetailItem;

@@ -1,8 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import FilterGroup from "./FilterGroup";
-import SizesFilter from "./SizesFilter";
 import ScrollBars from "rc-scrollbars";
-import ColorFilter from "./ColorFilter";
 import useProductTypes from '../../Shared/Hooks/useProductTypes';
 import useCategories from '../../Shared/Hooks/useCategories';
 import useBrands from '../../Shared/Hooks/useBrands';
@@ -33,20 +31,11 @@ function FilterBar() {
     },
     {
       main: "Gender",
-      items: ["Men", "Women", "Unisex"],
+      items: ["Male", "Female", "Unisex"],
     },
     {
       main: "Socks",
       items: ["Low", "Mid", "High"],
-    },
-    {
-      main: "Price",
-      items: [
-        "Under ₱5,000",
-        "₱5,000-₱9,000",
-        "₱9,000-₱10,000",
-        "Over ₱10,000",
-      ],
     },
   ];
 
@@ -56,16 +45,7 @@ function FilterBar() {
         <FilterGroup main={"Type"} items={mapTypes} />
         <FilterGroup main={"Brands"} items={mapBrands} />
         <FilterGroup main={"Categories"} items={mapCategories} />
-        <FilterGroup main={"Genders"} items={["Men", "Women", "Unisex"]} />
-        <FilterGroup main={"Price"} items={[
-          "Under ₱5,000",
-          "₱5,000-₱9,000",
-          "₱9,000-₱10,000",
-          "Over ₱10,000",
-        ]} />
-
-        <SizesFilter />
-        <ColorFilter />
+        <FilterGroup main={"Genders"} items={["Male", "Female", "Unisex"]} />
       </ScrollBars>
       {/* <FilterGroup main={"Type"} items={types} /> */}
     </Box>

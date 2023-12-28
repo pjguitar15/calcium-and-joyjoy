@@ -12,8 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 
@@ -34,13 +33,11 @@ const fields = [
 
 function Register({ onVerify }) {
   const toast = useToast();
-  // const nav = useNavigate();
-
   const { register, handleSubmit } = useForm();
+
   const onReg = async (data) => {
-    const { password, confirmPassword } = data;
+    const { password, confirmPassword, email } = data;
     if (password.trim() !== confirmPassword.trim()) {
-      // console.log(password, data.confirmPassword);
       toast({
         title: "Passwords do not match",
         position: "top",
@@ -49,21 +46,20 @@ function Register({ onVerify }) {
       throw new Error("Passwords do not match");
     } else {
       const res = await axiosInstance.post("/register", data);
-      return res.data.data;
+      return { ...res.data.data, email }; // Include email in the returned data
     }
   };
 
   const { mutate } = useMutation({
     mutationFn: onReg,
-    onSuccess: async (data) => {
-      // localStorage.setItem("user", JSON.stringify(data));
+    onSuccess: (data) => {
       toast({
         status: "info",
         description: "Verify your email",
         position: "top",
       });
       setTimeout(() => {
-        onVerify();
+        onVerify(data.email); // Pass the email to the onVerify callback
       }, 1500);
     },
     onError: (data) => {
@@ -74,6 +70,7 @@ function Register({ onVerify }) {
       });
     },
   });
+
   return (
     <Box mx='auto' maxW='400px'>
       <Box mb='40px'>
