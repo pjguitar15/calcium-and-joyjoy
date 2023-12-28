@@ -5,6 +5,7 @@ import { FaCheck, FaShoppingCart, FaClock, FaCreditCard, FaTruck } from "react-i
 const OrderDetailItem = ({ orderItems, onReceived }) => {
   const { items, status, reference_number, tracking_url, tracking_number, payment_status, estimated_delivery_date } = orderItems;
   const totalQuantity = items.reduce((total, item) => total + item.quantity, 0);
+  
 
   const StatusLine = ({ isActive }) => (
     <Center height="4px" width="160px">

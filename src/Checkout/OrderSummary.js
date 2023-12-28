@@ -9,17 +9,16 @@ import { useSearchParams } from "react-router-dom";
 import { clearCheckout } from '../Store/cart';
 import axiosInstance from '../Shared/utils/axiosInstance';
 
-function OrderSummary() {
+function OrderSummary({ setDiscount }) { // Accept setDiscount as a prop
   const subtotal = useSubtotal();
   const checkout = useSelector((state) => state.checkout);
   const [voucher, setVoucher] = useState("");
   const [coupons, setCoupons] = useState([]);
-  const [discount, setDiscount] = useState(0);
+  const [discountValue, setDiscountValue] = useState(0); // Local state for display purposes
   const [params, setParams] = useSearchParams();
   const toast = useToast();
   const dispatch = useDispatch();
 
-  // Fetch coupons on component mount
   useEffect(() => {
     axiosInstance.get('/admin/discount_coupons')
       .then(response => {
@@ -47,11 +46,12 @@ function OrderSummary() {
     };
   }, [dispatch]);
 
-  // Handle voucher application
   const handleApplyVoucher = () => {
     const validCoupon = coupons.find(coupon => coupon.discount_code === voucher);
     if (validCoupon) {
-      setDiscount(validCoupon.total_amount);
+      const discountAmount = validCoupon.total_amount;
+      setDiscountValue(discountAmount); // Update local state
+      setDiscount(discountAmount); // Update discount in CheckoutPage
       toast({
         title: 'Voucher Applied',
         description: 'Discount applied successfully!',
@@ -60,6 +60,8 @@ function OrderSummary() {
         isClosable: true,
       });
     } else {
+      setDiscountValue(0);
+      setDiscount(0); // Reset discount in CheckoutPage
       toast({
         title: 'Invalid Voucher',
         description: 'The voucher code entered is not valid.',
@@ -67,11 +69,10 @@ function OrderSummary() {
         duration: 5000,
         isClosable: true,
       });
-      setDiscount(0);
     }
   };
 
-  const total = subtotal + 300 - discount; // Adjust total calculation
+  const total = subtotal + 300 - discountValue; // Adjust total calculation
 
   return (
     <Box>
@@ -95,6 +96,10 @@ function OrderSummary() {
             placeholder='Enter code'
           />
           <Button onClick={handleApplyVoucher} colorScheme='blue'>Apply</Button>
+        </HStack>
+        <HStack justifyContent='space-between' mt='16px'>
+          <Text>Discount</Text>
+          <Text>{convertCurrency(discountValue)}</Text>
         </HStack>
       </Box>
       <HStack justifyContent='space-between'>

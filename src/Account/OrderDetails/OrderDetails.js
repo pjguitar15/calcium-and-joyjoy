@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import axiosInstance from "../../Shared/utils/axiosInstance";
 import OrderDetailItem from "./OrderDetailItem";
-import { Box, Heading, Text, CircularProgress, Center } from "@chakra-ui/react";
+import { Box, Heading, Text, CircularProgress, Center, Icon, Button } from "@chakra-ui/react";
+import { FaShoppingBag, FaSmileBeam } from "react-icons/fa";
+import { Link as RouterLink } from 'react-router-dom';
 
 function OrderDetails() {
     const [currUserOrders, setCurrUserOrders] = useState([]);
@@ -66,12 +68,20 @@ function OrderDetails() {
             {isLoading ? (
                 <Center><CircularProgress isIndeterminate color="green.300" /></Center>
             ) : error ? (
-                <Text color="red.500">{error}</Text>
+                <Center height="80vh">
+                    <Icon as={FaSmileBeam} w={10} h={10} color="red.500" />
+                    <Text color="red.500" fontSize="xl" mt={3}>{error}</Text>
+                </Center>
             ) : currUserOrders?.length > 0 ? (
                 renderedOrders
             ) : (
-                <Text>No orders to display. Start shopping now!</Text>
-            )}
+                <Center flexDirection="column" height="80vh">
+                <Icon as={FaShoppingBag} w={10} h={10} color="gray.400" />
+                <Text fontSize="xl" mt={3}>No orders to display. Start shopping now!</Text>
+                <Button as={RouterLink} to='/' colorScheme="blue" mt="32px">
+                    Browse Products
+                </Button>
+            </Center>            )}
         </main>
     );
 }

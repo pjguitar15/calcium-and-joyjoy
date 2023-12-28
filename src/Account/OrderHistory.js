@@ -5,7 +5,8 @@ import {
   HStack,
   Text,
   Image,
-  useDisclosure,
+  Button,
+  Divider,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -13,15 +14,21 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
-  Link
+  useDisclosure,
+  Link,
+  Badge,
+  Icon,
+  Heading,
+  Center
 } from "@chakra-ui/react";
-import { FaBox } from "react-icons/fa";
+import { FaBox, FaRedo, FaShoppingCart, FaSadTear, FaShoppingBag } from "react-icons/fa";
 import { useQuery } from "react-query";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../Store/cart";
+import { Link as RouterLink } from 'react-router-dom';
+
 
 function OrderHistory() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -56,84 +63,89 @@ function OrderHistory() {
     }
   };
 
+
   const { data: orders, isLoading, isError } = useQuery("orders", getOrders);
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError || !orders || orders.length < 1) return <Box>No order history.</Box>;
-
+  if (isError || !orders || orders.length < 1) {
+    return (
+      <Center flexDirection="column" height="80vh">
+        <Icon as={FaSadTear} w={10} h={10} color="gray.400" />
+        <Text fontSize="xl" mt={3}>You have no order history yet.</Text>
+        <Button as={RouterLink} to='/' colorScheme="blue" mt="32px">
+          <Icon as={FaShoppingBag} mr={2} />
+          Browse Products
+        </Button>
+      </Center>
+    );
+  }
   return (
-    <main className='pt-8 pe-8'>
+    
+    <main className="py-8 pe-8 overflow-y-scroll max-h-[800px] flex flex-col gap-3">
+          <Heading as="h2" size="xl" mb={6}>Order History</Heading>
       {orders.map((order, index) => {
         const totalQuantity = order.items.reduce((total, item) => total + item.quantity, 0);
 
         return (
-          <React.Fragment key={index}>
-            <div className='rounded-lg border border-gray-700 p-6 mb-4'>
-              <div className='flex gap-4 items-center mb-4'>
-                <FaBox className='text-4xl text-lime-600' />
-                <div>
-                  <h5 className='font-semibold text-lg'>
-                    Order Received - {order.estimated_delivery_date || 'Date not available'}
-                  </h5>
-                  <h6 className='font-normal text-lg'>
-                    Reference: {order.reference_number}
-                  </h6>
-                </div>
-              </div>
+          <Box key={index} bg="white" rounded="lg" border="1px" borderColor="black" p={6} shadow="sm" mb={4}>
+            <HStack spacing={4} align="center" mb={4}>
+              <Icon as={FaBox} w={8} h={8} color="green.500" />
+              <VStack align="start">
+                <Text fontWeight="semibold" fontSize="lg">
+                  Order Received - {order.estimated_delivery_date || 'Date not available'}
+                </Text>
+                <Text fontSize="md">Reference: {order.reference_number}</Text>
+              </VStack>
+            </HStack>
 
-              <hr className='border-black my-4' />
+            <Divider my={4} />
 
-              {order.items.map((item, itemIndex) => (
-                <div key={itemIndex} className='flex justify-between items-end mb-4'>
-                  <div className='flex items-center gap-5'>
-                    <Image
-                      className='w-[180px] h-[180px] object-cover rounded-lg'
-                      src={item.product.image}
-                      alt={item.product.name}
-                    />
-                    <div className='flex flex-col gap-2'>
-                      <p className='text-md'>{item.product.name}</p>
-                      <div className='bg-gray-100 px-3 py-2 rounded-lg text-gray-500'>
-                        Category: {item.product.category.name}, Brand: {item.product.brand.name}, Size: {item.size}
-                      </div>
-                      <h6 className='font-semibold'>P{item.price}</h6>
-                    </div>
-                  </div>
+            {order.items.map((item, itemIndex) => (
+              <VStack key={itemIndex} align="stretch" mb={4}>
+                <HStack spacing={4}>
+                  <Image boxSize="100px" objectFit="cover" rounded="md" src={item.product.image} alt={item.product.name} />
+                  <VStack align="start" flex="1">
+                    <Text fontWeight="semibold">{item.product.name}</Text>
+                    <Badge colorScheme="gray" p={1} rounded="md">
+                      {item.product.category.name} • {item.product.brand.name} • Size: {item.size}
+                    </Badge>
+                    <Text fontWeight="semibold" color="green.500">P{item.price}</Text>
+                  </VStack>
+                  <Text>Qty: {item.quantity}</Text>
+                </HStack>
+              </VStack>
+            ))}
 
-                  <h6 className='text-gray-600'>Quantity: {item.quantity}</h6>
-                </div>
-              ))}
+            <Divider my={4} />
 
-              <div className='text-gray-600 mb-4'>
-                <h6>Total Quantity: {totalQuantity}</h6>
-              </div>
+            <HStack justifyContent="space-between" mb={4}>
+              <Text>Total Quantity:</Text>
+              <Text fontWeight="semibold">{totalQuantity}</Text>
+            </HStack>
 
-              <div className='text-end my-4'>
-                <h6 className='text-lg font-semibold'>Total: P{order.grand_total}</h6>
-              </div>
+            <HStack justifyContent="space-between" mb={4}>
+              <Text fontWeight="semibold" fontSize="lg">Total:</Text>
+              <Text fontWeight="semibold" fontSize="lg" color="green.500">
+                P{order.grand_total}
+              </Text>
+            </HStack>
 
-              <div className='text-end'>
-                <button 
-                  className='border border-red-700 text-red-700 px-4 py-1 rounded-lg mr-2'
-                  onClick={() => handleBuyAgain(order)}
-                >
-                  Buy again
-                </button>
-                <button 
-                  className='border border-blue-700 text-blue-700 px-4 py-1 rounded-lg'
-                  onClick={handleReturnRefund}
-                >
-                  Return/Refund
-                </button>
-              </div>
-            </div>
-          </React.Fragment>
+            <HStack justifyContent="flex-end">
+              <Button leftIcon={<FaShoppingCart />} colorScheme="blue" variant="solid" size="sm" onClick={() => handleBuyAgain(order)}>
+                Buy again
+              </Button>
+              <Button leftIcon={<FaRedo />} colorScheme="red" variant="solid" size="sm" ml={2} onClick={handleReturnRefund}>
+                Return/Refund
+              </Button>
+            </HStack>
+          </Box>
         );
       })}
       <ReturnRefundModal isOpen={isOpen} onClose={onClose} />
     </main>
   );
 }
+
 
 const ReturnRefundModal = ({ isOpen, onClose }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
