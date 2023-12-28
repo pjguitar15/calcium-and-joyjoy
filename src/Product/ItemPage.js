@@ -286,7 +286,7 @@ function ItemPage() {
             <Text fontWeight='semibold'>Product Description</Text>
             <Text>{description}</Text>
           </Box>
-          <Box py='16px'>
+        {/*  <Box py='16px'>
             <HStack alignItems='center' gap='40px'>
               <Text fontWeight='semibold'>{`Reviews (1)`}</Text>
               <Box color='goldenrod'>
@@ -306,7 +306,7 @@ function ItemPage() {
                 NICE PRODUCTS EXCELLENTS!
               </Text>
             </Box>
-          </Box>
+          </Box>*/}
         </Box>
       </Grid>
 

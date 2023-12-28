@@ -9,27 +9,34 @@ import {
   Text,
   IconButton,
   useToast,
-  Link,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
-import LoadingSpinner from "./LoadingSpinner";
-import convertCurrency from "../utils/convertCurrency";
-import axiosInstance from "../utils/axiosInstance";
+import { Link, useLocation } from "react-router-dom"
+import LoadingSpinner from "./LoadingSpinner"
+import convertCurrency from "../utils/convertCurrency"
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Store/cart";
+import axiosInstance from "../utils/axiosInstance";
+
 
 function ItemCard(props) {
-  const { cardW, data, isSelected } = props;
-  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("user"));
   const toast = useToast();
+  const dispatch = useDispatch();
+  const { cardW, data, onSelect, isSelected } = props
+
+  const { pathname } = useLocation()
 
   if (!data) return <LoadingSpinner />
 
-  const { name, price, gender, discount, id, image } = data;
-  const maxLength = 21;
-  const formattedName = name.trim().length > maxLength ? name.slice(0, maxLength) + "..." : name;
+  const { name, price, gender, discount, id } = data
+  const maxLength = 21
+  const formattedName =
+    name.trim().length > maxLength ? name.slice(0, maxLength) + "..." : name
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const clickHandler = () => {
+    if (pathname !== "/customize") return
+    onSelect(data)
+  }
 
   const handleWishlist = async (e) => {
     e.stopPropagation();
@@ -71,6 +78,7 @@ function ItemCard(props) {
 
   return (
     <Card
+      onClick={clickHandler}
       py="8px"
       boxShadow="4px 4px 16px rgba(0,0,0,.3)"
       w={cardW || "250px"}
@@ -81,6 +89,8 @@ function ItemCard(props) {
         transform: "translateY(-8px)",
         boxShadow: "4px 8px 16px rgba(0,0,0,.4)",
       }}
+      as={pathname !== "/customize" ? Link : Card}
+      to={`/shoe/${id}`}
       borderRadius="20px"
       h="400px"
       bgColor={isSelected ? "var(--accent)" : ""}
@@ -103,28 +113,29 @@ function ItemCard(props) {
         </CardHeader>
       )}
       <CardBody>
-      <Link as={RouterLink} to={`/shoe/${id}`} style={{ textDecoration: 'none' }}>
         <Box display="flex" alignItems="center" alignContent="center" h="200px">
           <Image
             alt="product"
             mx="auto"
-            src={image}
+            src={props.data.image}
             verticalAlign="bottom"
             mb="16px"
             maxH="200px"
+            // h='200px'
             borderRadius="10px"
           />
         </Box>
         <Text fontWeight="semibold">{formattedName}</Text>
+
         <Text color="gray.500">
           {gender === "male" ? "Men's" : "Women's"}{" "}
-          {data.category && data.category.name}
+          {props.data.category && props.data.category?.name}
         </Text>
+
         {discount ? (
-          
           <HStack>
             <Text color="red" fontWeight="semibold">
-              {convertCurrency(price * (1 - discount))}
+              {convertCurrency(price * 0.1)}
             </Text>
             <Text my="16px" textDecor="line-through" fontWeight="semibold">
               {convertCurrency(price)}
@@ -135,8 +146,8 @@ function ItemCard(props) {
             {convertCurrency(price)}
           </Text>
         )}
-        </Link>
-        <HStack spacing={4} mt={2}>
+
+<HStack spacing={4} mt={2}>
         <IconButton
             aria-label="Add to cart"
             icon={<FaCartPlus />}
@@ -150,7 +161,7 @@ function ItemCard(props) {
         </HStack>
       </CardBody>
     </Card>
-  );
+  )
 }
 
-export default ItemCard;
+export default ItemCard
