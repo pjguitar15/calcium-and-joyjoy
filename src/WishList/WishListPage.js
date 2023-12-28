@@ -1,34 +1,41 @@
+import React, { useState, useEffect } from 'react';
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import WishList from "./WishList";
 
 function WishListPage() {
+  const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("user"));
+  const [wishlist, setWishlist] = useState([]);
 
-  // Only make the API call if the user is authenticated
-  const { data, isLoading, isError, error } = useQuery("wishlist", async () => {
+  const { isLoading, isError, error, data } = useQuery("wishlist", async () => {
     if (!user) return;
     const res = await axiosInstance.get("/user/wishlist", {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
+      headers: { Authorization: `Bearer ${user.token}` },
     });
     return res.data;
-  }, {
-    enabled: !!user  // This disables the query from automatically running if user is not authenticated
-  });
+  }, { enabled: !!user });
+
+  useEffect(() => {
+    if (data?.data) {
+      setWishlist(data.data);
+    }
+  }, [data]);
 
   if (isLoading) return <LoadingSpinner />;
 
   if (isError) {
     console.error(error); // Log the error
-    return <Text>An error occurred while fetching the wishlist.</Text>;
+    return (
+      <Box textAlign='center'>
+        <Text>An error occurred while fetching the wishlist.</Text>
+        <Button onClick={() => queryClient.refetchQueries('wishlist')}>Retry</Button>
+      </Box>
+    );
   }
-
-  const list = data?.data; // Safely access the data
 
   return (
     <Box textAlign='center'>
@@ -36,7 +43,7 @@ function WishListPage() {
         Wishlist
       </Heading>
       {user ? (
-        <WishList list={list} />
+        <WishList list={wishlist} setList={setWishlist} />
       ) : (
         <Box>
           <Text mb='16px'>You need an account to have a wishlist.</Text>

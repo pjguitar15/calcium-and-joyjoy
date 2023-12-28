@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Box, Input, Button, Heading, VStack, Text, Flex, useToast, Select } from "@chakra-ui/react";
 import axiosInstance from '../../Shared/utils/axiosInstance'; 
+import axios from "axios";
 
 function Customers() {
   const [customers, setCustomers] = useState([]);
@@ -14,8 +15,8 @@ function Customers() {
         const token = localStorage.getItem("adminLoginToken");
         if (!token) {
           throw new Error("No admin token found");
-        }
-        const response = await axiosInstance.get('/customers', {
+        } 
+        const response = await axiosInstance.get('http://18.223.157.202/backend/api/admin/customer', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -48,12 +49,26 @@ function Customers() {
     setSortType(e.target.value);
   };
 
-  const handleSuspendToggle = (customerId) => {
+  const handleSuspendToggle = (cust) => {
+    console.log('customer',cust)
+
+
+      axios
+      .post(`http://18.223.157.202/backend/api/admin/customer/${cust.id}/suspend`, {
+        suspended: cust.suspended == 0 ? 1 : 0,
+      })
+     
+
+
+
+
+
     setCustomers(prevCustomers => prevCustomers.map(customer => {
-      if (customer.id === customerId) {
+      if (customer.id === cust.id) {
         return { ...customer, suspended: !customer.suspended };
       }
       return customer;
+      
     }));
 
     toast({
@@ -80,7 +95,7 @@ function Customers() {
         } else { // oldest
           return new Date(a.timestamp) - new Date(b.timestamp);
         }
-      });
+      }); 
   }, [customers, searchTerm, sortType]);
 
   return (
@@ -116,11 +131,11 @@ function Customers() {
               <VStack align="start">
                 <Text fontWeight="bold" fontSize="lg">{customer.name}</Text>
                 <Text fontSize="sm">{customer.email}</Text>
-                <Text fontSize="sm" color="gray.500">Joined: {customer.timestamp}</Text>
+        
               </VStack>
               <Button 
                 colorScheme={customer.suspended ? 'red' : 'green'}
-                onClick={() => handleSuspendToggle(customer.id)}
+                onClick={() => handleSuspendToggle(customer)}
               >
                 {customer.suspended ? 'Unsuspend' : 'Suspend'}
               </Button>

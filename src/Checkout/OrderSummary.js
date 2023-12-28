@@ -1,27 +1,40 @@
+import React, { useEffect, useState } from 'react';
 import {
-  HStack,
-  Text,
-  Box,
-  Heading,
-  Grid,
-  Image,
-  VStack,
-  Input,
+  Box, Heading, HStack, Text, Input, VStack, Grid, Image, Button, useToast
 } from "@chakra-ui/react";
 import useSubtotal from "../Shared/Hooks/useSubtotal";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import { useDispatch, useSelector } from "react-redux";
-import config from "../Shared/utils/config";
-import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { clearCheckout } from '../Store/cart'
+import { clearCheckout } from '../Store/cart';
+import axiosInstance from '../Shared/utils/axiosInstance';
+
 function OrderSummary() {
   const subtotal = useSubtotal();
   const checkout = useSelector((state) => state.checkout);
   const [voucher, setVoucher] = useState("");
+  const [coupons, setCoupons] = useState([]);
+  const [discount, setDiscount] = useState(0);
   const [params, setParams] = useSearchParams();
-
+  const toast = useToast();
   const dispatch = useDispatch();
+
+  // Fetch coupons on component mount
+  useEffect(() => {
+    axiosInstance.get('/admin/discount_coupons')
+      .then(response => {
+        setCoupons(response.data);
+      })
+      .catch(error => {
+        toast({
+          title: 'Error',
+          description: 'Failed to fetch discount coupons.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+  }, []);
 
   useEffect(() => {
     params.set("voucher", voucher);
@@ -34,11 +47,35 @@ function OrderSummary() {
     };
   }, [dispatch]);
 
+  // Handle voucher application
+  const handleApplyVoucher = () => {
+    const validCoupon = coupons.find(coupon => coupon.discount_code === voucher);
+    if (validCoupon) {
+      setDiscount(validCoupon.total_amount);
+      toast({
+        title: 'Voucher Applied',
+        description: 'Discount applied successfully!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: 'Invalid Voucher',
+        description: 'The voucher code entered is not valid.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      setDiscount(0);
+    }
+  };
+
+  const total = subtotal + 300 - discount; // Adjust total calculation
+
   return (
     <Box>
-      <Heading fontWeight='normal' mb='24px'>
-        Order Summary
-      </Heading>
+      <Heading fontWeight='normal' mb='24px'>Order Summary</Heading>
       <Box color='gray.500' borderBottom='solid 1px #d1d1d1' pb='16px'>
         <HStack justifyContent='space-between'>
           <Text>Subtotal</Text>
@@ -57,28 +94,12 @@ function OrderSummary() {
             maxW='160px'
             placeholder='Enter code'
           />
+          <Button onClick={handleApplyVoucher} colorScheme='blue'>Apply</Button>
         </HStack>
       </Box>
-      <HStack
-        justifyContent='space-between'
-        borderBottom='solid 1px #d1d1d1'
-        pt='8px'
-        pb='16px'
-      >
+      <HStack justifyContent='space-between'>
         <Text>Total</Text>
-        <HStack>
-          {voucher === "voucher" && (
-            <Box as='span' color='red.500'>
-              {convertCurrency((subtotal + 300) * 0.8)}
-            </Box>
-          )}
-          <Text
-            textDecor={voucher === "voucher" ? "line-through" : ""}
-            opacity={voucher === "voucher" ? 0.7 : 1}
-          >
-            {convertCurrency(subtotal + 300)}
-          </Text>
-        </HStack>
+        <Text>{convertCurrency(total)}</Text>
       </HStack>
       <VStack gap='8px' mt='24px' maxH='45vh' overflowY='auto'>
         {checkout.map((item, i) => (
@@ -104,7 +125,6 @@ function OrderSummary() {
               <Text fontWeight='bold'>{item.name}</Text>
               <Text color='gray.500'>Men/Women's Shoes</Text>
               {item.size && <Text>Size: {item.size}</Text>}
-
               <Text>Quantity: {item.quantity}</Text>
               <Text>{convertCurrency(item.price)}</Text>
             </VStack>

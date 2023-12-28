@@ -7,7 +7,7 @@ const TableComponent = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentItem, setCurrentItem] = useState({ name: '', role: '', permissions: '' }); // For adding/editing
+  const [currentItem, setCurrentItem] = useState({ id:'', name: '', role: '', permissions: '' }); // For adding/editing
   const toast = useToast();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const TableComponent = () => {
 
   const addOrUpdatePermission = async () => {
     try {
-      const method = currentItem.id ? 'post' : 'put';
+      const method = 'post'
       const url = currentItem.id ? `/admin/role-permissions/update/${currentItem.id}` : '/admin/role-permissions/store';
       await axiosInstance[method](url, currentItem);
       fetchData();
@@ -61,14 +61,15 @@ const TableComponent = () => {
     }
   };
 
-  const openModal = (item = { name: '', role: '', permissions: '' }) => {
+  const openModal = (item = { id: '', name: '', role: '', permissions: '' }) => {
+    console.log('hakddog',item)
     setCurrentItem(item);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setCurrentItem({ name: '', role: '', permissions: '' });
+    setCurrentItem({id: '', name: '', role: '', permissions: '' });
   };
 
   const handleInputChange = (e) => {
@@ -83,10 +84,10 @@ const TableComponent = () => {
     </Box>
   );
 
-  if (loading) {
+  if (loading) { 
     return <p>Loading...</p>;
   }
-
+  
   return (
     <>
       <Button colorScheme="green" onClick={() => openModal()}>Add New Permission</Button>

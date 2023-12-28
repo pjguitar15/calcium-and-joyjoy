@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
+import axios from 'axios';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,9 +10,7 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js"
-import { Line } from "react-chartjs-2"
-import axios from 'axios'
+} from "chart.js";
 
 ChartJS.register(
   CategoryScale,
@@ -20,90 +20,85 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-)
+);
 
 const options = {
   responsive: true,
   scales: {
     x: {
-      ticks: {
-        color: "white", // Set the color of x-axis labels to white
-      },
+      ticks: { color: "white" },
     },
     y: {
-      ticks: {
-        color: "white", // Set the color of y-axis labels to white
-      },
+      ticks: { color: "white" },
     },
   },
   plugins: {
     legend: {
       position: "top",
-      labels: {
-        color: "white", // Set the color of legend labels to white
-      },
+      labels: { color: "white" },
     },
     title: {
       display: true,
       text: "Sales",
-      color: "white", // Set the color of the chart title to white
+      color: "white",
     },
   },
-}
+};
 
 const LineChart = () => {
-  const [labels, setLabels] = useState([])
-  const [dataFromDataSets, setDataFromDataSets] = useState([])
+  const [chartData, setChartData] = useState({ labels: [], data: [] });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const data = {
-    // x axis (array)
-    labels,
-    datasets: [
-      {
-        label: "Dataset 1",
-        // y axis
-        data: dataFromDataSets, // (array)
-        borderColor: "white",
-        backgroundColor: "white",
-      },
-    ],
+  useEffect(() => {
+    axios.get("http://18.223.157.202/backend/api/admin/sales")
+      .then((response) => {
+        const activeCouriers = response.data.data;
+        const modifiedData = activeCouriers.datasets[0].data.map(item =>
+          parseFloat(item.replace(/,/g, '')).toFixed(2)
+        );
+
+        setChartData({
+          labels: activeCouriers.labels,
+          data: modifiedData,
+        });
+      })
+      .catch(error => {
+        setError(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
   }
 
-  useEffect(() => {
-    axios.get(`http://18.223.157.202/backend/api/admin/sales`).then((res) => {
-      console.log(res.data.data.labels)
-      setLabels(res.data.data.labels)
+  if (error) {
+    return <p>Error loading data</p>;
+  }
 
-      const modifyDataSetsData = res.data.data.datasets[0].data.map((item) => {
-        return parseFloat(item.replace(/,/g, '')).toFixed(2)
-      })
-
-      setDataFromDataSets(modifyDataSetsData)
-    })
-  }, [])
-
-  useEffect(() => {
-    // console.log(dataFromDataSets)
-  }, [dataFromDataSets])
+  const data = {
+    labels: chartData.labels,
+    datasets: [
+      {
+        label: "Sales",
+        data: chartData.data,
+        borderColor: "white",
+        backgroundColor: "rgba(255, 255, 255, 0.5)",
+      },
+    ],
+  };
 
   return (
     <div className="p-5 bg-gray-100 border border-gray-400 rounded-md">
       <div className="bg-green-700 p-6">
-        {dataFromDataSets ? (
-          data ? (
-            <Line options={options} data={data} />
-          ) : (
-            <p>Loading...</p> // or any loading state or placeholder you prefer
-          )
-        ) : null}
+        <Line options={options} data={data} />
       </div>
-      <h1 className="text-2xl mt-4 font-semibold">Daily Sales</h1>
-      <p>
-        <span className="text-red-500 font-semibold">55% </span>Decrease in
-        today sales.
-      </p>
+      <h1 className="text-2xl mt-4 font-semibold">Product Sales</h1>
     </div>
-  )
-}
+  );
+};
 
-export default LineChart
+export default LineChart;

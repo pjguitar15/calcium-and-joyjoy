@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import {
   Box,
   Center,
@@ -15,9 +16,17 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 
-function Verify() {
+function Verify({ email }) {
   const toast = useToast();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
+
+  useEffect(() => {
+    // Set the default value for the email field only once when the component mounts
+    if (email) {
+      setValue('email', email, { shouldValidate: true });
+    }
+  }, [email, setValue]); // Dependencies array
+
   const onVerify = async (data) => {
     const res = await axiosInstance.post("/otp/verify", data);
     return res.data.data;
@@ -33,15 +42,14 @@ function Verify() {
         description: "Redirecting to login",
       });
       setTimeout(() => {
-        window.location.href = '/auth/sign-in'; // Redirect and refresh the page
+        window.location.href = '/auth/sign-in';
       }, 1500);
     },
     onError: () => {
       toast({ position: "top", status: "error", title: "Invalid OTP" });
     },
   });
-  
-  
+
   return (
     <Box maxW='400px' mx='auto'>
       <Box mb='40px'>
