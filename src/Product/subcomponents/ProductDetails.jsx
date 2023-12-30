@@ -18,13 +18,16 @@ const ProductDetails = ({ shoe, onAddToCart, onWishList, onCheckout, selectedSiz
     // Determine the product type text
     const productTypeText = shoe.category ? shoe.category.name : (shoe.gender === "male" ? "Men's" : "Women's") + ' shoes';
 
+    // Check if a size has been selected
+    const isSizeSelected = selectedSize !== null;
+
     return (
         <Box padding="4" borderWidth="1px" borderRadius="lg" overflow="hidden">
-        <Heading as="h2" size="xl" fontWeight="bold" mb="4">{shoe.name}</Heading>
-        <Text fontSize="lg" color="gray.600" mb="2">{productTypeText}</Text>
-        <Text fontSize="2xl" fontWeight="bold" my="2">{convertCurrency(shoe.price)}</Text>
-        <Text my="2" mb="4">Colors: {shoe.colors.map(colorObj => colorObj.color.name).join(', ')}</Text>
-        <HStack my="4">
+            <Heading as="h2" size="xl" fontWeight="bold" mb="4">{shoe.name}</Heading>
+            <Text fontSize="lg" color="gray.600" mb="2">{productTypeText}</Text>
+            <Text fontSize="2xl" fontWeight="bold" my="2">{convertCurrency(shoe.price)}</Text>
+            <Text my="2" mb="4">Colors: {shoe.colors.map(colorObj => colorObj.color.name).join(', ')}</Text>
+            <HStack my="4">
                 <Text fontWeight="bold">Quantity:</Text>
                 <InputGroup size="sm" maxW="140px">
                     <InputLeftAddon children='-' cursor="pointer" onClick={() => setQty(qty > 1 ? qty - 1 : 1)} />
@@ -57,10 +60,30 @@ const ProductDetails = ({ shoe, onAddToCart, onWishList, onCheckout, selectedSiz
 
             <VStack spacing="4">
                 <HStack spacing="4" w="full">
-                    <Button onClick={onAddToCart} bgColor='gray' color='white' borderRadius='20px' w="full">Add to Cart</Button>
+                    <Button 
+                        onClick={onAddToCart} 
+                        bgColor='gray' 
+                        _hover={{ bgColor: "var(--accent)" }}
+                        color='white' 
+                        borderRadius='20px' 
+                        w="full"
+                        isDisabled={!isSizeSelected} // Disable if no size is selected
+                    >
+                        Add to Cart
+                    </Button>
                     <Button onClick={onWishList} border='solid 2px gray' bgColor='none' color='gray' borderRadius='20px' w="full">Wishlist</Button>
                 </HStack>
-                <Button onClick={onCheckout} bgColor='gray' color='white' borderRadius='20px' w="full">Checkout</Button>
+                <Button 
+                    onClick={onCheckout} 
+                    bgColor='gray' 
+                    _hover={{ bgColor: "var(--accent)" }}
+                    color='white' 
+                    borderRadius='20px' 
+                    w="full"
+                    isDisabled={!isSizeSelected} // Disable if no size is selected
+                >
+                    Checkout
+                </Button>
             </VStack>
         </Box>
     );

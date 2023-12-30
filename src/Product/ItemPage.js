@@ -35,14 +35,14 @@ function ItemPage() {
 
   const handleAddToCart = () => {
     dispatch(addToCart({
-      ...shoe,
-      quantity: qty,
-      price: shoe.price * qty,
-      size: selectedSize,
+        ...shoe,
+        quantity: qty,
+        price: shoe.price, // Unit price
+        size: selectedSize,
     }));
     setShowAdded(true);
     setTimeout(() => setShowAdded(false), 1200);
-  };
+};
 
   const handleCheckout = () => {
     dispatch(addToCheckout({

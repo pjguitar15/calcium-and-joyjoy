@@ -99,7 +99,7 @@ function OrderSummary({ setDiscount }) { // Accept setDiscount as a prop
         </HStack>
         <HStack justifyContent='space-between' mt='16px'>
           <Text>Discount</Text>
-          <Text>{convertCurrency(discountValue)}</Text>
+          <Text>-{convertCurrency(discountValue)}</Text>
         </HStack>
       </Box>
       <HStack justifyContent='space-between'>
