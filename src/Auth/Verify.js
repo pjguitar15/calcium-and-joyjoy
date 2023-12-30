@@ -1,31 +1,31 @@
 import React, { useEffect } from 'react';
 import {
-  Box,
-  Center,
-  Image,
-  Heading,
-  VStack,
-  Input,
-  Button,
-  FormControl,
-  FormLabel,
-  useToast,
+  Box, Center, Image, Heading, VStack, Input, Button,
+  FormControl, FormLabel, useToast,
 } from "@chakra-ui/react";
 
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 
-function Verify({ email }) {
+function Verify({ email, otp }) { // Accept otp prop
   const toast = useToast();
   const { register, handleSubmit, setValue } = useForm();
 
   useEffect(() => {
-    // Set the default value for the email field only once when the component mounts
-    if (email) {
+    // Set the default values for email and otp fields
+    const storedEmail = localStorage.getItem('emailForVerification');
+    if (storedEmail) {
+      setValue('email', storedEmail, { shouldValidate: true });
+    } else if (email) {
       setValue('email', email, { shouldValidate: true });
     }
-  }, [email, setValue]); // Dependencies array
+    // Save otp to local storage and set it as the default value for otp field
+    if (otp) {
+      localStorage.setItem('otpForVerification', otp);
+      setValue('otp', otp, { shouldValidate: true });
+    }
+  }, [email, otp, setValue]);
 
   const onVerify = async (data) => {
     const res = await axiosInstance.post("/otp/verify", data);
@@ -49,6 +49,7 @@ function Verify({ email }) {
       toast({ position: "top", status: "error", title: "Invalid OTP" });
     },
   });
+
 
   return (
     <Box maxW='400px' mx='auto'>

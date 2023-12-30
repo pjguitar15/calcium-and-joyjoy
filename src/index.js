@@ -43,6 +43,7 @@ import Chatbox from "./Joybot/Chatbox";
 import ChatWithUser from "./Admin/ChatSupport/ChatWithUser";
 import AdminChatFaqs from "./Admin/ChatSupport/FAQs/FAQList";
 import Faqbox from "./Joybot/Faqbox";
+import Verify from "./Auth/Verify";
 // import Thankyou from "./Checkout/Thankyou";
 //import OtpLinkVerification from "./Auth/OtpLinkVerification";
 
@@ -79,6 +80,22 @@ const router = createBrowserRouter([
         path: "/auth/:action",
         element: (
           <Suspense fallback={<div />}>
+            <AuthPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/otp",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Verify />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/otp/:otp",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
             <AuthPage />
           </Suspense>
         ),
