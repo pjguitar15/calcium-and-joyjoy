@@ -29,8 +29,7 @@ import CourierTable from "./Admin/Courier/CourierTable";
 import AdminShipping from "./Admin/Courier/AdminShipping";
 import AdminDiscounts from "./Admin/Discounts/AdminDiscounts";
 import AdminPayments from "./Admin/Payment/PaymentOptionsTable";
-import WebsiteConfig from "./Admin/Settings/WebsiteConfig";
-import BasicInfo from "./Admin/Settings/BasicInfo";
+import GeneralSettings from "./Admin/Settings/General Settings/GeneralSettings";
 import TransactRecords from "./Admin/Payment/TransactRecords";
 import Announcement from "./Admin/Settings/Announcement";
 import SalesRep from "./Admin/Reports/SalesRep";
@@ -411,6 +410,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <ProductPerf />
+          </Suspense>
+        ),
+      },
+      {
+        path: "general-settings",
+        element: (
+          <Suspense fallback={<div />}>
+            <GeneralSettings />
           </Suspense>
         ),
       },
