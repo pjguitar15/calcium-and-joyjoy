@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axiosInstance from '../../../Shared/utils/axiosInstance';
-import { Button, FormControl, FormLabel, Input, Grid, GridItem, Box } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, Grid, GridItem, Box, useToast } from '@chakra-ui/react';
 
 const WebConfigForm = ({ initialData }) => {
     const [formData, setFormData] = useState({
@@ -13,6 +13,9 @@ const WebConfigForm = ({ initialData }) => {
         shipping_rate: initialData.shipping_rate || '',
     });
 
+    const toast = useToast();
+
+
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
@@ -21,10 +24,23 @@ const WebConfigForm = ({ initialData }) => {
         event.preventDefault();
         axiosInstance.post('/admin/general-settings/update/web-config', formData)
             .then(response => {
-                alert('Settings updated successfully');
+                toast({
+                    title: "Settings updated",
+                    description: "Your web configuration settings have been updated successfully.",
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                });
             })
             .catch(error => {
                 console.error('Error updating settings', error);
+                toast({
+                    title: "Error",
+                    description: "There was an error updating your web configuration settings.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
             });
     };
 

@@ -19,6 +19,28 @@ function OrderSummary({ setDiscount }) { // Accept setDiscount as a prop
   const toast = useToast();
   const dispatch = useDispatch();
 
+  
+
+  const [shippingRate, setShippingRate] = useState(0);
+  useEffect(() => {
+    axiosInstance.get('/admin/general-settings')
+      .then(response => {
+        setShippingRate(response.data.shipping_rate);
+      })
+      .catch(error => {
+        console.log('Error fetching shipping rate:', error); // Log the error to the console
+        toast({
+          title: 'Error',
+          description: 'Failed to fetch shipping rate.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+  }, []);
+  
+
+
   useEffect(() => {
     axiosInstance.get('/admin/discount_coupons')
       .then(response => {
@@ -71,8 +93,18 @@ function OrderSummary({ setDiscount }) { // Accept setDiscount as a prop
       });
     }
   };
+  
+// Ensure the values are numbers before calculations
+const numericSubtotal = parseFloat(subtotal);
+const numericShippingRate = parseFloat(shippingRate);
+const numericDiscountValue = parseFloat(discountValue);
 
-  const total = subtotal + 300 - discountValue; // Adjust total calculation
+// Perform calculations with numbers
+const total = numericSubtotal + numericShippingRate - numericDiscountValue;
+
+// Format the total for display
+const formattedTotal = convertCurrency(total);
+
 
   return (
     <Box>
@@ -84,7 +116,7 @@ function OrderSummary({ setDiscount }) { // Accept setDiscount as a prop
         </HStack>
         <HStack justifyContent='space-between'>
           <Text>Shipping</Text>
-          <Text>{convertCurrency(300)}</Text>
+          <Text>{convertCurrency(shippingRate)}</Text>
         </HStack>
         <HStack mt='16px' justifyContent='space-between'>
           <Text>Voucher</Text>
@@ -104,7 +136,7 @@ function OrderSummary({ setDiscount }) { // Accept setDiscount as a prop
       </Box>
       <HStack justifyContent='space-between'>
         <Text>Total</Text>
-        <Text>{convertCurrency(total)}</Text>
+        <Text>{formattedTotal}</Text>
       </HStack>
       <VStack gap='8px' mt='24px' maxH='45vh' overflowY='auto'>
         {checkout.map((item, i) => (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axiosInstance from '../../../Shared/utils/axiosInstance';
-import { Button, FormControl, FormLabel, Input, Textarea, Grid, GridItem, Box } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, Textarea, Grid, GridItem, Box, useToast } from '@chakra-ui/react';
 
 const BasicInfoForm = ({ initialData }) => {
     const [formData, setFormData] = useState({
@@ -12,20 +12,36 @@ const BasicInfoForm = ({ initialData }) => {
         terms_and_condition: initialData.terms_and_condition || '',
     });
 
+    const toast = useToast();
+
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = (event) => {
+ const handleSubmit = (event) => {
         event.preventDefault();
         axiosInstance.post('/admin/general-settings/update/basic-info', formData)
             .then(response => {
-                alert('Settings updated successfully');
+                toast({
+                    title: "Settings updated",
+                    description: "Your Basic Info have been updated successfully.",
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                });
             })
             .catch(error => {
                 console.error('Error updating settings', error);
+                toast({
+                    title: "Error",
+                    description: "There was an error updating your settings.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
             });
     };
+
 
     return (
         <Box p={4} w="100%">
