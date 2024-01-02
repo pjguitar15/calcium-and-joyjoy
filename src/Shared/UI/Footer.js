@@ -1,6 +1,8 @@
+import React, { useState, useEffect } from 'react';
 import { Box, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import { BiLogoTwitter, BiLogoFacebook, BiLogoWhatsapp } from "react-icons/bi";
 import { FaLocationDot } from "react-icons/fa6";
+import axiosInstance from "../utils/axiosInstance";  // Adjust the path as necessary
 
 const socials = [
   {
@@ -21,6 +23,19 @@ const socials = [
 ];
 
 function Footer() {
+  const [historyText, setHistoryText] = useState('Loading history...');
+
+  useEffect(() => {
+    axiosInstance.get('/admin/general-settings')
+      .then(response => {
+        setHistoryText(response.data.history_text);
+      })
+      .catch(error => {
+        console.error("Error fetching history text:", error);
+        setHistoryText("Error loading history. Please try again later.");
+      });
+  }, []);
+
   return (
     <Box bgColor='#403F3F' py='40px' px='40px' color='#FFDC83'>
       <HStack
@@ -36,12 +51,7 @@ function Footer() {
             History
           </Text>
           <Text mb='56px'>
-            Calcium JoyJoy Online Shop PH is a successful e-commerce venture on
-            social media, with a focus on offering branded shoes and
-            accompanying accessories like aglets, shoelaces, and socks.
-            Established on August 19, 2018, the business initially began with
-            pre-order items. Ms. Mary Joy "MJ" Muit, the devoted owner, manages
-            the company, which is duly registered with the DTI.
+            {historyText}
           </Text>
           <HStack gap='16px'>
             <Text fontWeight='bold'>

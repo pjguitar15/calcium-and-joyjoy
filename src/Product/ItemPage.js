@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useQuery } from "react-query";
-import { Box, Grid, useToast } from "@chakra-ui/react";
+import { Grid, useToast } from "@chakra-ui/react";
 import { addToCart, addToCheckout } from "../Store/cart";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
