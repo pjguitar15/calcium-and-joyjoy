@@ -26,7 +26,7 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
   const [receiptImage, setReceiptImage] = useState(null);
   const [selectedPaymentMethodDetails, setSelectedPaymentMethodDetails] =
     useState({});
-  const deliveryFee = 300;
+  const [shippingRate, setShippingRate] = useState(0);
   const cart = useSelector((state) => state.checkout);
   const user = JSON.parse(localStorage.getItem("user"));
   const toast = useToast();
@@ -71,6 +71,25 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
     };
   
     fetchCouriersAndPaymentMethods();
+  }, [toast]);
+
+  useEffect(() => {
+    axiosInstance.get('/admin/general-settings')
+      .then(response => {
+        const fetchedShippingRate = parseFloat(response.data.shipping_rate) || 0;
+        setShippingRate(fetchedShippingRate);
+      })
+      .catch(error => {
+        toast({
+          title: 'Error',
+          description: 'Failed to fetch shipping rate.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        // Optionally set a default shipping rate in case of an error
+        setShippingRate(300);
+      });
   }, [toast]);
 
   const handlePaymentChange = (paymentMethodName) => {
@@ -125,7 +144,7 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
     const totalCartPriceAfterDiscount = totalCartPrice - discount; // Adjust total price by subtracting discount
   
     // Log grand total calculation
-    const grandTotal = totalCartPriceAfterDiscount + deliveryFee;
+    const grandTotal = totalCartPriceAfterDiscount + shippingRate;
     console.log(`Grand Total after discount and delivery fee: ${grandTotal}`);
   
     const postData = {
