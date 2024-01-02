@@ -131,11 +131,6 @@ function CheckoutConfirm({ onConfirm }) {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      {/* <Input
-        placeholder="Phone Number"
-        {...register("phone_number", { required: true })}
-        defaultValue={autoFilledData?.phone_number !== undefined ? autoFilledData?.phone_number : ""}
-      /> */}
       <Button
         onClick={handleSubmit(handleConfirm)}
         borderRadius="80px"

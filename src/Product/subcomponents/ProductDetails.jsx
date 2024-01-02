@@ -18,8 +18,8 @@ const ProductDetails = ({ shoe, onAddToCart, onWishList, onCheckout, selectedSiz
     // Determine the product type text
     const productTypeText = shoe.category ? shoe.category.name : (shoe.gender === "male" ? "Men's" : "Women's") + ' shoes';
 
-    // Check if a size has been selected
-    const isSizeSelected = selectedSize !== null;
+    // Check if the product has sizes and if a size has been selected
+    const isSizeSelectedOrNotRequired = !hasSizes || (hasSizes && selectedSize !== null);
 
     return (
         <Box padding="4" borderWidth="1px" borderRadius="lg" overflow="hidden">
@@ -67,7 +67,7 @@ const ProductDetails = ({ shoe, onAddToCart, onWishList, onCheckout, selectedSiz
                         color='white' 
                         borderRadius='20px' 
                         w="full"
-                        isDisabled={!isSizeSelected} // Disable if no size is selected
+                        isDisabled={!isSizeSelectedOrNotRequired} // Disable if sizes are available but no size is selected
                     >
                         Add to Cart
                     </Button>
@@ -80,7 +80,7 @@ const ProductDetails = ({ shoe, onAddToCart, onWishList, onCheckout, selectedSiz
                     color='white' 
                     borderRadius='20px' 
                     w="full"
-                    isDisabled={!isSizeSelected} // Disable if no size is selected
+                    isDisabled={!isSizeSelectedOrNotRequired} // Disable if sizes are available but no size is selected
                 >
                     Checkout
                 </Button>

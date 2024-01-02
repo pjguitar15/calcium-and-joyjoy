@@ -47,9 +47,9 @@ function ItemPage() {
   const handleCheckout = () => {
     dispatch(addToCheckout({
       ...shoe,
-      quantity: qty,
-      price: shoe.price * qty,
-      size: selectedSize,
+    quantity: qty,
+    price: shoe.price, // price per unit
+    size: selectedSize,
     }));
     navigate("/checkout");
   };

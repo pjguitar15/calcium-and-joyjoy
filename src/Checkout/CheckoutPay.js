@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../Store/cart";
+import axiosInstance from "../Shared/utils/axiosInstance";
 
 function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
   const [payment, setPayment] = useState("");
@@ -37,20 +38,20 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
       setLoading(true);
       try {
         const [couriersResponse, paymentMethodsResponse] = await Promise.all([
-          axios.get("http://18.223.157.202/backend/api/admin/couriers"),
-          axios.get("http://18.223.157.202/backend/api/admin/payment-options"),
+          axiosInstance.get("admin/couriers"),
+          axiosInstance.get("admin/payment-options"),
         ]);
-
+  
         const activeCouriers = couriersResponse.data.filter(
           (courier) => courier.active === "true"
         );
         const activePaymentMethods = paymentMethodsResponse.data.filter(
           (method) => method.active === "true" || method.active === 1
         );
-
+  
         setCouriers(activeCouriers);
         setPaymentMethods(activePaymentMethods);
-
+  
         if (activeCouriers.length > 0) {
           setCourier(activeCouriers[0].courier_name);
         }
@@ -68,7 +69,7 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
       }
       setLoading(false);
     };
-
+  
     fetchCouriersAndPaymentMethods();
   }, [toast]);
 
@@ -90,7 +91,12 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
       });
       return;
     }
-
+  
+    // Log cart items and their totals
+    cart.forEach((item) => {
+      console.log(`Item ID: ${item.id}, Quantity: ${item.quantity}, Price: ${item.price}, Total: ${item.quantity * item.price}`);
+    });
+  
     const cartsData = cart.map((item) => {
       console.log(item.size);
       const data = {
@@ -102,15 +108,26 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
         price: item.price,
         total: item.quantity * item.price,
       };
-
+  
       return data;
     });
-
+  
+    // Log subtotal calculation
     const totalCartPrice = cart.reduce(
       (total, item) => total + item.quantity * item.price,
       0
-    ) - discount; // Adjust total price by subtracting discount
-
+    );
+    console.log(`Subtotal before discount: ${totalCartPrice}`);
+  
+    // Log discount value
+    console.log(`Discount: ${discount}`);
+  
+    const totalCartPriceAfterDiscount = totalCartPrice - discount; // Adjust total price by subtracting discount
+  
+    // Log grand total calculation
+    const grandTotal = totalCartPriceAfterDiscount + deliveryFee;
+    console.log(`Grand Total after discount and delivery fee: ${grandTotal}`);
+  
     const postData = {
       checkoutData: {
         ...checkoutData,
@@ -118,16 +135,18 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
         payment_method: payment,
         courier,
         receipt_img: receiptImage,
-        grand_total: totalCartPrice + deliveryFee, // Updated grand total
+        grand_total: grandTotal, // Updated grand total after discount and delivery fee
       },
       cartsData,
     };
-
+  
+    // Log post data
+    console.log('Post Data:', postData);
+  
     if (postData) {
-      console.log(postData);
       setLoading(true);
-      axios
-        .post("http://18.223.157.202/backend/api/checkout", postData)
+      axiosInstance
+        .post("checkout", postData)
         .then((res) => {
           setLoading(false);
           toast({
@@ -147,6 +166,8 @@ function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
       console.log("something wrong with postData");
     }
   };
+  
+
 
   // Cloudinary Image Upload Function
   const uploadImageToCloudinary = async (file) => {
