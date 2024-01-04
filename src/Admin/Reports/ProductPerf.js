@@ -95,7 +95,6 @@ const ProductPerf = () => {
                 <Thead>
                     <Tr>
                         <Th>Product</Th>
-                        <Th>Total Views</Th>
                         <Th>Total Purchases</Th>
                     </Tr>
                 </Thead>
@@ -104,7 +103,6 @@ const ProductPerf = () => {
                         <Tr key={index}>
                             <Td>{data.product_name}</Td>
                             <Td>{data.purchases}</Td>
-                            <Td>{data.total_views}</Td>
                         </Tr>
                     ))}
                 </Tbody>

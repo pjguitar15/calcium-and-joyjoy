@@ -1,7 +1,7 @@
 import { Grid, Heading } from "@chakra-ui/react"
 import LineChart from "./LineChart"
 import BarChart from "./BarChart"
-import UserBehavior from "./UserBehavior"
+import UserBehavior from "./UserBehaviorChart"
 
 function Overview() {
   return (

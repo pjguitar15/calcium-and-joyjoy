@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import axiosInstance from "../../Shared/utils/axiosInstance";
-
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
   BarElement,
   Title,
   Tooltip,
@@ -16,12 +14,15 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
   BarElement,
   Title,
   Tooltip,
   Legend
 );
+
+const truncateLabel = (label, maxLength = 15) => {
+  return label.length > maxLength ? label.substring(0, maxLength) + '...' : label;
+};
 
 const chartOptions = {
   responsive: true,
@@ -41,39 +42,29 @@ const chartOptions = {
     },
     title: {
       display: true,
-      text: "Top 10 Most Sold Products",
+      text: "User Behavior",
       color: "white",
     },
   },
 };
 
-// Function to truncate label text
-const truncateLabel = (label, maxLength = 15) => {
-  return label.length > maxLength ? label.substring(0, maxLength) + '...' : label;
-};
-
-const BarChart = () => {
+const UserBehaviorReport = () => {
   const [chartData, setChartData] = useState({ labels: [], data: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axiosInstance.get("/admin/get_most_sold_products_chart")
-      .then((res) => {
-        const { labels, datasets } = res.data.chart_config.data;
-  
-        // Sort and slice top 10 products
-        const sortedData = [...datasets[0].data]
-          .map((value, index) => ({ label: labels[index], value }))
-          .sort((a, b) => b.value - a.value)
+    axiosInstance.get("/shoes")
+      .then((response) => {
+        const productViewsData = response.data.map(product => ({
+          name: truncateLabel(product.name),
+          views: product.product_view,
+        })).sort((a, b) => b.views - a.views)
           .slice(0, 10);
-  
-        // Apply label truncation
-        const truncatedLabels = sortedData.map(item => truncateLabel(item.label));
-  
+
         setChartData({
-          labels: truncatedLabels,
-          data: sortedData.map(item => item.value),
+          labels: productViewsData.map(p => p.name),
+          data: productViewsData.map(p => p.views),
         });
       })
       .catch(error => {
@@ -89,14 +80,14 @@ const BarChart = () => {
   }
 
   if (error) {
-    return <p>Error loading data</p>;
+    return <p>Error loading data: {error.message}</p>;
   }
 
   const data = {
     labels: chartData.labels,
     datasets: [
       {
-        label: "Total Order",
+        label: "Page Visits",
         data: chartData.data,
         borderColor: "white",
         backgroundColor: "white",
@@ -106,12 +97,12 @@ const BarChart = () => {
 
   return (
     <div className="p-5 bg-gray-100 border border-gray-400 rounded-md">
-      <div className="bg-yellow-500 p-6">
+      <div className="bg-blue-500 p-6">
         <Bar options={chartOptions} data={data} />
       </div>
-      <h1 className="text-2xl mt-4 font-semibold">Top 10 Most Sold Products</h1>
+      <h1 className="text-2xl mt-4 font-semibold">User Behavior</h1>
     </div>
   );
 };
 
-export default BarChart;
+export default UserBehaviorReport;
