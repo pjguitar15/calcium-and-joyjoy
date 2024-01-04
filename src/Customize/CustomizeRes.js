@@ -14,8 +14,6 @@ function CustomizeRes({ results }) {
   const toast = useToast(); 
   const { shoe, sock, accessory } = results;
 
-
-  
   useEffect(() => {
     setPrices({
       shoe: shoe ? Number(shoe.price) : 0,
@@ -86,7 +84,7 @@ function CustomizeRes({ results }) {
     </div>
   );
 
-  const addToCartAndNavigate = (item, price, type) => {
+  const checkoutAndNavigate = (item, price, type) => {
     if (item) {
       dispatch(addToCheckout({
         ...item,
@@ -99,13 +97,14 @@ function CustomizeRes({ results }) {
   };
 
   const handleCheckout = () => {
-    addToCartAndNavigate(shoe, prices.shoe, 'shoe');
-    addToCartAndNavigate(sock, prices.sock, 'sock');
-    addToCartAndNavigate(accessory, prices.accessory, 'accessory');
+    checkoutAndNavigate(shoe, prices.shoe, 'shoe');
+    checkoutAndNavigate(sock, prices.sock, 'sock');
+    checkoutAndNavigate(accessory, prices.accessory, 'accessory');
     navigate("/checkout");
   };
 
   const isCheckoutDisabled = !Object.values(results).some(item => item);
+
 
   return (
     <Grid maxW="1200px" bgColor="gray.100" mx="auto" my="24px" minH="400px" borderRadius="10px" display="flex" pt="40px" px="32px" pb="24px" columnGap="80px">

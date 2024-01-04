@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import axios from "axios";
+import axiosInstance from "../../Shared/utils/axiosInstance";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
   BarElement,
   Title,
   Tooltip,
@@ -15,7 +14,6 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
   BarElement,
   Title,
   Tooltip,
@@ -24,89 +22,72 @@ ChartJS.register(
 
 const options = {
   responsive: true,
-  scales: {
-    x: {
-      type: "category",
-      ticks: { color: "white" },
-    },
-    y: {
-      ticks: { color: "white" },
-    },
-  },
   plugins: {
     legend: {
       position: "top",
-      labels: { color: "white" },
     },
     title: {
       display: true,
-      text: "User Behavior",
-      color: "white",
+      text: "Shoe Product Views",
     },
   },
 };
 
-const UserBehavior = () => {
-  const [chartData, setChartData] = useState({ labels: [], data: [] });
+const UserBehaviorReport = () => {
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: [],
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://18.223.157.202/backend/api/admin/customer_behavior`)
-      .then((res) => {
-        const activityLogs = res.data.reduce((acc, user) => {
-          user.activity_logs.forEach((log) => {
-            const existingLog = acc.find((item) => item.page_name === log.page_name);
-            if (existingLog) {
-              existingLog.count += log.count;
-            } else {
-              acc.push({ page_name: log.page_name, count: log.count });
-            }
-          });
-          return acc;
-        }, []);
-
-        const labels = activityLogs.map((log) => log.page_name);
-        const data = activityLogs.map((log) => log.count);
-
-        setChartData({ labels, data });
-      })
-      .catch(error => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axiosInstance.get("/shoes");
+        const productViewsData = response.data.map(product => ({
+          name: product.name.length > 10 ? product.name.substring(0, 10) + '...' : product.name,
+          views: product.product_view,
+        })).sort((a, b) => b.views - a.views) // Sort by views
+          .slice(0, 10); // Limit to 10 products
+  
+        const labels = productViewsData.map(p => p.name);
+        const data = productViewsData.map(p => p.views);
+  
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: 'Product Views',
+              data,
+              backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            },
+          ],
+        });
+      } catch (error) {
         setError(error);
-      })
-      .finally(() => {
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+  
+    fetchProducts();
   }, []);
-
+  
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
   if (error) {
-    return <p>Error loading data</p>;
+    return <p>Error loading data: {error.message}</p>;
   }
 
-  const data = {
-    labels: chartData.labels,
-    datasets: [
-      {
-        label: "Page Visits",
-        data: chartData.data,
-        borderColor: "white",
-        backgroundColor: "white",
-      },
-    ],
-  };
-
   return (
-    <div className="p-5 bg-gray-100 border border-gray-400 rounded-md">
-      <div className="bg-blue-500 p-6">
-        <Bar options={options} data={data} />
-      </div>
-      <h1 className="text-2xl mt-4 font-semibold">User Behavior</h1>
+    <div style={{ padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+      <h2>User Behavior Report: Shoe Product Views</h2>
+      <Bar options={options} data={chartData} />
     </div>
   );
 };
 
-export default UserBehavior;
+export default UserBehaviorReport;
