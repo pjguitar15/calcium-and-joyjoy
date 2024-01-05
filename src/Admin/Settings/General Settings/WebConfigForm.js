@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axiosInstance from '../../../Shared/utils/axiosInstance';
-import { Button, FormControl, FormLabel, Input, Textarea, Grid, GridItem, Box, useToast } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, Textarea, Grid, GridItem, Box, useToast, Icon, Tooltip } from '@chakra-ui/react';
+import { FaFacebook, FaTwitter, FaInstagram, FaGlobe, FaTruck, FaBullseye, FaEye, FaUsers, FaHistory } from 'react-icons/fa';
 
 const WebConfigForm = ({ initialData }) => {
     const [formData, setFormData] = useState({
@@ -14,6 +15,21 @@ const WebConfigForm = ({ initialData }) => {
         twitter: initialData.twitter || '',
         instagram: initialData.instagram || '',
     });
+
+    // Enhanced Form Field with Icon
+    const FormFieldWithIcon = ({ icon, label, name, type = "text", isTextarea = false, ...props }) => (
+        <FormControl>
+            <FormLabel>
+                <Icon as={icon} mr={2} />
+                {label}
+            </FormLabel>
+            {isTextarea ? (
+                <Textarea name={name} value={formData[name]} onChange={handleChange} {...props} />
+            ) : (
+                <Input type={type} name={name} value={formData[name]} onChange={handleChange} {...props} />
+            )}
+        </FormControl>
+    );
 
     const toast = useToast();
 
@@ -51,62 +67,35 @@ const WebConfigForm = ({ initialData }) => {
                 <Grid templateColumns="repeat(2, 1fr)" gap={6}>
                     {/* Logo and Shipping Rate Fields */}
                     <GridItem colSpan={1}>
-                        <FormControl>
-                            <FormLabel>Logo URL</FormLabel>
-                            <Input type="text" name="logo" value={formData.logo} onChange={handleChange} />
-                        </FormControl>
+                        <FormFieldWithIcon icon={FaGlobe} label="Logo URL" name="logo" />
                     </GridItem>
                     <GridItem colSpan={1}>
-                        <FormControl>
-                            <FormLabel>Shipping Rate</FormLabel>
-                            <Input type="number" name="shipping_rate" value={formData.shipping_rate} onChange={handleChange} />
-                        </FormControl>
+                        <FormFieldWithIcon icon={FaTruck} label="Shipping Rate" name="shipping_rate" type="number" />
                     </GridItem>
                     
                     {/* Mission, Vision, and About Us Fields */}
                     <GridItem colSpan={2}>
-                        <FormControl>
-                            <FormLabel>Mission</FormLabel>
-                            <Textarea name="mission" value={formData.mission} onChange={handleChange} />
-                        </FormControl>
+                        <FormFieldWithIcon icon={FaBullseye} label="Mission" name="mission" isTextarea />
                     </GridItem>
                     <GridItem colSpan={2}>
-                        <FormControl>
-                            <FormLabel>Vision</FormLabel>
-                            <Textarea name="vision" value={formData.vision} onChange={handleChange} />
-                        </FormControl>
+                        <FormFieldWithIcon icon={FaEye} label="Vision" name="vision" isTextarea />
                     </GridItem>
                     <GridItem colSpan={2}>
-                        <FormControl>
-                            <FormLabel>About Us</FormLabel>
-                            <Textarea name="about_us" value={formData.about_us} onChange={handleChange} />
-                        </FormControl>
+                        <FormFieldWithIcon icon={FaUsers} label="About Us" name="about_us" isTextarea />
                     </GridItem>
 
                     {/* History Text and Social Media URLs */}
                     <GridItem colSpan={2}>
-                        <FormControl>
-                            <FormLabel>History Text</FormLabel>
-                            <Textarea name="history_text" value={formData.history_text} onChange={handleChange} />
-                        </FormControl>
+                        <FormFieldWithIcon icon={FaHistory} label="History Text" name="history_text" isTextarea />
                     </GridItem>
                     <GridItem colSpan={1}>
-                        <FormControl>
-                            <FormLabel>Facebook URL</FormLabel>
-                            <Input type="text" name="facebook" value={formData.facebook} onChange={handleChange} />
-                        </FormControl>
+                        <FormFieldWithIcon icon={FaFacebook} label="Facebook URL" name="facebook" />
                     </GridItem>
                     <GridItem colSpan={1}>
-                        <FormControl>
-                            <FormLabel>Twitter URL</FormLabel>
-                            <Input type="text" name="twitter" value={formData.twitter} onChange={handleChange} />
-                        </FormControl>
+                        <FormFieldWithIcon icon={FaTwitter} label="Twitter URL" name="twitter" />
                     </GridItem>
                     <GridItem colSpan={1}>
-                        <FormControl>
-                            <FormLabel>Instagram URL</FormLabel>
-                            <Input type="text" name="instagram" value={formData.instagram} onChange={handleChange} />
-                        </FormControl>
+                        <FormFieldWithIcon icon={FaInstagram} label="Instagram URL" name="instagram" />
                     </GridItem>
 
                     {/* Submit Button */}

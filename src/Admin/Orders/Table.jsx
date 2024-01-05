@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { FaPenClip } from "react-icons/fa6";
-import { FaTrashAlt } from "react-icons/fa";
 
 const Table = () => {
   const [allOrders, setAllOrders] = useState([])

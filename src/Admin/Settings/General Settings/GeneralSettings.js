@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../Shared/utils/axiosInstance';
 import WebConfigForm from './WebConfigForm';
-import { Box, Heading, Spinner, VStack, Divider } from '@chakra-ui/react';
+import { Box, Heading, Spinner, VStack } from '@chakra-ui/react';
 
 const GeneralSettings = () => {
     const [settings, setSettings] = useState(null);
