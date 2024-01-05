@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import axiosInstance from '../../../Shared/utils/axiosInstance';
-import { Button, FormControl, FormLabel, Input, Grid, GridItem, Box, useToast } from '@chakra-ui/react';
+import { Button, FormControl, FormLabel, Input, Textarea, Grid, GridItem, Box, useToast } from '@chakra-ui/react';
 
 const WebConfigForm = ({ initialData }) => {
     const [formData, setFormData] = useState({
         logo: initialData.logo || '',
-        favicon: initialData.favicon || '',
-        header_title: initialData.header_title || '',
-        footer_text: initialData.footer_text || '',
-        contact_info: initialData.contact_info || '',
-        social_media: initialData.social_media || '',
         shipping_rate: initialData.shipping_rate || '',
+        mission: initialData.mission || '',
+        vision: initialData.vision || '',
+        about_us: initialData.about_us || '',
+        history_text: initialData.history_text || '',
+        facebook: initialData.facebook || '',
+        twitter: initialData.twitter || '',
+        instagram: initialData.instagram || '',
     });
 
     const toast = useToast();
-
 
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -22,7 +23,7 @@ const WebConfigForm = ({ initialData }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axiosInstance.post('/admin/general-settings/update/web-config', formData)
+        axiosInstance.post('/admin/general-settings/update/settings', formData)
             .then(response => {
                 toast({
                     title: "Settings updated",
@@ -48,6 +49,7 @@ const WebConfigForm = ({ initialData }) => {
         <Box p={4} w="100%">
             <form onSubmit={handleSubmit}>
                 <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+                    {/* Logo and Shipping Rate Fields */}
                     <GridItem colSpan={1}>
                         <FormControl>
                             <FormLabel>Logo URL</FormLabel>
@@ -56,40 +58,58 @@ const WebConfigForm = ({ initialData }) => {
                     </GridItem>
                     <GridItem colSpan={1}>
                         <FormControl>
-                            <FormLabel>Favicon URL</FormLabel>
-                            <Input type="text" name="favicon" value={formData.favicon} onChange={handleChange} />
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={1}>
-                        <FormControl>
-                            <FormLabel>Header Title</FormLabel>
-                            <Input type="text" name="header_title" value={formData.header_title} onChange={handleChange} />
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={1}>
-                        <FormControl>
-                            <FormLabel>Footer Text</FormLabel>
-                            <Input type="text" name="footer_text" value={formData.footer_text} onChange={handleChange} />
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={1}>
-                        <FormControl>
-                            <FormLabel>Contact Info</FormLabel>
-                            <Input type="text" name="contact_info" value={formData.contact_info} onChange={handleChange} />
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={1}>
-                        <FormControl>
-                            <FormLabel>Social Media URLs</FormLabel>
-                            <Input type="text" name="social_media" value={formData.social_media} onChange={handleChange} />
-                        </FormControl>
-                    </GridItem>
-                    <GridItem colSpan={2}>
-                        <FormControl>
                             <FormLabel>Shipping Rate</FormLabel>
                             <Input type="number" name="shipping_rate" value={formData.shipping_rate} onChange={handleChange} />
                         </FormControl>
                     </GridItem>
+                    
+                    {/* Mission, Vision, and About Us Fields */}
+                    <GridItem colSpan={2}>
+                        <FormControl>
+                            <FormLabel>Mission</FormLabel>
+                            <Textarea name="mission" value={formData.mission} onChange={handleChange} />
+                        </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={2}>
+                        <FormControl>
+                            <FormLabel>Vision</FormLabel>
+                            <Textarea name="vision" value={formData.vision} onChange={handleChange} />
+                        </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={2}>
+                        <FormControl>
+                            <FormLabel>About Us</FormLabel>
+                            <Textarea name="about_us" value={formData.about_us} onChange={handleChange} />
+                        </FormControl>
+                    </GridItem>
+
+                    {/* History Text and Social Media URLs */}
+                    <GridItem colSpan={2}>
+                        <FormControl>
+                            <FormLabel>History Text</FormLabel>
+                            <Textarea name="history_text" value={formData.history_text} onChange={handleChange} />
+                        </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={1}>
+                        <FormControl>
+                            <FormLabel>Facebook URL</FormLabel>
+                            <Input type="text" name="facebook" value={formData.facebook} onChange={handleChange} />
+                        </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={1}>
+                        <FormControl>
+                            <FormLabel>Twitter URL</FormLabel>
+                            <Input type="text" name="twitter" value={formData.twitter} onChange={handleChange} />
+                        </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={1}>
+                        <FormControl>
+                            <FormLabel>Instagram URL</FormLabel>
+                            <Input type="text" name="instagram" value={formData.instagram} onChange={handleChange} />
+                        </FormControl>
+                    </GridItem>
+
+                    {/* Submit Button */}
                     <GridItem colSpan={2}>
                         <Button 
                             type="submit"

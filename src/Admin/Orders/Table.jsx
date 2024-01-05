@@ -130,22 +130,6 @@ const Table = () => {
       })
       })
       }
-
-
-    // axios
-    //   .post(`http://18.223.157.202/backend/api/admin/orders/${id}/status`, {
-    //     status: "SHIPPED",
-    //   })
-    //   .then((res) => {
-    //     console.log(res)
-    //     const updatedOrders = allOrders.map((item) => {
-    //       if (item.id === id) {
-    //         return { ...item, status: "SHIPPED" }
-    //       }
-    //       return item
-    //     })
-    //     setAllOrders(updatedOrders)
-    //   })
   }
 
   const ActionButtons = ({ id, status }) => {

@@ -18,6 +18,8 @@ function UserBehaviorReport() {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toast = useToast();
+    const [topViewedProducts, setTopViewedProducts] = useState([]);
+
 
     // Sorting state
     const [sortType, setSortType] = useState('');
@@ -29,6 +31,7 @@ function UserBehaviorReport() {
                 const sortedData = response.data.sort((a, b) => b.product_view - a.product_view);
                 setProductData(sortedData);
                 setDisplayedProducts(sortedData.slice(0, productsPerPage));
+                setTopViewedProducts(sortedData.slice(0, 10)); // Add this line
             } catch (error) {
                 toast({
                     title: "Error loading data",
@@ -41,6 +44,7 @@ function UserBehaviorReport() {
         };
         fetchProducts();
     }, [productsPerPage, toast]);
+    
 
     useEffect(() => {
         const indexOfLastProduct = currentPage * productsPerPage;
@@ -134,7 +138,7 @@ function UserBehaviorReport() {
             <Grid templateColumns="repeat(3, 1fr)" gap={6}>
                 {displayedProducts.map((product, index) => (
                     <GridItem key={product.id} w="100%" bg="white" p={4} borderWidth="1px" borderRadius="15px" overflow="hidden" onClick={() => openModal(product)} shadow="sm">
-                        {(currentPage === 1 && index < 10) && <Badge colorScheme="green" p={1} mb={2}>Top Viewed</Badge>}
+                        {topViewedProducts.includes(product) && <Badge colorScheme="green" p={1} mb={2}>Top Viewed</Badge>}
                         <Image src={product.image} alt={product.name} boxSize="150px" borderRadius="15px" objectFit="cover" m="auto" />
                         <Divider my={2} />
                         <Text mt={2} fontWeight="bold" fontFamily="Arial, sans-serif" color="gray.700">{product.name}</Text>

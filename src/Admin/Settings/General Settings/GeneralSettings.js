@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../../Shared/utils/axiosInstance';
 import WebConfigForm from './WebConfigForm';
-import BasicInfoForm from './BasicInfoForm';
 import { Box, Heading, Spinner, VStack, Divider } from '@chakra-ui/react';
 
 const GeneralSettings = () => {
@@ -41,19 +40,6 @@ const GeneralSettings = () => {
                         >
                             <Heading size="lg" mb={4}>Website Config</Heading>
                             <WebConfigForm initialData={settings} />
-                        </Box>
-                        <Divider my={8} />
-                        <Box 
-                            p={5} 
-                            shadow="sm" 
-                            borderWidth="1px" 
-                            borderColor="black"
-                            borderRadius="md" 
-                            bg="white" 
-                            w="100%"
-                        >
-                            <Heading size="lg" mb={4}>Basic Info</Heading>
-                            <BasicInfoForm initialData={settings} />
                         </Box>
                     </>
                 )}

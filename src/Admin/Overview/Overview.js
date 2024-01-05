@@ -13,10 +13,11 @@ function Overview() {
 
       {/* Charts and Analysis Section */}
       <Grid templateColumns={{ sm: "1fr", md: "1fr 1fr" }} gap="24px">
-        <LineChart />
-        <BarChart />
-        <UserBehavior />
-      </Grid>
+  <LineChart />
+  <BarChart />
+  <UserBehavior style={{ gridColumn: "2", justifySelf: "center" }} />
+</Grid>
+
     </div>
   )
 }
