@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Heading, Table, Tbody, Td, Th, Thead, Tr, Select, useToast, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Table, Tbody, Td, Th, Thead, Tr, Select, useToast, Text, Spinner } from "@chakra-ui/react";
 import { Line } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -11,7 +11,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import axiosInstance from "../../Shared/utils/axiosInstance"; // Adjust the path as necessary
+import axiosInstance from "../../Shared/utils/axiosInstance";
 
 ChartJS.register(
     CategoryScale,
@@ -25,7 +25,9 @@ ChartJS.register(
 
 function SalesRep() {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const [salesData, setSalesData] = useState({});
+    const [parsedData, setParsedData] = useState([]);
     const [filterType, setFilterType] = useState('daily');
     const toast = useToast();
 
@@ -36,6 +38,7 @@ function SalesRep() {
                 setSalesData(response.data.current_year);
             })
             .catch(error => {
+                setError(error.message);
                 toast({
                     title: "Error loading data",
                     description: error.message,
@@ -46,6 +49,10 @@ function SalesRep() {
             })
             .finally(() => setLoading(false));
     }, [toast]);
+
+    useEffect(() => {
+        setParsedData(parseSalesData(salesData[filterType]));
+    }, [salesData, filterType]);
 
     const handleFilterChange = (e) => {
         setFilterType(e.target.value);
@@ -102,7 +109,7 @@ function SalesRep() {
 
             <Button onClick={downloadReport} mb={4}>Download Report</Button>
 
-            {loading ? <Text>Loading...</Text> : (
+            {loading ? <Spinner /> : error ? <Text>{error}</Text> : (
                 <>
                     <Line data={chartData} />
                     <Table variant="simple">

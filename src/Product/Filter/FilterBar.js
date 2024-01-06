@@ -5,7 +5,7 @@ import useProductTypes from '../../Shared/Hooks/useProductTypes';
 import useCategories from '../../Shared/Hooks/useCategories';
 import useBrands from '../../Shared/Hooks/useBrands';
 
-function FilterBar() {
+function FilterBar({ onFilterChange }) {
   const { productTypes } = useProductTypes()
   const { categories } = useCategories()
   const { brands } = useBrands()
@@ -20,34 +20,19 @@ function FilterBar() {
   const mapBrands = brands?.map((item) => {
     return item.name
   })
-  const filters = [
-    {
-      main: "Type",
-      items: ["Lifestyle", "Running", "Basketball", "Training"],
-    },
-    {
-      main: "Brand",
-      items: ["Nike", "Adidas", "Jordan", "Converse"],
-    },
-    {
-      main: "Gender",
-      items: ["Male", "Female", "Unisex"],
-    },
-    {
-      main: "Socks",
-      items: ["Low", "Mid", "High"],
-    },
-  ];
 
+  const handleFilterChange = (filterGroup, filterItem) => {
+    onFilterChange(filterGroup, filterItem);
+  };
+  
   return (
     <Box h='80vh' pr='24px'>
       <ScrollBars>
-        <FilterGroup main={"Type"} items={mapTypes} />
-        <FilterGroup main={"Brands"} items={mapBrands} />
-        <FilterGroup main={"Categories"} items={mapCategories} />
-        <FilterGroup main={"Genders"} items={["Male", "Female", "Unisex"]} />
+        <FilterGroup main={"Type"} items={mapTypes} onFilterChange={handleFilterChange} />
+        <FilterGroup main={"Brands"} items={mapBrands} onFilterChange={handleFilterChange} />
+        <FilterGroup main={"Categories"} items={mapCategories} onFilterChange={handleFilterChange} />
+        <FilterGroup main={"Genders"} items={["Male", "Female", "Unisex"]} onFilterChange={handleFilterChange} />
       </ScrollBars>
-      {/* <FilterGroup main={"Type"} items={types} /> */}
     </Box>
   );
 }
