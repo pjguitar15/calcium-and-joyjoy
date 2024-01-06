@@ -21,19 +21,21 @@ import {
   Heading,
   Center
 } from "@chakra-ui/react";
-import { FaBox, FaRedo, FaShoppingCart, FaSadTear, FaShoppingBag } from "react-icons/fa";
+import { FaBox, FaRedo, FaShoppingCart, FaSadTear, FaShoppingBag, FaStar } from "react-icons/fa";
 import { useQuery } from "react-query";
 import LoadingSpinner from "../Shared/UI/LoadingSpinner";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../Store/cart";
 import { Link as RouterLink } from 'react-router-dom';
+import ReviewModal from "./ReviewModal";
 
 
 function OrderHistory() {
   const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [hasReviewed, setHasReviewed] = React.useState(false);
 
   const handleBuyAgain = (order) => {
     order.items.forEach(item => {
@@ -48,6 +50,18 @@ function OrderHistory() {
   const handleReturnRefund = () => {
     onOpen();
   };
+
+   // New state to control the ReviewModal
+   const { isOpen: isReviewOpen, onOpen: onReviewOpen, onClose: onReviewClose } = useDisclosure();
+   const [currentProductId, setCurrentProductId] = React.useState(null);
+
+
+   const handleReview = (productId) => {
+    setCurrentProductId(productId);
+    onReviewOpen();
+    setHasReviewed(true); // Set hasReviewed to true after a review is submitted
+  };
+
 
   const getOrders = async () => {
     try {
@@ -113,7 +127,18 @@ function OrderHistory() {
                   </VStack>
                   <Text>Qty: {item.quantity}</Text>
                 </HStack>
-              </VStack>
+                <Button 
+                  leftIcon={<FaStar />} 
+                  colorScheme="yellow" 
+                  variant="outline" 
+                  size="sm" 
+                  ml={2} 
+                  onClick={() => handleReview(item.product.id)} // Pass the product ID from the item
+                  isDisabled={hasReviewed} // Disable the button if a review has been submitted
+                >
+                  Write Review
+                </Button>
+                </VStack>
             ))}
 
             <Divider my={4} />
@@ -138,12 +163,14 @@ function OrderHistory() {
                 Return/Refund
               </Button>
             </HStack>
-          </Box>
+                </Box>
+              );
+            })}
+            <ReturnRefundModal isOpen={isOpen} onClose={onClose} />
+            <ReviewModal isOpen={isReviewOpen} onClose={onReviewClose} productId={currentProductId} />
+
+          </main>
         );
-      })}
-      <ReturnRefundModal isOpen={isOpen} onClose={onClose} />
-    </main>
-  );
 }
 
 

@@ -10,25 +10,56 @@ import {
   Button,
   Textarea,
   useToast,
-  useDisclosure,
+  Text,
+  Box,
+  Flex,
+  useTheme,
 } from "@chakra-ui/react";
 import axiosInstance from "../Shared/utils/axiosInstance";
+import { FaStar } from "react-icons/fa";
 
-function ReviewModal({ productId }) {
+
+function ReviewModal({ productId, isOpen, onClose }) {
   const [reviewContent, setReviewContent] = useState('');
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [starsValue, setStarsValue] = useState(5);
   const toast = useToast();
 
-  const handleReviewChange = (e) => {
-    setReviewContent(e.target.value);
-  };
   
-  const customOnOpen = () => {
-    console.log('Product ID:', productId); // Log the product ID when the modal is opened
-    onOpen();
+  const theme = useTheme();
+
+
+  const StarRating = ({ value, onChange }) => {
+    return (
+      <Flex direction='row' mt={2} mb={4}>
+        {[...Array(5)].map((_, index) => {
+          const ratingValue = index + 1;
+          return (
+            <Box
+              as="button"
+              key={ratingValue}
+              onClick={() => onChange(ratingValue)}
+              onMouseEnter={() => setHover(ratingValue)}
+              onMouseLeave={() => setHover(null)}
+              _focus={{ outline: 'none' }}
+              style={{ cursor: 'pointer' }}
+            >
+              <FaStar
+                color={ratingValue <= (hover || value) ? "#ffc107" : "#e4e5e9"}
+                size="24px"
+              />
+            </Box>
+          );
+        })}
+      </Flex>
+    );
   };
 
+  const [hover, setHover] = useState(null);
+
+
+
   const submitReview = async () => {
+    console.log("Product ID:", productId); // Debugging: Log the productId
     const userString = localStorage.getItem('user');
     if (!userString) {
       console.error('No user data in local storage.');
@@ -52,16 +83,16 @@ function ReviewModal({ productId }) {
     }
 
     try {
-     await axiosInstance.post('/products/review', {
-  user_id: user.user_info.id,
-  product_id: productId, // Ensure this is included
-  review_content: reviewContent,
-}, {
-  headers: {
-    'Authorization': `Bearer ${user.token}`
-  }
-});
-
+      await axiosInstance.post('/products/review', {
+        user_id: user.user_info.id,
+        product_id: productId,
+        review_content: reviewContent,
+        stars_value: starsValue,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
 
       toast({
         title: 'Review Submitted',
@@ -71,8 +102,9 @@ function ReviewModal({ productId }) {
         isClosable: true,
       });
 
-      onClose();
-      setReviewContent('');
+      onClose();  // Close the modal
+      setReviewContent('');  // Reset the review content
+      setStarsValue(5);  // Reset the stars value
     } catch (error) {
       console.error('Error submitting review:', error);
       toastError('There was an error submitting your review. Please try again.');
@@ -89,34 +121,38 @@ function ReviewModal({ productId }) {
     });
   };
 
-   return (
-    <>
-      <button
-        className='border border-red-700 text-red-700 px-4 py-1 rounded-lg ms-2'
-        onClick={customOnOpen} // Use the custom onOpen function
-        variant='unstyled'
-      >
-        Review
-      </button>
+ 
+ return (
+    <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent borderRadius="10px">
+        <ModalHeader fontSize="2xl" fontWeight="bold" textAlign="center">Leave a Review</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody pb={6}>
+          <Text fontWeight="medium">Rating:</Text>
+          <StarRating value={starsValue} onChange={setStarsValue} />
+          <Textarea
+            placeholder='Write your thoughts about the product here...'
+            value={reviewContent}
+            onChange={(e) => setReviewContent(e.target.value)}
+            size="lg"
+            mt={2}
+            borderColor={theme.colors.gray[300]}
+            _hover={{ borderColor: theme.colors.gray[400] }}
+            _focus={{ borderColor: theme.colors.blue[500] }}
+            borderRadius="8px"
+            minHeight="130px"
+          />
+        </ModalBody>
 
-      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Leave a review</ModalHeader>
-          <ModalCloseButton color='red' />
-          <ModalBody>
-            <Textarea value={reviewContent} onChange={handleReviewChange} />
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme='red' variant='ghost' mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button bgColor='var(--accent)' onClick={submitReview}>Submit</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+        <ModalFooter>
+          <Button variant='outline' colorScheme='red' mr={3} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button bgColor='var(--accent)' onClick={submitReview}>Submit Review</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 }
 
