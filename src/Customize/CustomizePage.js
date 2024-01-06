@@ -2,7 +2,7 @@ import { Box, Grid } from "@chakra-ui/react";
 import FilterBar from "../Product/Filter/FilterBar";
 import CustomizeRes from "./CustomizeRes";
 import Carousels from "./Carousels";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 function CustomizePage() {
   const [results, setResults] = useState({});
   const handleSelectItems = (item) => {

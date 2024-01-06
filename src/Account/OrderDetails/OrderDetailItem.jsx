@@ -79,7 +79,8 @@ const OrderDetailItem = ({ orderItems, onReceived }) => {
               <VStack align="start" spacing={1} flex="1">
                 <Text fontSize="md" fontWeight="semibold">{item.product.name}</Text>
                 <Text fontSize="sm" color="gray.600">
-                  Category: {item.product.category.name} • Brand: {item.product.brand.name} • Size: {item.size}
+                  Category: {item.product.category.name} • Brand: {item.product.brand.name} 
+                  {item.product.category.name.toLowerCase() === 'shoes' && ` • Size: ${item.size}`}
                 </Text>
                 <Text fontWeight="semibold" color="green.500">P{item.price}</Text>
               </VStack>

@@ -1,4 +1,4 @@
-import { Box, Center, Grid, HStack, Image, Text, VStack, useToast } from "@chakra-ui/react";
+import { Box, Center, Grid, HStack, Image, Text, VStack, useToast, Select, } from "@chakra-ui/react";
 import convertCurrency from "../Shared/utils/convertCurrency";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -38,6 +38,10 @@ function CustomizeRes({ results }) {
       });
   }, [shoe, sock, accessory, toast]);
 
+  
+
+  const [shoeSize, setShoeSize] = useState(null);
+
     // Ensure the values are numbers before calculations
     const numericSubtotal = parseFloat(Object.values(prices).reduce((acc, price) => acc + price, 0)) || 0;
     const numericShippingRate = parseFloat(shippingRate) || 0;
@@ -48,26 +52,36 @@ function CustomizeRes({ results }) {
     // Format the total for display
     const formattedTotal = convertCurrency(total);
 
-  const ItemCard = ({ item, type }) => (
-    <HStack w="100%" justify="space-between">
-      <Box>
-        <HStack gap="16px">
-          <Center borderRadius="10px" maxW="160px" aspectRatio="1/1" overflow="hidden" border="solid 1.6px black">
-            {item?.name ? (
-              <Image src={item.image || getDefaultImage(type)} alt={type} maxW="160px" />
-            ) : (
-              <PlaceholderIcon />
-            )}
-          </Center>
-          <Box>
-            <Text fontWeight="semibold">{item?.name || `No ${type} selected`}</Text>
-            <Text opacity=".7">{item?.name ? `${type.charAt(0).toUpperCase() + type.slice(1)}` : `Please select a ${type} below`}</Text>
-          </Box>
-        </HStack>
-      </Box>
-      <Text>{convertCurrency(prices[type])}</Text>
-    </HStack>
-  );
+    const ItemCard = ({ item, type }) => (
+      <HStack w="100%" justify="space-between">
+        <Box>
+          <HStack gap="16px">
+            <Center borderRadius="10px" maxW="160px" aspectRatio="1/1" overflow="hidden" border="solid 1.6px black">
+              {item?.name ? (
+                <Image src={item.image || getDefaultImage(type)} alt={type} maxW="160px" />
+              ) : (
+                <PlaceholderIcon />
+              )}
+            </Center>
+            <Box>
+              <Text fontWeight="semibold">{item?.name || `No ${type} selected`}</Text>
+              <Text opacity=".7">{item?.name ? `${type.charAt(0).toUpperCase() + type.slice(1)}` : `Please select a ${type} below`}</Text>
+              {type === 'shoe' && item && (
+                <Select placeholder="Select size" onChange={(e) => setShoeSize(e.target.value)}>
+                  {item.sizes.map((sizeObj, index) => (
+                    <option key={index} value={sizeObj.size.name}>
+                      {sizeObj.size.name}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            </Box>
+          </HStack>
+        </Box>
+        <Text>{convertCurrency(prices[type])}</Text>
+      </HStack>
+    );
+    
 
   const getDefaultImage = (type) => {
     switch (type) {
@@ -85,23 +99,47 @@ function CustomizeRes({ results }) {
   );
 
   const checkoutAndNavigate = (item, price, type) => {
+    if (type === 'shoe' && !shoeSize) {
+      toast({
+        title: 'Error',
+        description: 'Please select a shoe size.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
     if (item) {
       dispatch(addToCheckout({
         ...item,
         quantity: 1,
         price: price,
-        size: item.sizes[0]?.size.name,
+        size: type === 'shoe' ? shoeSize : undefined,
       }));
     }
     console.log(item, type);
   };
+  
+  
 
   const handleCheckout = () => {
+    if (!shoeSize && shoe) {
+      toast({
+        title: 'Error',
+        description: 'Please select a shoe size.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
     checkoutAndNavigate(shoe, prices.shoe, 'shoe');
     checkoutAndNavigate(sock, prices.sock, 'sock');
     checkoutAndNavigate(accessory, prices.accessory, 'accessory');
     navigate("/checkout");
   };
+  
+  
 
   const isCheckoutDisabled = !Object.values(results).some(item => item);
 
