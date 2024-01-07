@@ -5,17 +5,23 @@ import LoadingSpinner from "../Shared/UI/LoadingSpinner"
 import { useQuery } from "react-query"
 import axiosInstance from "../Shared/utils/axiosInstance"
 import { useGetAccessories } from '../Shared/Hooks/useGetAccessories'
+import { useSearchParams } from "react-router-dom";
 
 function Carousels({ onSelectItems }) {
   const { accessoriesData } = useGetAccessories()
+  const [searchParams] = useSearchParams();
+
+  const queryObj = {};
+  for (const [key, value] of searchParams.entries()) {
+    queryObj[key] = value;
+  }
 
   useEffect(() => {
     console.log(accessoriesData)
   }, [accessoriesData])
 
-  const { data: mix, isLoading } = useQuery("mix", async () => {
-    // /api/admin/products
-    const res = await axiosInstance.get("/mix-and-match")
+  const { data: mix, isLoading } = useQuery(["mix", queryObj], async () => {
+    const res = await axiosInstance.get("/mix-and-match", { params: queryObj })
     console.log("Data", res.data)
     return res.data
   })
@@ -26,7 +32,6 @@ function Carousels({ onSelectItems }) {
 
   useEffect(() => {
     onSelectItems({ shoe, sock, accessory })
-    // console.log(sock)
   }, [shoe?.id, sock?.id, accessory?.id])
 
   if (isLoading) return <LoadingSpinner />
@@ -52,4 +57,4 @@ function Carousels({ onSelectItems }) {
   )
 }
 
-export default Carousels
+export default Carousels;

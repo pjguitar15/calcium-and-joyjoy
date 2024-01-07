@@ -1,8 +1,6 @@
 import { Box, Text, VStack, Heading, Divider, Flex, Icon, Badge } from '@chakra-ui/react';
 import { FaStar } from 'react-icons/fa';
 
-
-
 const Reviews = ({ reviews, rating }) => {
   return (
     <VStack

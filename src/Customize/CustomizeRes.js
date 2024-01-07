@@ -141,7 +141,7 @@ function CustomizeRes({ results }) {
   
   
 
-  const isCheckoutDisabled = !Object.values(results).some(item => item);
+  const isCheckoutDisabled = Object.values(results).filter(item => item).length < 2;
 
 
   return (
