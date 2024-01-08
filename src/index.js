@@ -43,6 +43,8 @@ import ChatWithUser from "./Admin/ChatSupport/ChatWithUser";
 import AdminChatFaqs from "./Admin/ChatSupport/FAQs/FAQList";
 import Faqbox from "./Joybot/Faqbox";
 import Verify from "./Auth/Verify";
+import ContactUs from "./Contacts/ContactUs";
+import ContactUsList from "./Admin/ChatSupport/Contacts/ContactUsList";
 // import Thankyou from "./Checkout/Thankyou";
 //import OtpLinkVerification from "./Auth/OtpLinkVerification";
 
@@ -152,6 +154,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <CheckoutPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/contacts",
+        element: (
+          <Suspense fallback={<div />}>
+            <ContactUs />
           </Suspense>
         ),
       },
@@ -418,6 +428,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div />}>
             <GeneralSettings />
+          </Suspense>
+        ),
+      },
+      {
+        path: "Contact-Us-Messages",
+        element: (
+          <Suspense fallback={<div />}>
+            <ContactUsList />
           </Suspense>
         ),
       },

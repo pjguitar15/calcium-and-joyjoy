@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Box, Flex, Text, VStack, Heading, Badge, Input, Button, useColorModeValue, HStack,
 } from "@chakra-ui/react";
+import axiosInstance from "../../Shared/utils/axiosInstance";
 
 const AdminChatSupport = () => {
   const [chatList, setChatList] = useState([]);
@@ -14,8 +15,8 @@ const AdminChatSupport = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://18.223.157.202/backend/api/admin/chat/list`)
-      .then((res) => {
+    axiosInstance.get(`/admin/chat/list`)
+    .then((res) => {
         const mappedRes = res.data.map((item) => ({
           id: item.id,
           customer: item.author.name,

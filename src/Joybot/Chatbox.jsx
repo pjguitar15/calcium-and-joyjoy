@@ -1,6 +1,6 @@
-import axios from "axios"
 import React, { useEffect, useState } from "react"
 import useGetCurrLoggedIn from "../Shared/Hooks/useGetCurrLoggedIn"
+import axiosInstance from "../Shared/utils/axiosInstance"
 
 const Chatbox = () => {
   const [messageInput, setMessageInput] = useState("")
@@ -10,10 +10,12 @@ const Chatbox = () => {
   const duration = 15 * 60 * 1000 // 15 minutes in milliseconds
   const interval = 2500 // 1 second
 
+
+  
   const fetchData = () => {
     if (userId) {
-      axios
-        .get(`http://18.223.157.202/backend/api/chat/open_chat/${userId}`)
+      axiosInstance
+        .get(`/chat/open_chat/${userId}`)
         .then((res) => {
           const messages = res.data.messages
           const mappedMessages = messages.map((item) => {
@@ -78,15 +80,17 @@ const Chatbox = () => {
   }, [])
 
   const sendMessage = (text) => {
-    console.log(text)
-    if (userId) {
-      axios
-        .post(`http://18.223.157.202/backend/api/chat/send_chat/${userId}`, {
-          message: messageInput,
+    if (userId && text.trim()) {
+      axiosInstance
+        .post(`/chat/send_chat/${userId}`, {
+          message: text,
         })
         .then((res) => {
-          // console.log(res.data)
           setMessageInput("")
+          fetchData() 
+        })
+        .catch((err) => {
+          console.log(err)
         })
     }
   }

@@ -2,6 +2,7 @@ import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import useGetCurrAdmin from "../../Shared/Hooks/useGetCurrAdmin"
+import axiosInstance from "../../Shared/utils/axiosInstance"
 
 const ChatWithUser = () => {
   const [messageInput, setMessageInput] = useState("")
@@ -15,8 +16,8 @@ const ChatWithUser = () => {
 
   const fetchData = () => {
     if (id) {
-      axios
-        .get(`http://18.223.157.202/backend/api/admin/chat/open/${id}`)
+      axiosInstance
+        .get(`/admin/chat/open/${id}`)
         .then((res) => {
           const messages = res.data.messages
           const mappedMessages = messages.map((item) => {
@@ -85,9 +86,9 @@ const ChatWithUser = () => {
     setMessageInput("")
 
     if (userId) {
-      axios
+      axiosInstance
         .post(
-          `http://18.223.157.202/backend/api/admin/chat/send/${id}?user_id=${userId}&message=${messageInput}`
+          `/admin/chat/send/${id}?user_id=${userId}&message=${messageInput}`
         )
         .then((res) => {
           console.log(res.data)
