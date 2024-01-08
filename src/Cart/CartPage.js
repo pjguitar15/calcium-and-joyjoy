@@ -1,29 +1,33 @@
 import {
   Box,
   Button,
-  Center,
   Grid,
   HStack,
   Image,
-  Input,
-  Select,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import YouMightAlsoLike from "../Shared/UI/YouMightAlsoLike";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import config from "../Shared/utils/config";
 import convertCurrency from "../Shared/utils/convertCurrency";
+import { subtractOne } from "../Store/cart";
 import { useEffect } from 'react';
-function CartPage() {
-  // const sizes = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
 
+function CartPage() {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
 
   useEffect(() => {
-    console.log(cart)
-  }, [cart])
+    console.log(cart);
+  }, [cart]);
+
+  const handleRemove = (item) => {
+    dispatch(subtractOne(item));
+  };
+
+  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const shippingCost = 300; // Assuming a flat shipping cost
+  const total = subtotal + shippingCost;
 
   return (
     <Box maxW='1100px' mx='auto'>
@@ -33,8 +37,9 @@ function CartPage() {
             Cart
           </Text>
           <VStack overflow='auto' maxH='60vh' align='normal'>
-            {cart.map((item) => (
+            {cart.map((item, index) => (
               <Grid
+                key={`${item.id}-${index}`}
                 gap='24px'
                 gridTemplateColumns='1fr 1fr 1fr'
                 alignItems='start'
@@ -56,24 +61,17 @@ function CartPage() {
                   >
                     {item.name}
                   </Text>
-                  <Text>{item.gender === "male" && "Men"}{item.gender === "female" && "Women"}{item.gender === "unisex" && "Unisex"}'s Shoes</Text>
+                  <Text>{item.gender === "male" ? "Men's" : item.gender === "female" ? "Women's" : "Unisex"} Shoes</Text>
                   <Text>Cloud White/ White</Text>
                   <HStack gap='12px'>
                     <Text fontWeight='bold'>Size: {item.size}</Text>
                     <Text fontWeight='bold'>Quantity: {item.quantity}</Text>
                   </HStack>
-                  {/* <HStack mt='16px'>
-                <Select>
-                  {sizes.map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
-                  ))}
-                </Select>
-                <Input type='number' />
-              </HStack> */}
-
-                  <Button variant='unstyled' color='red.500'>
+                  <Button
+                    variant='unstyled'
+                    color='red.500'
+                    onClick={() => handleRemove(item)}
+                  >
                     Remove
                   </Button>
                 </Box>
@@ -83,7 +81,7 @@ function CartPage() {
                   ml='auto'
                   mr='8px'
                 >
-                  {convertCurrency(item.price)}
+                  {convertCurrency(item.price * item.quantity)}
                 </Text>
               </Grid>
             ))}
@@ -95,13 +93,11 @@ function CartPage() {
           </Text>
           <HStack justifyContent='space-between'>
             <Text>Subtotal</Text>
-            <Text>
-              {convertCurrency(cart.reduce((acc, cur) => acc + cur.price, 0))}
-            </Text>
+            <Text>{convertCurrency(subtotal)}</Text>
           </HStack>
           <HStack justifyContent='space-between'>
             <Text>Shipping</Text>
-            <Text> {convertCurrency(300)} </Text>
+            <Text>{convertCurrency(shippingCost)}</Text>
           </HStack>
           <HStack
             my='40px'
@@ -110,11 +106,7 @@ function CartPage() {
             justifyContent='space-between'
           >
             <Text>Total</Text>
-            <Text>
-              {convertCurrency(
-                cart.reduce((acc, cur) => acc + cur.price, 0) + 300
-              )}
-            </Text>
+            <Text>{convertCurrency(total)}</Text>
           </HStack>
           <Link to='/checkout'>
             <Button borderRadius='40px' w='100%'>
@@ -123,7 +115,6 @@ function CartPage() {
           </Link>
         </Box>
       </Grid>
-      {/* <YouMightAlsoLike /> */}
     </Box>
   );
 }

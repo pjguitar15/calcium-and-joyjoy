@@ -3,6 +3,7 @@ import { Flex, Box, Heading, Text, Button } from "@chakra-ui/react"
 import useGetCurrLoggedIn from "../Shared/Hooks/useGetCurrLoggedIn"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import axiosInstance from "../Shared/utils/axiosInstance"
 
 const ChatbotPage = () => {
   const [isNewChat, setIsNewChat] = useState(true)
@@ -11,20 +12,16 @@ const ChatbotPage = () => {
 
   // Check if curr user is first time with chat
   useEffect(() => {
-    console.log(userId)
     if (userId) {
-      axios
-        .get(`http://18.223.157.202/backend/api/chat/check/${userId}`)
+      axiosInstance
+        .get(`/chat/check/${userId}`)
         .then((res) => {
-          console.log(res)
           if (res) {
             setIsNewChat(false)
-            console.log("should go to chat box")
           }
         })
         .catch((err) => {
-          const responseData = err.response.data[0]
-          console.log("Response Data", responseData)
+          const responseData = err.response?.data[0] // Use optional chaining
           if (responseData === "Chat not found") {
             setIsNewChat(true)
           } else {

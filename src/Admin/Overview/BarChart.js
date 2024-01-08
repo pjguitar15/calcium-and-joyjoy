@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import axios from "axios";
+import axiosInstance from "../../Shared/utils/axiosInstance";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -57,19 +58,19 @@ const BarChart = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://18.223.157.202/backend/api/admin/get_most_sold_products_chart`)
+    axiosInstance.get("/admin/get_most_sold_products_chart")
       .then((res) => {
         const { labels, datasets } = res.data.chart_config.data;
-
+  
         // Sort and slice top 10 products
         const sortedData = [...datasets[0].data]
           .map((value, index) => ({ label: labels[index], value }))
           .sort((a, b) => b.value - a.value)
           .slice(0, 10);
-
+  
         // Apply label truncation
         const truncatedLabels = sortedData.map(item => truncateLabel(item.label));
-
+  
         setChartData({
           labels: truncatedLabels,
           data: sortedData.map(item => item.value),

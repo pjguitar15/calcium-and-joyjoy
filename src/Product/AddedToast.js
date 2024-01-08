@@ -26,11 +26,13 @@ const ChakraBox = chakra(motion.div, {
 function AddedToast({ item, show, dismount }) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   if (!item || cart.length < 1) return <div />;
 
-  const { name, price, gender, image, quantity, size } = item;
+  const { name, price, gender, image, quantity, size, category } = item;
+  const isShoesCategory = category && category.name.toLowerCase() === 'shoes';
+
   const handleHover = () => {
     show();
   };
@@ -94,9 +96,9 @@ function AddedToast({ item, show, dismount }) {
           <Text color='black' fontSize='16px' fontWeight='semibold'>
             {name}
           </Text>
-          <Text>{gender === "male" ? "Men's" : "Women's"} shoes</Text>
+          <Text>{`${category.name} - ${gender === "male" ? "Men's" : "Women's"}${isShoesCategory ? ` - Size: ${size}` : ''}`}</Text>
           <HStack justifyContent='space-between'>
-            <Text fontSize='12px'>Size: {size}</Text>
+            {isShoesCategory && <Text fontSize='12px'>Size: {size}</Text>}
             <Text fontSize='12px'>Quantity: {quantity}</Text>
           </HStack>
           <HStack mt='-4px' justifyContent='space-between'>

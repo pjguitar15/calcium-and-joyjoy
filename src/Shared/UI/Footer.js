@@ -1,77 +1,65 @@
-import { Box, HStack, Icon, Text, VStack } from "@chakra-ui/react";
-import { BiLogoTwitter, BiLogoFacebook, BiLogoWhatsapp } from "react-icons/bi";
-import { FaLocationDot } from "react-icons/fa6";
-
-const socials = [
-  {
-    icon: BiLogoFacebook,
-    link: "https://www.facebook.com/",
-    text: "Calcium Joyjoy PH",
-  },
-  {
-    icon: BiLogoTwitter,
-    link: "https://twitter.com/home",
-    text: "calciumjoyjoyonlineshop",
-  },
-  {
-    icon: BiLogoWhatsapp,
-    link: "",
-    text: "MJ Muit 09750327117",
-  },
-];
+import React, { useState, useEffect } from 'react';
+import { Box, Icon, Text, VStack, Flex } from "@chakra-ui/react";
+import { BiLogoTwitter, BiLogoFacebook } from "react-icons/bi";
+import { FaInstagram, FaLocationArrow } from "react-icons/fa";
+import axiosInstance from "../utils/axiosInstance";  // Adjust the path as necessary
 
 function Footer() {
+  const [historyText, setHistoryText] = useState('Loading history...');
+  const [socialMedia, setSocialMedia] = useState({
+    facebook: "",
+    twitter: "",
+    instagram: ""
+  });
+
+  useEffect(() => {
+    axiosInstance.get('/admin/general-settings')
+      .then(response => {
+        const data = response.data;
+        setHistoryText(data.history_text);
+        setSocialMedia({
+          facebook: data.facebook,
+          twitter: data.twitter,
+          instagram: data.instagram
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+        setHistoryText("Error loading history. Please try again later.");
+      });
+  }, []);
+
   return (
     <Box bgColor='#403F3F' py='40px' px='40px' color='#FFDC83'>
-      <HStack
+      <VStack
         maxW='var(--maxW)'
         mx='auto'
-        justifyContent='space-between'
-        rowGap='80px'
-        flexDir={{ base: "column", md: "row" }}
-        columnGap='240px'
+        spacing='24px'
+        alignItems='start'
       >
-        <VStack h='100%' alignItems='start'>
-          <Text mb='16px' fontWeight='semibold' fontSize='20px'>
-            History
-          </Text>
-          <Text mb='56px'>
-            Calcium JoyJoy Online Shop PH is a successful e-commerce venture on
-            social media, with a focus on offering branded shoes and
-            accompanying accessories like aglets, shoelaces, and socks.
-            Established on August 19, 2018, the business initially began with
-            pre-order items. Ms. Mary Joy "MJ" Muit, the devoted owner, manages
-            the company, which is duly registered with the DTI.
-          </Text>
-          <HStack gap='16px'>
-            <Text fontWeight='bold'>
-              <Icon as={FaLocationDot} /> Philippines
-            </Text>
-            <Text opacity={0.6}>&copy; 2023 Calcium & Joyjoy</Text>
-          </HStack>
-        </VStack>
-        <VStack gap='24px' alignItems='start'>
-          {socials.map((item) => (
-            <HStack
-              gap='16px'
-              key={item.text}
-              alignItems='center'
-              justify='start'
-            >
-              <Icon
-                cursor='pointer'
-                bgColor='#FFDC83'
-                as={item.icon}
-                borderRadius='full'
-                p='6px'
-                fontSize='40px'
-                color='black'
-              />
-              <Text fontSize='16px'>{item.text}</Text>
-            </HStack>
-          ))}
-        </VStack>
-      </HStack>
+        <Text mb='16px' fontWeight='semibold' fontSize='20px'>
+          History
+        </Text>
+        <Text mb='16px'>
+          {historyText}
+        </Text>
+        <Flex alignItems='center' gap='16px'>
+          <a href={socialMedia.facebook} target='_blank' rel='noopener noreferrer'>
+            <Icon as={BiLogoFacebook} bgColor='#FFDC83' borderRadius='full' p='6px' fontSize='40px' color='black' />
+          </a>
+          <a href={socialMedia.twitter} target='_blank' rel='noopener noreferrer'>
+            <Icon as={BiLogoTwitter} bgColor='#FFDC83' borderRadius='full' p='6px' fontSize='40px' color='black' />
+          </a>
+          <a href={socialMedia.instagram} target='_blank' rel='noopener noreferrer'>
+            <Icon as={FaInstagram} bgColor='#FFDC83' borderRadius='full' p='6px' fontSize='40px' color='black' />
+          </a>
+        </Flex>
+        <Flex gap='16px' mt='32px' alignItems='center'>
+          <Icon as={FaLocationArrow} />
+          <Text fontWeight='bold'>Philippines</Text>
+          <Text opacity={0.6}>&copy; 2023 Calcium & Joyjoy</Text>
+        </Flex>
+      </VStack>
     </Box>
   );
 }

@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import axiosInstance from "../Shared/utils/axiosInstance";
 
@@ -34,6 +34,7 @@ const fields = [
 function Register({ onVerify }) {
   const toast = useToast();
   const { register, handleSubmit } = useForm();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const onReg = async (data) => {
     const { password, confirmPassword, email } = data;
@@ -58,9 +59,8 @@ function Register({ onVerify }) {
         description: "Verify your email",
         position: "top",
       });
-      setTimeout(() => {
-        onVerify(data.email); // Pass the email to the onVerify callback
-      }, 1500);
+      onVerify(data.email); // Pass the email to the onVerify callback
+      navigate(`/otp`); // Programmatically navigate to the OTP verification page
     },
     onError: (data) => {
       toast({

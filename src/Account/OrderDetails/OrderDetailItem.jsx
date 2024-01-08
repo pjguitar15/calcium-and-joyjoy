@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box, Button, VStack, HStack, Text, Link, Image, Center, useColorModeValue, Divider } from "@chakra-ui/react";
-import { FaCheck, FaShoppingCart, FaClock, FaCreditCard, FaTruck } from "react-icons/fa";
+import { FaCheck, FaShoppingCart, FaClock, FaCreditCard, FaTruck, FaTimes } from "react-icons/fa";
 
 const OrderDetailItem = ({ orderItems, onReceived }) => {
   const { items, status, reference_number, tracking_url, tracking_number, payment_status, estimated_delivery_date } = orderItems;
   const totalQuantity = items.reduce((total, item) => total + item.quantity, 0);
+  
 
   const StatusLine = ({ isActive }) => (
     <Center height="4px" width="160px">
@@ -15,16 +16,23 @@ const OrderDetailItem = ({ orderItems, onReceived }) => {
   const statusColor = useColorModeValue({
     checkout: "green.500",
     pending: "yellow.500",
-    payment: "blue.500",
-    shipped: "red.500",
+    shipped: "purple.500",
+    rejected: "red.500",
   });
 
   const statusIcon = {
     checkout: <FaShoppingCart color="white" size="24px" />,
     pending: <FaClock color="white" size="24px" />,
-    payment: <FaCheck color="white" size="24px" />,
     shipped: <FaTruck color="white" size="24px" />,
+    rejected: <FaTimes color="white" size="24px" />,
   };
+
+  const paymentStatusColor = payment_status === 'verified' ? "blue.500" : 
+  payment_status === 'rejected' ? "red.500" : "gray.300";
+
+  const paymentStatusIcon = payment_status === 'verified' ? <FaCheck color="white" size="24px" /> : 
+    payment_status === 'rejected' ? <FaTimes color="white" size="24px" /> : 
+    <FaCreditCard color="white" size="24px" />;
 
   return (
     <Box rounded="lg" border="1px" borderColor="gray.700" p={6}>
@@ -45,11 +53,14 @@ const OrderDetailItem = ({ orderItems, onReceived }) => {
           <Text fontSize="lg" fontWeight="semibold">Pending</Text>
         </VStack>
         <StatusLine isActive={payment_status === "verified"} />
-        <VStack opacity={payment_status === "verified" ? 1 : 0.4}>
-          <Box bg={statusColor.payment} rounded="full" p={3}>
-            {statusIcon.payment}
+        <VStack>
+          <Box bg={paymentStatusColor} rounded="full" p={3}>
+            {paymentStatusIcon}
           </Box>
-          <Text fontSize="lg" fontWeight="semibold">Payment</Text>
+          <Text fontSize="lg" fontWeight="semibold">
+            {payment_status === 'verified' ? 'Verified' : 
+             payment_status === 'rejected' ? 'Rejected' : 'Payment'}
+          </Text>
         </VStack>
         <StatusLine isActive={status === "SHIPPED"} />
         <VStack opacity={status === "SHIPPED" ? 1 : 0.4}>
@@ -68,7 +79,8 @@ const OrderDetailItem = ({ orderItems, onReceived }) => {
               <VStack align="start" spacing={1} flex="1">
                 <Text fontSize="md" fontWeight="semibold">{item.product.name}</Text>
                 <Text fontSize="sm" color="gray.600">
-                  Category: {item.product.category.name} • Brand: {item.product.brand.name} • Size: {item.size}
+                  Category: {item.product.category.name} • Brand: {item.product.brand.name} 
+                  {item.product.category.name.toLowerCase() === 'shoes' && ` • Size: ${item.size}`}
                 </Text>
                 <Text fontWeight="semibold" color="green.500">P{item.price}</Text>
               </VStack>

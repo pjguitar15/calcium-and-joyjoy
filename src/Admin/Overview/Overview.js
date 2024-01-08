@@ -1,7 +1,7 @@
 import { Grid, Heading } from "@chakra-ui/react"
 import LineChart from "./LineChart"
 import BarChart from "./BarChart"
-import UserBehavior from "./UserBehavior"
+import UserBehavior from "./UserBehaviorChart"
 
 function Overview() {
   return (
@@ -13,10 +13,11 @@ function Overview() {
 
       {/* Charts and Analysis Section */}
       <Grid templateColumns={{ sm: "1fr", md: "1fr 1fr" }} gap="24px">
-        <LineChart />
-        <BarChart />
-        <UserBehavior />
-      </Grid>
+  <LineChart />
+  <BarChart />
+  <UserBehavior style={{ gridColumn: "2", justifySelf: "center" }} />
+</Grid>
+
     </div>
   )
 }

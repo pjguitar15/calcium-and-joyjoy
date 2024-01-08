@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Heading, VStack, Text, Button, useToast, ScaleFade } from '@chakra-ui/react';
-import axios from 'axios';
+import axiosInstance from '../Shared/utils/axiosInstance';
 
 const FaqPage = () => {
     const [faqs, setFaqs] = useState([]);
@@ -8,7 +8,7 @@ const FaqPage = () => {
     const toast = useToast();
 
     useEffect(() => {
-        axios.get('http://18.223.157.202/backend/api/admin/faqs')
+        axiosInstance.get('/admin/faqs') 
             .then(res => {
                 setFaqs(res.data);
             })
@@ -22,7 +22,7 @@ const FaqPage = () => {
                     isClosable: true,
                 });
             });
-    }, []);
+    }, [toast]);
 
     const handleFaqClick = (faqId) => {
         setSelectedFaqId(faqId === selectedFaqId ? null : faqId);

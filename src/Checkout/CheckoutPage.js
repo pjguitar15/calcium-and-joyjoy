@@ -1,18 +1,20 @@
-import CheckoutConfirm from "./CheckoutConfirm"
-import { useEffect, useState } from "react"
-import CheckoutPay from "./CheckoutPay"
-import Thankyou from "./Thankyou"
-import { Grid } from "@chakra-ui/react"
-import OrderSummary from "./OrderSummary"
+import CheckoutConfirm from "./CheckoutConfirm";
+import { useState } from "react";
+import CheckoutPay from "./CheckoutPay";
+import Thankyou from "./Thankyou";
+import { Grid } from "@chakra-ui/react";
+import OrderSummary from "./OrderSummary";
+
 function CheckoutPage() {
-  const [checkoutData, setCheckoutData] = useState({})
-  const [confirmed, setConfirmed] = useState(false)
-  const [processed, setProcessed] = useState(false)
+  const [checkoutData, setCheckoutData] = useState({});
+  const [confirmed, setConfirmed] = useState(false);
+  const [processed, setProcessed] = useState(false);
+  const [discount, setDiscount] = useState(0); // New state for discount
 
   const handleConfirm = (data) => {
-    setCheckoutData(data)
-    setConfirmed(true)
-  }
+    setCheckoutData(data);
+    setConfirmed(true);
+  };
 
   return (
     <Grid
@@ -27,14 +29,15 @@ function CheckoutPage() {
       {confirmed && !processed && (
         <CheckoutPay
           checkoutData={checkoutData}
+          discount={discount} // Pass the discount as a prop
           onPay={() => setProcessed(true)}
           onBack={() => setConfirmed(false)}
         />
       )}
       {processed && <Thankyou />}
-      <OrderSummary />
+      <OrderSummary setDiscount={setDiscount} /> {/* Pass setDiscount function */}
     </Grid>
-  )
+  );
 }
 
-export default CheckoutPage
+export default CheckoutPage;

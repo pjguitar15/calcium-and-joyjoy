@@ -20,12 +20,16 @@ function Navbar() {
       page: "products",
     },
     {
-      text: "About us",
+      text: "About Us",
       page: "about",
     },
     {
       text: "Make A Bundle",
       page: "/customize",
+    },
+    {
+      text: "Contact Us",
+      page: "/contacts",
     },
   ];
   const user = JSON.parse(localStorage.getItem("user"));

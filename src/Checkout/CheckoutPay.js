@@ -9,17 +9,15 @@ import {
   Text,
   VStack,
   useToast,
-  Heading,
-  Badge,
 } from "@chakra-ui/react";
 import Receipt from "./Receipt";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../Store/cart";
-import LoadingSpinner from "../Shared/UI/LoadingSpinner";
+import axiosInstance from "../Shared/utils/axiosInstance";
 
-function CheckoutPay({ onBack, onPay, checkoutData }) {
+function CheckoutPay({ onBack, onPay, checkoutData, discount }) {
   const [payment, setPayment] = useState("");
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [courier, setCourier] = useState("");
@@ -28,7 +26,7 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
   const [receiptImage, setReceiptImage] = useState(null);
   const [selectedPaymentMethodDetails, setSelectedPaymentMethodDetails] =
     useState({});
-  const deliveryFee = 300;
+  const [shippingRate, setShippingRate] = useState(0);
   const cart = useSelector((state) => state.checkout);
   const user = JSON.parse(localStorage.getItem("user"));
   const toast = useToast();
@@ -40,20 +38,20 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
       setLoading(true);
       try {
         const [couriersResponse, paymentMethodsResponse] = await Promise.all([
-          axios.get("http://18.223.157.202/backend/api/admin/couriers"),
-          axios.get("http://18.223.157.202/backend/api/admin/payment-options"),
+          axiosInstance.get("admin/couriers"),
+          axiosInstance.get("admin/payment-options"),
         ]);
-
+  
         const activeCouriers = couriersResponse.data.filter(
           (courier) => courier.active === "true"
         );
         const activePaymentMethods = paymentMethodsResponse.data.filter(
           (method) => method.active === "true" || method.active === 1
         );
-
+  
         setCouriers(activeCouriers);
         setPaymentMethods(activePaymentMethods);
-
+  
         if (activeCouriers.length > 0) {
           setCourier(activeCouriers[0].courier_name);
         }
@@ -71,11 +69,29 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
       }
       setLoading(false);
     };
-
+  
     fetchCouriersAndPaymentMethods();
   }, [toast]);
 
-  // Function to handle payment method change
+  useEffect(() => {
+    axiosInstance.get('/admin/general-settings')
+      .then(response => {
+        const fetchedShippingRate = parseFloat(response.data.shipping_rate) || 0;
+        setShippingRate(fetchedShippingRate);
+      })
+      .catch(error => {
+        toast({
+          title: 'Error',
+          description: 'Failed to fetch shipping rate.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        // Optionally set a default shipping rate in case of an error
+        setShippingRate(300);
+      });
+  }, [toast]);
+
   const handlePaymentChange = (paymentMethodName) => {
     setPayment(paymentMethodName);
     const selectedMethod = paymentMethods.find(
@@ -94,7 +110,12 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
       });
       return;
     }
-
+  
+    // Log cart items and their totals
+    cart.forEach((item) => {
+      console.log(`Item ID: ${item.id}, Quantity: ${item.quantity}, Price: ${item.price}, Total: ${item.quantity * item.price}`);
+    });
+  
     const cartsData = cart.map((item) => {
       console.log(item.size);
       const data = {
@@ -106,34 +127,45 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
         price: item.price,
         total: item.quantity * item.price,
       };
-
+  
       return data;
     });
-
-    // Calculate total cart price
+  
+    // Log subtotal calculation
     const totalCartPrice = cart.reduce(
       (total, item) => total + item.quantity * item.price,
       0
     );
-
+    console.log(`Subtotal before discount: ${totalCartPrice}`);
+  
+    // Log discount value
+    console.log(`Discount: ${discount}`);
+  
+    const totalCartPriceAfterDiscount = totalCartPrice - discount; // Adjust total price by subtracting discount
+  
+    // Log grand total calculation
+    const grandTotal = totalCartPriceAfterDiscount + shippingRate;
+    console.log(`Grand Total after discount and delivery fee: ${grandTotal}`);
+  
     const postData = {
       checkoutData: {
         ...checkoutData,
         user_id: user?.user_info.id,
         payment_method: payment,
         courier,
-        receipt_img: receiptImage, // Use the uploaded image
-        grand_total: totalCartPrice + deliveryFee,
+        receipt_img: receiptImage,
+        grand_total: grandTotal, // Updated grand total after discount and delivery fee
       },
       cartsData,
     };
-
+  
+    // Log post data
+    console.log('Post Data:', postData);
+  
     if (postData) {
-      console.log(postData);
       setLoading(true);
-      // const res = await axiosInstance.post("/checkout", JSON.stringify(postData));
-      axios
-        .post("http://18.223.157.202/backend/api/checkout", postData)
+      axiosInstance
+        .post("checkout", postData)
         .then((res) => {
           setLoading(false);
           toast({
@@ -153,6 +185,8 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
       console.log("something wrong with postData");
     }
   };
+  
+
 
   // Cloudinary Image Upload Function
   const uploadImageToCloudinary = async (file) => {
@@ -206,7 +240,6 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
         {" "}
         {/* Margin bottom for spacing */}
         <RadioGroup value={courier} onChange={(value) => setCourier(value)}>
-          {loading && <LoadingSpinner />}
           <VStack align='normal'>
             {couriers.map((courier, index) => (
               <React.Fragment key={index}>
@@ -232,7 +265,6 @@ function CheckoutPay({ onBack, onPay, checkoutData }) {
         {" "}
         {/* Margin bottom for spacing */}
         <RadioGroup value={payment} onChange={handlePaymentChange}>
-          {loading && <LoadingSpinner />}
           <VStack align='normal'>
             {paymentMethods.map((method, index) => (
               <React.Fragment key={index}>

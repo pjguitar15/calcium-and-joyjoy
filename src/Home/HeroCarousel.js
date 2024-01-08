@@ -26,6 +26,8 @@ function HeroCarousel() {
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    autoplay: true, 
+    autoplaySpeed: 2000, 
   };
 
   return (

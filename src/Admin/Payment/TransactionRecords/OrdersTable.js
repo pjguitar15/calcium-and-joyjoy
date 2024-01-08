@@ -1,13 +1,16 @@
 import React from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td, Image } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, useColorModeValue } from "@chakra-ui/react";
 import ActionButtons from './ActionButtons';
 import ImageView from './ImageView';
 
 const OrdersTable = ({ data, updatePaymentStatus }) => {
+    const borderColor = useColorModeValue('gray.200', 'gray.700');
+    const hoverBg = useColorModeValue('gray.50', 'gray.600');
+
     return (
-        <Table variant="simple">
+        <Table variant="simple" size="md" colorScheme="teal">
             <Thead>
-                <Tr>
+                <Tr bgColor={borderColor}>
                     <Th>Reference Number</Th>
                     <Th>User ID</Th>
                     <Th>Grand Total</Th>
@@ -20,7 +23,7 @@ const OrdersTable = ({ data, updatePaymentStatus }) => {
             </Thead>
             <Tbody>
                 {data.map((item, index) => (
-                    <Tr key={index}>
+                    <Tr key={index} _hover={{ bgColor: hoverBg }}>
                         <Td>{item.reference_number}</Td>
                         <Td>{item.user_id}</Td>
                         <Td>P{item.grand_total}</Td>

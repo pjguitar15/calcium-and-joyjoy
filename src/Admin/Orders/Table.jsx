@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { FaPenClip } from "react-icons/fa6";
-import { FaTrashAlt } from "react-icons/fa";
 
 const Table = () => {
   const [allOrders, setAllOrders] = useState([])
@@ -130,22 +129,6 @@ const Table = () => {
       })
       })
       }
-
-
-    // axios
-    //   .post(`http://18.223.157.202/backend/api/admin/orders/${id}/status`, {
-    //     status: "SHIPPED",
-    //   })
-    //   .then((res) => {
-    //     console.log(res)
-    //     const updatedOrders = allOrders.map((item) => {
-    //       if (item.id === id) {
-    //         return { ...item, status: "SHIPPED" }
-    //       }
-    //       return item
-    //     })
-    //     setAllOrders(updatedOrders)
-    //   })
   }
 
   const ActionButtons = ({ id, status }) => {

@@ -17,17 +17,22 @@ import {
     ModalFooter, 
     ModalBody, 
     ModalCloseButton, 
-    useDisclosure 
+    useDisclosure,
+    Icon, 
 } from "@chakra-ui/react";
+import { AiOutlineUser, AiOutlineMail, AiOutlineLock, AiOutlinePhone } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../Shared/utils/axiosInstance";
 import useRefetchUser from "../Shared/Hooks/useRefetchUser";
 
 // Form Field Component
-const FormField = ({ id, label, defaultValue, register, errors, type = "text", gridColumn, tooltip, isReadOnly = false }) => (
+const FormField = ({ id, label, defaultValue, register, errors, type = "text", gridColumn, tooltip, isReadOnly = false, icon }) => (
     <FormControl isInvalid={errors[id]} gridColumn={gridColumn}>
-        <FormLabel htmlFor={id}>{label}</FormLabel>
+        <FormLabel htmlFor={id}>
+            <Icon as={icon} mr={2} />
+            {label}
+        </FormLabel>
         <Tooltip label={tooltip || ""} shouldWrapChildren mt='3'>
             <Input
                 id={id}
@@ -104,11 +109,11 @@ function AccountDetails() {
             <Text mb={8}>Update your personal information and contact details.</Text>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }} gap={6}>
-                    <FormField id="firstname" label="First Name" defaultValue={firstname} register={register} errors={errors} gridColumn={{ base: "1", md: "1 / 2" }} />
-                    <FormField id="lastname" label="Last Name" defaultValue={lastname} register={register} errors={errors} gridColumn={{ base: "1", md: "2 / 3" }} />
-                    <FormField id="email" label="Email" defaultValue={email} register={register} errors={errors} gridColumn={{ base: "1 / -1", md: "1 / 4" }} isReadOnly />
-                    <FormField id="password" label="Password" type="password" register={register} errors={errors} gridColumn={{ base: "1 / -1", md: "1 / 4" }} />
-                    <FormField id="phone_number" label="Phone Number" defaultValue={phone_number} type="tel" tooltip="Include country code if applicable" register={register} errors={errors} gridColumn={{ base: "1 / -1", md: "1 / 4" }} />
+                <FormField id="firstname" label="First Name" defaultValue={firstname} register={register} errors={errors} gridColumn={{ base: "1", md: "1 / 2" }} icon={AiOutlineUser} />
+                <FormField id="lastname" label="Last Name" defaultValue={lastname} register={register} errors={errors} gridColumn={{ base: "1", md: "2 / 3" }} icon={AiOutlineUser} />
+                <FormField id="email" label="Email" defaultValue={email} register={register} errors={errors} gridColumn={{ base: "1 / -1", md: "1 / 4" }} isReadOnly icon={AiOutlineMail} />
+                <FormField id="password" label="Password" type="password" register={register} errors={errors} gridColumn={{ base: "1 / -1", md: "1 / 4" }} icon={AiOutlineLock} />
+                <FormField id="phone_number" label="Phone Number" defaultValue={phone_number} type="tel" tooltip="Include country code if applicable" register={register} errors={errors} gridColumn={{ base: "1 / -1", md: "1 / 4" }} icon={AiOutlinePhone} />
                     <Button type="submit" colorScheme='blue' size="lg" w="full" gridColumn={{ base: "1 / -1", md: "1 / 4" }}>Update Details</Button>
                 </Grid>
             </form>

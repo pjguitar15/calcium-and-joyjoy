@@ -30,6 +30,7 @@ import {
   BsGraphUp,
   BsPeopleFill,
   BsHouseDoorFill,
+  BsChatLeftText,
   BsGrid,
   BsTags,
   BsArrowsFullscreen,
@@ -134,9 +135,13 @@ const menu = [
         link: "/faqs",
         icon: BsInfoCircleFill,
       },
+      {
+        text: "Contact Us Messages",
+        link: "/contact-us-messages",
+        icon: BsChatLeftText,
+      },
     ],
   },
-
   {
     main: "CMS",
     icon: BsTruck,
@@ -179,6 +184,12 @@ const menu = [
       },
     ],
   },
+  {
+    main: "General Settings",
+    icon: BsGear, 
+    link: "/general-settings",
+    type: "link" 
+  },
 ];
 
 function Dashboard() {
@@ -208,12 +219,23 @@ function Dashboard() {
         </HStack>
 
         {menu.map((item, index) => (
-          <Accordion
-            key={index}
-            onChange={() => handleExpand(expanded === item.main ? null : item.main)}
-            allowToggle
-            className="w-full"
-          >
+          item.type === "link" ?
+            <HStack
+              key={index}
+              as={NavLink}
+              to={"/admin" + item.link}
+              className="cursor-pointer w-full py-4 px-6 justify-start gap-4"
+            >
+              <Icon className="text-xl" as={item.icon} />
+              <Text>{item.main}</Text>
+            </HStack>
+          :
+            <Accordion
+              key={index}
+              onChange={() => handleExpand(expanded === item.main ? null : item.main)}
+              allowToggle
+              className="w-full"
+            >
             <AccordionItem className="border-none">
               <AccordionButton
                 _hover={{ bgColor: "blackAlpha.300" }}

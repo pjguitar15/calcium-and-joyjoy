@@ -1,169 +1,142 @@
-import { Box, Button, Heading, Table, Tbody, Td, Text, Th, Thead, Tr,  useToast, } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Heading, Table, Tbody, Td, Th, Thead, Tr, Select, useToast, Text, Spinner } from "@chakra-ui/react";
+import { Line } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import axiosInstance from "../../Shared/utils/axiosInstance";
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 function SalesRep() {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [salesData, setSalesData] = useState({});
+    const [parsedData, setParsedData] = useState([]);
+    const [filterType, setFilterType] = useState('daily');
     const toast = useToast();
 
-    const [salesData, setSalesData] = useState([]);
-
-
+    useEffect(() => {
+        setLoading(true);
+        axiosInstance.get("/admin/get_sales_report")
+            .then(response => {
+                setSalesData(response.data.current_year);
+            })
+            .catch(error => {
+                setError(error.message);
+                toast({
+                    title: "Error loading data",
+                    description: error.message,
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                });
+            })
+            .finally(() => setLoading(false));
+    }, [toast]);
 
     useEffect(() => {
-        const fetchCouriersAndPaymentMethods = async () => {
-          setLoading(true);
-          try {
-            const [couriersResponse] = await Promise.all([
-              axios.get("http://18.223.157.202/backend/api/admin/get_sales_report"),
-             
-            ]);
-            
-            
-            const activeCouriers = couriersResponse.data.current_year
-       
-            setSalesData(activeCouriers);
+        setParsedData(parseSalesData(salesData[filterType]));
+    }, [salesData, filterType]);
 
-        
-        
-           
-          } catch (error) {
-            toast({
-              title: "Error loading data",
-              description: error.message,
-              status: "error",
-              duration: 9000,
-              isClosable: true,
-            });
-          }
-          setLoading(false);
-        };
-    
-        fetchCouriersAndPaymentMethods();
-      }, [toast]);
-
-
-
-
-
-
-
-
-
-    // Function to generate the sales report
-  
-   
-    
-    
-    function downloadReport(columnNames, rows ) {
-        const getSalesData = (data) => {
-            const latestDate = Object.keys(data)
-            .sort((a, b) => new Date(b) - new Date(a))
-            [0];
-    
-        const formattedSalesData = data[latestDate];
-    
-        return formattedSalesData !== undefined ? String(formattedSalesData).replace(/,/g, '') : null;
+    const handleFilterChange = (e) => {
+        setFilterType(e.target.value);
     };
-    
-    const daily_sales = getSalesData(salesData.daily);
-    const monthly_sales = getSalesData(salesData.monthly);
-    const weekly_sales = getSalesData(salesData.weekly);
-    const yearly_sales = String(salesData.yearly).replace(/,/g, '');
-        const columns = ['Daily', 'Weekly', 'Monthly','Yearly'];
-        const dataRows = [
-          [daily_sales, monthly_sales,weekly_sales,yearly_sales],
-       
-          // Add more rows as needed
-        ];
-        // Combine column names and rows into a CSV string
-        const csvData = [columns.join(','), ...dataRows.map(row => row.join(','))].join('\n');
-      
-        // Create a link element
-        const anchor = document.createElement('a');
-      
-        // Set the data URL with CSV content
-        anchor.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvData);
-      
-        // Set the download attribute with the specified file name
-        anchor.download = 'test';
-      
-        // Trigger a click event to initiate the download
-        anchor.click();
-      }
-      
-      // Example usage
-     
-      
+
+    const downloadReport = () => {
+        let dataToDownload = salesData[filterType] || {};
+
+        if (filterType === 'yearly') {
+            dataToDownload = { 'Year': salesData.yearly };
+        }
+
+        const rows = Object.entries(dataToDownload).map(([key, value]) => [key, value]);
+        const csvContent = ["Period,Sales", ...rows.map(e => e.join(","))].join("\n");
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `sales_report_${filterType}.csv`;
+        link.click();
+    };
+
+    const parseSalesData = (data) => {
+        return Object.entries(data || {}).map(([key, value]) => {
+            return {
+                period: key,
+                sales: parseFloat(value.replace(/,/g, ''))
+            };
+        });
+    };
+
+    const chartData = {
+        labels: parseSalesData(salesData[filterType]).map(item => item.period),
+        datasets: [
+            {
+                label: 'Sales',
+                data: parseSalesData(salesData[filterType]).map(item => item.sales),
+                borderColor: 'rgb(53, 162, 235)',
+                backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            },
+        ],
+    };
 
     return (
-        
         <Box>
+            <Heading size="lg" mb={4}>Sales Report</Heading>
 
-<Heading size="lg" mb={4}>Sales Report</Heading>
+            <Select placeholder="Select period" onChange={handleFilterChange} mb={4}>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+            </Select>
 
-          
-            <Button onClick={downloadReport}>Download Report</Button>
-            
-           
+            <Button onClick={downloadReport} mb={4}>Download Report</Button>
 
-            <Table >
-               
-                
-            <Tbody>
-                <Tr>
-                    <Td>
-                        <strong>Daily</strong>
-                    </Td>
-                    {salesData.daily &&
-                    Object.keys(salesData.daily)
-                    .reverse() // Reverse the order of keys (dates)
-                    .slice(0, 1) // Select only the first date
-                    .map((date) => (
-                        
-                            <Td>{salesData.daily[date]}</Td>
-                       
-                    ))}
-                </Tr>
-                <Tr>
-                    <Td>
-                        <strong>Weekly</strong>
-                    </Td>
-                    {salesData.weekly &&
-                    Object.keys(salesData.weekly)
-                    .reverse() // Reverse the order of keys (dates)
-                    .slice(0, 1) // Select only the first date
-                    .map((date) => (
-                        
-                            <Td>{salesData.weekly[date]}</Td>
-                    ))}
-                </Tr>
-                <Tr>
-                    <Td>
-                        <strong>Monthly</strong>
-                    </Td>
-                    {salesData.monthly &&
-                    Object.keys(salesData.monthly)
-                    .reverse() // Reverse the order of keys (dates)
-                    .slice(0, 1) // Select only the first date
-                    .map((date) => (
-                        
-                            <Td>{salesData.monthly[date]}</Td>
-                    ))}
-                </Tr>
-                <Tr>
-                    <Td>
-                        <strong>Yearly</strong>
-                       
-                    </Td>
-                    <Td>{salesData.yearly}</Td>
-                </Tr>
-
-            </Tbody>
-
-            </Table>
-
-
+            {loading ? <Spinner /> : error ? <Text>{error}</Text> : (
+                <>
+                    <Line data={chartData} />
+                    <Table variant="simple">
+                        <Thead>
+                            <Tr>
+                                <Th>Date/Period</Th>
+                                <Th>Sales</Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody>
+                            {filterType !== 'yearly' ? (
+                                parseSalesData(salesData[filterType]).map(({ period, sales }) => (
+                                    <Tr key={period}>
+                                        <Td>{period}</Td>
+                                        <Td>{sales.toLocaleString()}</Td>
+                                    </Tr>
+                                ))
+                            ) : (
+                                <Tr>
+                                    <Td>Year</Td>
+                                    <Td>{parseFloat(salesData.yearly.replace(/,/g, '')).toLocaleString()}</Td>
+                                </Tr>
+                            )}
+                        </Tbody>
+                    </Table>
+                </>
+            )}
         </Box>
     );
 }
